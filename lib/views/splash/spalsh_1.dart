@@ -14,7 +14,21 @@ class _Spalsh1State extends State<Spalsh1> {
     return Scaffold(
 
 
-      body: Center(child: Text('Splash Screen'),),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+
+          children: [
+
+            Text('Locate Lost'),
+            Divider(),
+
+            ElevatedButton(onPressed: (){}, child: const Text('Get Started'))
+
+          ],
+
+        ),
+      ),
 
     );
 

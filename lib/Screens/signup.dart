@@ -77,7 +77,7 @@ class _SignupState extends State<Signup> {
                         labelText: 'Name',
                         hintText: 'Name',
                         controller: cName,
-                        fillColor: AppColors.myColor,
+                        fillColor: AppColors.background,
                       ),
                       CustomTextFormField(
                         labelText: 'E-Mail Address',

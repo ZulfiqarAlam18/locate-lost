@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/report_case.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/colors.dart';
 
@@ -48,7 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            CustomButton(text: 'New Case', onPressed: (){}, size: 'small', bgColor: AppColors.primary, textColor: AppColors.secondary),
+            CustomButton(text: 'New Case', onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportCase()));
+
+            }, size: 'large', bgColor: AppColors.primary, textColor: AppColors.secondary),
 
           ],
         ),

@@ -5,6 +5,7 @@ import 'package:locat_lost/Screens/login.dart';
 import 'package:locat_lost/Screens/report_case.dart';
 import 'package:locat_lost/Screens/signup.dart';
 import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/demo.dart';
 
 import 'Screens/home_screen.dart';
 import 'Screens/record.dart';
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
 
       ),
 
-      home:  ChildDetailsScreens(),
+      home:  Signup(),
 
     );
 

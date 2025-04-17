@@ -189,25 +189,27 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
 
 
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CustomButton(
-                            text: 'Back',
-                            onPressed: () {},
-                            size: 'small',
-                            bgColor: AppColors.secondary,
-                            textColor: AppColors.primary,
-                          ),
-                          CustomButton(
-                            text: 'Submit',
-                            onPressed: () {
+                          CustomButton(onPressed: (){
+                            Navigator.pop(context);
+                          },
+                              backgroundColor: AppColors.secondary,
+                              foregroundColor: AppColors.primary,
+                              size: 'small',
+                              label: 'Back',
+                              border: true),
+                          CustomButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>RecordScreen()));
 
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> RecordScreen()));
+                          },
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: AppColors.secondary,
+                              size: 'small',
+                              label: 'Next',
+                              border: true),
 
-                            },
-                            size: 'large',
-                            bgColor: AppColors.primary,
-                            textColor: AppColors.secondary,
-                          ),
+
                         ],
                       ),
                     ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/SplashScreens/splash1.dart';
 import 'package:locat_lost/Screens/child_info.dart';
 import 'package:locat_lost/Screens/login.dart';
 import 'package:locat_lost/Screens/report_case.dart';
@@ -7,6 +8,7 @@ import 'package:locat_lost/Screens/signup.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/demo.dart';
 
+import 'Screens/SplashScreens/splash.dart';
 import 'Screens/home_screen.dart';
 import 'Screens/record.dart';
 
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
 
       ),
 
-      home:  Signup(),
+      home:  Splash(),
 
     );
 

@@ -1,84 +1,86 @@
-import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-
-class AnimatedProgressCard extends StatefulWidget {
-  const AnimatedProgressCard({super.key});
-
-  @override
-  State<AnimatedProgressCard> createState() => _AnimatedProgressCardState();
-}
-
-class _AnimatedProgressCardState extends State<AnimatedProgressCard>
-    with SingleTickerProviderStateMixin {
-  double progressPercent = 0.25; // Can be dynamic later
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 390,
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        elevation: 6,
-        shadowColor: Colors.black26,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Row(
-            children: [
-              // Left side: Texts
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Application Progress',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.teal[700],
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      'Enter missing person’s real\nname here',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.redAccent,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Right side: Circular progress
-              CircularPercentIndicator(
-                radius: 40,
-                lineWidth: 8.0,
-                percent: progressPercent,
-                animation: true,
-                animationDuration: 1000,
-                progressColor: Colors.teal,
-                backgroundColor: Colors.teal.shade100,
-                circularStrokeCap: CircularStrokeCap.round,
-                center: Text(
-                  "${(progressPercent * 100).toInt()}%",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal[800],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+// import 'package:flutter/material.dart';
+// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+//
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: SplashScreen(),
+//     );
+//   }
+// }
+//
+// class SplashScreen extends StatefulWidget {
+//   const SplashScreen({super.key});
+//
+//   @override
+//   State<SplashScreen> createState() => _SplashScreenState();
+// }
+//
+// class _SplashScreenState extends State<SplashScreen> {
+//   final PageController _controller = PageController();
+//
+//   final List<Widget> splashPages = [
+//     Container(
+//       color: Colors.white,
+//       child: const Center(child: Text('Splash Screen 1', style: TextStyle(fontSize: 24))),
+//     ),
+//     Container(
+//       color: Colors.white,
+//       child: const Center(child: Text('Splash Screen 2', style: TextStyle(fontSize: 24))),
+//     ),
+//     Container(
+//       color: Colors.white,
+//       child: const Center(child: Text('Splash Screen 3', style: TextStyle(fontSize: 24))),
+//     ),
+//   ];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: PageView(
+//               controller: _controller,
+//               children: splashPages,
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.only(bottom: 30),
+//             child: SmoothPageIndicator(
+//               controller: _controller,
+//               count: splashPages.length,
+//               effect: CustomizableEffect(
+//                 activeDotDecoration: DotDecoration(
+//                   width: 12,
+//                   height: 12,
+//                   color: Colors.teal,
+//                   shape: BoxShape.circle,
+//                 ),
+//                 dotDecoration: DotDecoration(
+//                   width: 12,
+//                   height: 12,
+//                   color: Colors.white,
+//                   shape: BoxShape.circle,
+//                   border: Border.all(
+//                     color: Colors.teal,
+//                     width: 2,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

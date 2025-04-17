@@ -55,7 +55,11 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+
+                      },
                       child: Text(
                         'Login',
                         style: TextStyle(
@@ -114,15 +118,17 @@ class _SignupState extends State<Signup> {
                       SizedBox(height: 15), // Only a small gap between button and fields
 
                       // Custom Button
-                      CustomButton(
-                        text: 'Create Account',
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) =>Login()));
-                        },
-                        size: 'large',
-                        bgColor: Colors.teal,
-                        textColor: Colors.white,
-                      ),
+                      CustomButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+                      },
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.secondary,
+                          size: 'large',
+                          label: 'Create Account',
+                          border: false),
+
+
+
                     ],
                   ),
                 ),

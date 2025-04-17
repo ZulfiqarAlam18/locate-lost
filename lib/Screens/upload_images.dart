@@ -23,7 +23,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
       backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
         
@@ -151,7 +151,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
               SizedBox(height: 10),
               Container(
                 width: 430,
-                height: 230,
+                height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
@@ -194,7 +194,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
               SizedBox(height: 10),
               Container(
                 width: 430,
-                height: 230,
+                height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
@@ -236,13 +236,28 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
               ),
               SizedBox(height: 10,),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomButton(text: 'Previous', onPressed: (){
+                  CustomButton(onPressed: (){
+                    Navigator.pop(context);
+                  },
+                      backgroundColor: AppColors.secondary,
+                      foregroundColor: AppColors.primary,
+                      size: 'small',
+                      label: 'Back',
+                      border: true),
+                  CustomButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ParentDetailsScreen()));
-                  }, size: 'small', bgColor: AppColors.secondary, textColor: AppColors.primary),
-                  CustomButton(text: 'Next', onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ParentDetailsScreen()));
-                  }, size: 'large', bgColor: AppColors.primary, textColor: AppColors.secondary),
+
+                  },
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.secondary,
+                      size: 'small',
+                      label: 'Next',
+                      border: true),
+
+
+
 
 
                 ],

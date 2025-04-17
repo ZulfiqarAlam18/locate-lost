@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/signup.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
@@ -55,7 +56,9 @@ class _SignupState extends State<Login> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()));
+                      },
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
@@ -109,15 +112,16 @@ class _SignupState extends State<Login> {
                       SizedBox(height: 15), // Only a small gap between button and fields
 
                       // Custom Button
-                      CustomButton(
-                        text: 'Log In',
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-                        },
-                        size: 'large',
-                        bgColor: Colors.teal,
-                        textColor: Colors.white,
-                      ),
+                      CustomButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                      },
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.secondary,
+                          size: 'large',
+                          label: 'Log In',
+                          border: false),
+
+
                     ],
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/child_info.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -93,7 +94,8 @@ class _RecordScreenState extends State<RecordScreen> {
 
                   child: ListTile(
                     leading: CircleAvatar(
-                      child: Text('${index + 1}'),
+                      radius: 30,
+                      child: ClipRRect(borderRadius: BorderRadius.circular(30),child: Image.asset('assets/zulfi.png',fit: BoxFit.cover,)),
                     ),
                     title: const Text('Zulfiqar Alam'),
                     subtitle: const Text('Reported Case Detail'),
@@ -113,7 +115,11 @@ class _RecordScreenState extends State<RecordScreen> {
         ],
       ),
 
-      floatingActionButton: FloatingActionButton(onPressed: (){},child: Icon(Icons.add,color: Colors.white,),backgroundColor: Colors.teal,),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>ChildDetailsScreens()));
+
+      },child: Icon(Icons.add,color: Colors.white,),backgroundColor: Colors.teal,),
     );
   }
 }

@@ -195,25 +195,29 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
 
 
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CustomButton(
-                            text: 'Back',
-                            onPressed: () {},
-                            size: 'small',
-                            bgColor: AppColors.secondary,
-                            textColor: AppColors.primary,
-                          ),
-                          CustomButton(
-                            text: 'Next',
-                            onPressed: () {
 
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> UploadImagesScreen()));
+                          CustomButton(onPressed: (){
+                            Navigator.pop(context);
+                          },
+                              backgroundColor: AppColors.secondary,
+                              foregroundColor: AppColors.primary,
+                              size: 'small',
+                              label: 'Back',
+                              border: true),
+                          CustomButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadImagesScreen()));
 
-                            },
-                            size: 'large',
-                            bgColor: AppColors.primary,
-                            textColor: AppColors.secondary,
-                          ),
+                          },
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: AppColors.secondary,
+                              size: 'small',
+                              label: 'Next',
+                              border: true),
+
+
+
                         ],
                       ),
                     ],

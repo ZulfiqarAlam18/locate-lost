@@ -49,10 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            CustomButton(text: 'New Case', onPressed: (){
+            SizedBox(height: 10,),
+            CustomButton(onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportCase()));
-
-            }, size: 'large', bgColor: AppColors.primary, textColor: AppColors.secondary),
+            },
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.secondary,
+                size: 'small',
+                label: 'New Case',
+                border: false),
 
           ],
         ),

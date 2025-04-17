@@ -18,6 +18,7 @@ class _ReportCaseState extends State<ReportCase> {
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
+
           Container(
             width: 430,
             height: 110,
@@ -37,6 +38,8 @@ class _ReportCaseState extends State<ReportCase> {
               ],
             ),
           ),
+
+
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

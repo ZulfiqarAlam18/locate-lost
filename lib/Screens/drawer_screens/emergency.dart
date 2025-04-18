@@ -15,7 +15,9 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(text: 'Emergency', onPressed: (){}),
+      appBar: CustomAppBar(text: 'Emergency', onPressed: (){
+        Navigator.pop(context);
+      }),
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [

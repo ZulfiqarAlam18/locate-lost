@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/drawer_screens/about_us.dart';
+import 'package:locat_lost/Screens/drawer_screens/emergency.dart';
+import 'package:locat_lost/Screens/drawer_screens/faqs.dart';
 import 'package:locat_lost/Screens/report_case.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
@@ -15,7 +18,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(text: 'LocateLost', onPressed: (){}),
+      // appBar: CustomAppBar(text: 'LocateLost', onPressed: (){}),
+      appBar: AppBar(
+        title: Text('Home Screen'),
+      ),
       backgroundColor: AppColors.secondary,
       body: Center(
         child: Column(
@@ -75,6 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Home'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+              onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+
+              },
             ),
             ListTile(
 
@@ -82,6 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Report a case'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+              onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportCase()));
+
+              },
             ),
             ListTile(
 
@@ -89,6 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('FAQs'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+              onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>FAQsScreen()));
+
+              },
             ),
             ListTile(
 
@@ -96,6 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Emergency'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+              onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>EmergencyContactScreen()));
+
+              },
             ),
             ListTile(
 
@@ -103,6 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('About Us'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+              onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AboutUsScreen()));
+
+              },
             ),
             ListTile(
 
@@ -110,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Log Out'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+
             ),
           ],
         ),

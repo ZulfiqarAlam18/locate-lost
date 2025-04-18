@@ -75,7 +75,8 @@ class MyApp extends StatelessWidget {
 
       ),
 
-     home: DisplayInfoScreen(),
+    // home: DisplayInfoScreen(),
+      home: Splash(),
 
     );
 

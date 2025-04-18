@@ -16,7 +16,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: CustomAppBar(text: 'About Us', onPressed: (){}),
+      appBar: CustomAppBar(text: 'About Us', onPressed: (){
+        Navigator.pop(context);
+      }),
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [

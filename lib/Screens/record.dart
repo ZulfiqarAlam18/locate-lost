@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Screens/child_info.dart';
+import 'package:locat_lost/Screens/display_info.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
 
@@ -80,7 +81,7 @@ class _RecordScreenState extends State<RecordScreen> {
                     subtitle: const Text('Reported Case Detail'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () {
-                      // Action on tap
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DisplayInfoScreen()));
                     },
                   ),
                 );

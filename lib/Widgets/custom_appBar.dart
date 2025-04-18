@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/colors.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String text;
   final VoidCallback onPressed;
-  final IconData icon; // New: Accept icon from parent
+  final IconData icon;
 
   const CustomAppBar({
     super.key,
     required this.text,
     required this.onPressed,
-    this.icon = Icons.arrow_circle_left_outlined, // Default icon
+    this.icon = Icons.arrow_circle_left_outlined,
   });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(110); // Match the height of your container
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,6 @@ class CustomAppBar extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Centered title
           Text(
             text,
             style: TextStyle(
@@ -38,8 +40,6 @@ class CustomAppBar extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-
-          // Customizable Icon Button
           Positioned(
             left: 10,
             top: 0,
@@ -47,7 +47,7 @@ class CustomAppBar extends StatelessWidget {
             child: IconButton(
               onPressed: onPressed,
               icon: Icon(
-                icon, // <- Your custom icon here
+                icon,
                 color: AppColors.secondary,
                 size: 30,
               ),

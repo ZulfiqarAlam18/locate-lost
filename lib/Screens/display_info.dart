@@ -7,6 +7,8 @@ import 'package:locat_lost/Widgets/custom_elevatedButton.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/demo.dart';
 
+import '../Widgets/custom_appBar.dart';
+
 class DisplayInfoScreen extends StatefulWidget {
   const DisplayInfoScreen({super.key});
 

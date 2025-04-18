@@ -15,11 +15,11 @@ class _FAQsScreenState extends State<FAQsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(text: 'Frequently Asked Questions', onPressed: (){}),
+      backgroundColor: AppColors.secondary,
       body: Column(
         children: [
-          CustomAppBar(text: 'Frequently Asked Questions', onPressed: () {
-            Navigator.pop(context);
-          }),
+
           SizedBox(height: 5),
           Expanded(child: SingleChildScrollView(
             child: Column(

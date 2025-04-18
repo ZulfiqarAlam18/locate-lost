@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Screens/report_case.dart';
+import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/colors.dart';
 
@@ -14,12 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('LocateLost'),
-        centerTitle: true,
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.secondary,
-      ),
+      appBar: CustomAppBar(text: 'LocateLost', onPressed: (){}),
       backgroundColor: AppColors.secondary,
       body: Center(
         child: Column(

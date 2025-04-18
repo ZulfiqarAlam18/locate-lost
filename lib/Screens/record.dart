@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Screens/child_info.dart';
+import 'package:locat_lost/Widgets/custom_appBar.dart';
+import 'package:locat_lost/colors.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -12,35 +14,12 @@ class _RecordScreenState extends State<RecordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(text: 'LocateLost', onPressed: (){}),
+      backgroundColor: AppColors.secondary,
       body: Column(
         children: [
           // AppBar-style top container
-          Container(
-            width: double.infinity,
-            height: 110,
-            decoration: const BoxDecoration(
-              color: Colors.teal,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Row(
-              children: const [
-                SizedBox(width: 10),
-                Icon(Icons.arrow_back, color: Colors.white),
-                SizedBox(width: 10),
-                Text(
-                  'Report a Case',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
+
 
           Row(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,

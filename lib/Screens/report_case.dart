@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Screens/child_info.dart';
+import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,30 +16,10 @@ class _ReportCaseState extends State<ReportCase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     appBar: CustomAppBar(text: 'Custom App Bar', onPressed: (){}),
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
-
-          Container(
-            width: 430,
-            height: 110,
-            decoration: BoxDecoration(
-              color: Colors.teal,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Row(
-              children: [
-                IconButton(onPressed: () {
-                  Navigator.pop(context);
-                }, icon: Icon(Icons.arrow_back)),
-                Text('Report a Case'),
-              ],
-            ),
-          ),
-
 
           Expanded(
             child: Padding(

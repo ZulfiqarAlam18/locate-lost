@@ -14,12 +14,13 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      appBar: CustomAppBar(text: 'About Us', onPressed: (){}),
+      backgroundColor: AppColors.secondary,
       body: Column(
         children: [
-          CustomAppBar(text: 'About Us', onPressed: () {
-            Navigator.pop(context);
-          }),
+
           SizedBox(height: 5),
           Expanded(
             child: SingleChildScrollView(

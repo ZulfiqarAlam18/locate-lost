@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Widgets/custom_elevatedButton.dart';
 import 'package:locat_lost/colors.dart';
@@ -43,8 +39,7 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
     return Scaffold(
       backgroundColor: AppColors.secondary,
 
-
-      appBar: CustomAppBarr(text: 'Case Details',showBackButton: false,),
+      appBar: CustomAppBarr(text: 'Case Details', showBackButton: false),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -101,7 +96,14 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
             const SizedBox(height: 30),
 
             Center(
-            child: CustomElevatedButton(label: 'Edit Details', backgroundColor: AppColors.primary, foregroundColor: AppColors.secondary, width: 130, height: 50, onPressed: (){}),
+              child: CustomElevatedButton(
+                label: 'Edit Details',
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.secondary,
+                width: 130,
+                height: 50,
+                onPressed: () {},
+              ),
             ),
           ],
         ),
@@ -122,7 +124,10 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
               child: RichText(
                 text: TextSpan(
                   text: '${entry.key}: ',
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                   children: [
                     TextSpan(
                       text: entry.value,

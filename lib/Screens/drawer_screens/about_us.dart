@@ -14,16 +14,17 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: CustomAppBar(text: 'About Us', onPressed: (){
-        Navigator.pop(context);
-      }),
+      appBar: CustomAppBar(
+        text: 'About Us',
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
         child: Column(
           children: [
-        
             SizedBox(height: 5),
             _buildProfileCard(
               imagePath: 'assets/ali.png',
@@ -59,9 +60,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       radius: Radius.circular(12),
       child: Card(
         elevation: 16,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -165,23 +164,3 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

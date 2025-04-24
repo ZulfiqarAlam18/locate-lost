@@ -39,16 +39,17 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-
             SizedBox(height: 50),
-            Center(child: Text(
-              'Lost Person',
-              style: TextStyle(
-                fontSize: 25,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w500,
+            Center(
+              child: Text(
+                'Lost Person',
+                style: TextStyle(
+                  fontSize: 25,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),),
+            ),
 
             Divider(
               color: AppColors.primary,
@@ -58,16 +59,12 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
             ),
             SizedBox(height: 20),
 
-
             Container(
               width: 390,
               height: 140,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: AppColors.primary,
-                  width: 1.5,
-                ),
+                border: Border.all(color: AppColors.primary, width: 1.5),
               ),
               child: Card(
                 elevation: 6,
@@ -76,7 +73,10 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -108,10 +108,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
                       ),
                       Expanded(
                         flex: 1,
-                        child:
-
-
-                        CircularPercentIndicator(
+                        child: CircularPercentIndicator(
                           radius: 40,
                           lineWidth: 8.0,
                           percent: progressPercent,
@@ -129,19 +126,12 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
                             ),
                           ),
                         ),
-
-
-
-
-
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-
-
 
             SizedBox(height: 20),
             Divider(
@@ -178,37 +168,65 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
 
                   child: Column(
                     children: [
-
-                      _buildTextField('Parent name', 'Enter Missing Person\'s parent name', cName, true),
-                      _buildTextField('Relationship with missing person', 'What is your relationship with missing person', cFName, true),
-                      _buildTextField('Phone Number', 'Enter your phone number', cCaste, true),
-                      _buildTextField('Emergency Contact', 'Enter emergency contact in case first one is off.', cGender, true),
-                      _buildTextField('Any other details', 'If you want to provide any other details related to you are the missing person.', cHeight, true),
-
-
+                      _buildTextField(
+                        'Parent name',
+                        'Enter Missing Person\'s parent name',
+                        cName,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Relationship with missing person',
+                        'What is your relationship with missing person',
+                        cFName,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Phone Number',
+                        'Enter your phone number',
+                        cCaste,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Emergency Contact',
+                        'Enter emergency contact in case first one is off.',
+                        cGender,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Any other details',
+                        'If you want to provide any other details related to you are the missing person.',
+                        cHeight,
+                        true,
+                      ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CustomButton(onPressed: (){
-                            Navigator.pop(context);
-                          },
-                              backgroundColor: AppColors.secondary,
-                              foregroundColor: AppColors.primary,
-                              size: 'small',
-                              label: 'Back',
-                              border: true),
-                          CustomButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>RecordScreen()));
-
-                          },
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: AppColors.secondary,
-                              size: 'small',
-                              label: 'Next',
-                              border: true),
-
-
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            backgroundColor: AppColors.secondary,
+                            foregroundColor: AppColors.primary,
+                            size: 'small',
+                            label: 'Back',
+                            border: true,
+                          ),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecordScreen(),
+                                ),
+                              );
+                            },
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.secondary,
+                            size: 'small',
+                            label: 'Next',
+                            border: true,
+                          ),
                         ],
                       ),
                     ],
@@ -220,10 +238,14 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
         ),
       ),
     );
-
   }
 
-  Widget _buildTextField(String label, String hint, TextEditingController controller, bool isRequired) {
+  Widget _buildTextField(
+    String label,
+    String hint,
+    TextEditingController controller,
+    bool isRequired,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
@@ -267,32 +289,6 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //  CustomTextFormField Widget Implementation
 class CustomTextFormField extends StatelessWidget {
   final String labelText;
@@ -317,21 +313,14 @@ class CustomTextFormField extends StatelessWidget {
         labelText: labelText,
         hintText: hintText,
         hintStyle: const TextStyle(fontSize: 13),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 14,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         filled: true,
         fillColor: Colors.white,
       ),
     );
   }
 }
-
-
-
-
-
-
-
-

@@ -17,11 +17,10 @@ class _ReportCaseState extends State<ReportCase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: CustomAppBar(text: 'Custom App Bar', onPressed: (){}),
+      appBar: CustomAppBar(text: 'Custom App Bar', onPressed: () {}),
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

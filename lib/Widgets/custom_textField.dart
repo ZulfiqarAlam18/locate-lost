@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final IconData? icon;
   final Color? fillColor; // background color
-  final double? height;   // height of input field
+  final double? height; // height of input field
 
   const CustomTextFormField({
     super.key,
@@ -29,7 +29,9 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5), // Reduced padding here
       child: SizedBox(
-        height: height ?? 50, // Default height reduced to 50 for a more compact field
+        height:
+            height ??
+            50, // Default height reduced to 50 for a more compact field
         child: TextFormField(
           controller: controller,
           obscureText: isPassword,
@@ -41,9 +43,7 @@ class CustomTextFormField extends StatelessWidget {
             filled: fillColor != null,
             fillColor: fillColor,
             prefixIcon: icon != null ? Icon(icon, color: Colors.teal) : null,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.teal),
               borderRadius: BorderRadius.circular(12),

@@ -40,16 +40,17 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-
             SizedBox(height: 50),
-            Center(child: Text(
-              'Lost Person',
-              style: TextStyle(
-                fontSize: 25,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w500,
+            Center(
+              child: Text(
+                'Lost Person',
+                style: TextStyle(
+                  fontSize: 25,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),),
+            ),
 
             Divider(
               color: AppColors.primary,
@@ -59,16 +60,12 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
             ),
             SizedBox(height: 20),
 
-
             Container(
               width: 390,
               height: 140,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: AppColors.primary,
-                  width: 1.5,
-                ),
+                border: Border.all(color: AppColors.primary, width: 1.5),
               ),
               child: Card(
                 elevation: 6,
@@ -77,7 +74,10 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -109,10 +109,7 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
                       ),
                       Expanded(
                         flex: 1,
-                        child:
-
-
-                        CircularPercentIndicator(
+                        child: CircularPercentIndicator(
                           radius: 40,
                           lineWidth: 8.0,
                           percent: progressPercent,
@@ -130,19 +127,12 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
                             ),
                           ),
                         ),
-
-
-
-
-
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-
-
 
             SizedBox(height: 20),
             Divider(
@@ -179,46 +169,101 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
 
                   child: Column(
                     children: [
-
-                      _buildTextField('Name', 'Enter Missing Person\'s name', cName, true),
-                      _buildTextField('Father\'s Name', 'Enter Missing Person\'s father\'s name', cFName, true),
-                      _buildTextField('Surname', 'Enter Missing Person\'s surname', cCaste, true),
-                      _buildTextField('Gender', 'Enter Missing Person\'s gender', cGender, true),
-                      _buildTextField('Height', 'Enter Missing Person\'s height (ft)', cHeight, true),
-                      _buildTextField('Skin Color', 'Enter Missing Person\'s skin color', cSkinColor, true),
-                      _buildTextField('Hair Color', 'Enter Missing Person\'s hair color', cHairColor, true),
-                      _buildTextField('Disability (if any)', 'Enter Missing Person\'s disability', cDisability, false),
-                      _buildTextField('Last Seen Place', 'Where was the person seen last?', cLastSeenPlace, true),
-                      _buildTextField('Last Seen Time', 'Enter Missing Person\'s last seen time', cLastSeenTime, true),
-                      _buildTextField('Phone Number (optional)', 'Enter Missing Person\'s phone number', cNum, false),
-
-
-
+                      _buildTextField(
+                        'Name',
+                        'Enter Missing Person\'s name',
+                        cName,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Father\'s Name',
+                        'Enter Missing Person\'s father\'s name',
+                        cFName,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Surname',
+                        'Enter Missing Person\'s surname',
+                        cCaste,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Gender',
+                        'Enter Missing Person\'s gender',
+                        cGender,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Height',
+                        'Enter Missing Person\'s height (ft)',
+                        cHeight,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Skin Color',
+                        'Enter Missing Person\'s skin color',
+                        cSkinColor,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Hair Color',
+                        'Enter Missing Person\'s hair color',
+                        cHairColor,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Disability (if any)',
+                        'Enter Missing Person\'s disability',
+                        cDisability,
+                        false,
+                      ),
+                      _buildTextField(
+                        'Last Seen Place',
+                        'Where was the person seen last?',
+                        cLastSeenPlace,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Last Seen Time',
+                        'Enter Missing Person\'s last seen time',
+                        cLastSeenTime,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Phone Number (optional)',
+                        'Enter Missing Person\'s phone number',
+                        cNum,
+                        false,
+                      ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
-                          CustomButton(onPressed: (){
-                            Navigator.pop(context);
-                          },
-                              backgroundColor: AppColors.secondary,
-                              foregroundColor: AppColors.primary,
-                              size: 'small',
-                              label: 'Back',
-                              border: true),
-                          CustomButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadImagesScreen()));
-
-                          },
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: AppColors.secondary,
-                              size: 'small',
-                              label: 'Next',
-                              border: true),
-
-
-
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            backgroundColor: AppColors.secondary,
+                            foregroundColor: AppColors.primary,
+                            size: 'small',
+                            label: 'Back',
+                            border: true,
+                          ),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UploadImagesScreen(),
+                                ),
+                              );
+                            },
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.secondary,
+                            size: 'small',
+                            label: 'Next',
+                            border: true,
+                          ),
                         ],
                       ),
                     ],
@@ -230,10 +275,14 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
         ),
       ),
     );
-
   }
 
-  Widget _buildTextField(String label, String hint, TextEditingController controller, bool isRequired) {
+  Widget _buildTextField(
+    String label,
+    String hint,
+    TextEditingController controller,
+    bool isRequired,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
@@ -276,34 +325,6 @@ class _ChildDetailsScreensState extends State<ChildDetailsScreens> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //
 // import 'package:flutter/material.dart';
@@ -566,21 +587,14 @@ class CustomTextFormField extends StatelessWidget {
         labelText: labelText,
         hintText: hintText,
         hintStyle: const TextStyle(fontSize: 13),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 14,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         filled: true,
         fillColor: Colors.white,
       ),
     );
   }
 }
-
-
-
-
-
-
-
-

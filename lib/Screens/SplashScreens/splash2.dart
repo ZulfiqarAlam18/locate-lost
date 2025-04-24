@@ -17,7 +17,11 @@ class _Splash2State extends State<Splash2> {
       body: Column(
         children: [
           Center(
-            child: Image.asset('assets/images/splash2.png', width: 355, height: 280),
+            child: Image.asset(
+              'assets/images/splash2.png',
+              width: 355,
+              height: 280,
+            ),
           ),
           SizedBox(height: 30),
           RichText(

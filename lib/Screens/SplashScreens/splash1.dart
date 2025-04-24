@@ -18,13 +18,16 @@ class _Splash1State extends State<Splash1> {
       body: Column(
         children: [
           Center(
-            child: Image.asset('assets/images/splash1.png', width: 355, height: 280),
+            child: Image.asset(
+              'assets/images/splash1.png',
+              width: 355,
+              height: 280,
+            ),
           ),
           SizedBox(height: 30),
 
           Row(
             children: [
-
               RichText(
                 text: TextSpan(
                   text: 'Reuniting\n',
@@ -42,12 +45,13 @@ class _Splash1State extends State<Splash1> {
                   ],
                 ),
               ),
-              Image.asset('assets/images/Map1_updated.svg',width: 20,height: 20,),
-
+              Image.asset(
+                'assets/images/Map1_updated.svg',
+                width: 20,
+                height: 20,
+              ),
             ],
           ),
-
-
         ],
       ),
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/child_info.dart';
 import 'package:locat_lost/Screens/display_info.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
+
+import 'parent_screens/child_info.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});

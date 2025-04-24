@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/upload_images.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+
+import 'upload_images.dart';
 
 class ChildDetailsScreens extends StatefulWidget {
   const ChildDetailsScreens({super.key});

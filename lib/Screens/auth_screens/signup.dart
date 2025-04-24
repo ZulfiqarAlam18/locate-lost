@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/login.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
+
+import 'login.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});

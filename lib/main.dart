@@ -1,8 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:locatlost/demo.dart';
-import 'colors.dart';
+import 'package:locat_lost/Screens/SplashScreens/splash1.dart';
+import 'package:locat_lost/Screens/display_info.dart';
+import 'package:locat_lost/Screens/drawer_screens/about_us.dart';
+import 'package:locat_lost/Screens/drawer_screens/emergency.dart';
+import 'package:locat_lost/Screens/report_case.dart';
+import 'package:locat_lost/Widgets/custom_appBar.dart';
+import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/demo.dart';
+import 'package:locat_lost/demo2.dart';
 
-import 'views/splash/spalsh_1.dart';
+import 'Screens/SplashScreens/splash.dart';
+import 'Screens/drawer_screens/faqs.dart';
+import 'Screens/home_screen.dart';
+import 'Screens/profile.dart';
+import 'Screens/record.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,57 +23,59 @@ void main() {
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Locate Lost',
-      home: Spalsh1(),
       theme: ThemeData(
-
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: bgColor,
-            backgroundColor: myPrimaryColor,
-            textStyle: TextStyle(
-              fontFamily: 'Poppins',
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.w500,
-
-
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-            minimumSize: Size(241,60),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-
-
-          ),
+        appBarTheme: AppBarTheme(
+          foregroundColor: AppColors.secondary,
+          backgroundColor: AppColors.primary,
+          centerTitle: true,
         ),
 
-        // textTheme: TextTheme(
-        //  bodyText1: TextStyle(
-        //    fontFamily: 'Poppins',
-        //    fontWeight: FontWeight.w600,
-        //    color: Colors.white,
+        // elevatedButtonTheme: ElevatedButtonThemeData(
+        //   style: ElevatedButton.styleFrom(
+        //     backgroundColor: AppColors.primary,
+        //     foregroundColor: AppColors.secondary,
+        //   ),
+        // ),
+
+        // inputDecorationTheme: InputDecorationTheme(
+        //  enabledBorder: OutlineInputBorder(
+        //    borderSide: BorderSide(
+        //     // color: Colors.teal,
         //
+        //      width: 1,
+        //    ),
+        //    borderRadius: BorderRadius.circular(12),
+        //
+        //  ),
+        //  focusedBorder: OutlineInputBorder(
+        //    borderSide: BorderSide(
+        //      color: AppColors.primary,
+        //      width: 1,
+        //    ),
+        //    borderRadius: BorderRadius.circular(12),
         //  )
         //
         // ),
-
-
-        appBarTheme: AppBarTheme(
-          centerTitle: true,
-          foregroundColor: Colors.white,
-          backgroundColor: myPrimaryColor,
-        ),
-
-        scaffoldBackgroundColor: bgColor,
-
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: myPrimaryColor,
-          primary: myPrimaryColor,
-          secondary: Colors.teal[50],
-        ),
       ),
+
+      // home: DisplayInfoScreen(),
+      //
+      home: Splash(),
+
+      //  home: ProfileScreen(),
+      //home: Demo(),
+      //   home: EmergencyContactScreen(),
     );
   }
 }
+
+/*
+
+
+style: TextStyle(
+fontSize: 30,
+color: AppColors.primary,
+fontWeight: FontWeight.w600,
+),
+
+*/

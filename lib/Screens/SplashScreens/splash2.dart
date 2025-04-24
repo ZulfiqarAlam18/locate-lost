@@ -15,27 +15,22 @@ class _Splash2State extends State<Splash2> {
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Column(
-
         children: [
-
-          Center(child: Image.asset('assets/splash2.png',width: 355,height: 280,)),
-          SizedBox(height: 30,),
-          RichText(text: TextSpan(text: 'Hope\n',style:TextStyle(
-
-            color: AppColors.primary,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-
-
-          ),children: [
-            TextSpan(text: 'Action\n',),
-            TextSpan(text: 'Reunion'),
-          ]),
-
-
+          Center(
+            child: Image.asset('assets/splash2.png', width: 355, height: 280),
           ),
-
-
+          SizedBox(height: 30),
+          RichText(
+            text: TextSpan(
+              text: 'Hope\n',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+              ),
+              children: [TextSpan(text: 'Action\n'), TextSpan(text: 'Reunion')],
+            ),
+          ),
         ],
       ),
     );

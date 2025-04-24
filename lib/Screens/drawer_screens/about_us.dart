@@ -20,33 +20,26 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         Navigator.pop(context);
       }),
       backgroundColor: AppColors.secondary,
-      body: Column(
-        children: [
-
-          SizedBox(height: 5),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  _buildProfileCard(
-                    imagePath: 'assets/ali.png',
-                    name: 'Ali Raza',
-                    role: 'Full Stack Developer',
-                    position: 'Team Leader',
-                  ),
-                  SizedBox(height: 20),
-                  _buildProfileCard(
-                    imagePath: 'assets/zulfiqar.png',
-                    name: 'Zulfiqar Alam',
-                    role: 'Flutter Developer',
-                    position: 'Team Member',
-                  ),
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+        
+            SizedBox(height: 5),
+            _buildProfileCard(
+              imagePath: 'assets/ali.png',
+              name: 'Ali Raza',
+              role: 'Full Stack Developer',
+              position: 'Team Leader',
             ),
-          ),
-        ],
+            SizedBox(height: 20),
+            _buildProfileCard(
+              imagePath: 'assets/zulfiqar.png',
+              name: 'Zulfiqar Alam',
+              role: 'Flutter Developer',
+              position: 'Team Member',
+            ),
+          ],
+        ),
       ),
     );
   }

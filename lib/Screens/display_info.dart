@@ -44,7 +44,7 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
       backgroundColor: AppColors.secondary,
 
 
-      appBar: CustomAppBar(text: 'Case Details', onPressed: (){}),
+      appBar: CustomAppBarr(text: 'Case Details',showBackButton: false,),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

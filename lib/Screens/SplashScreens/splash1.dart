@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/colors.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Splash1 extends StatefulWidget {
   const Splash1({super.key});
@@ -15,27 +16,37 @@ class _Splash1State extends State<Splash1> {
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Column(
-
         children: [
-
-
-
-          Center(child: Image.asset('assets/splash1.png',width: 355,height: 280,)),
-          SizedBox(height: 30,),
-          RichText(text: TextSpan(text: 'Reuniting\n',style:TextStyle(
-
-            color: AppColors.primary,
-            fontSize: 30,
-
-
-          ),children: [
-            TextSpan(text: 'Loved Ones,\nOne ',style: TextStyle(color: AppColors.myBlackColor)),
-            TextSpan(text: 'Search'),
-            TextSpan(text: ' at\na time',style: TextStyle(color: AppColors.myBlackColor)),
-          ]),
-
-
+          Center(
+            child: Image.asset('assets/splash1.png', width: 355, height: 280),
           ),
+          SizedBox(height: 30),
+
+          Row(
+            children: [
+
+              RichText(
+                text: TextSpan(
+                  text: 'Reuniting\n',
+                  style: TextStyle(color: AppColors.primary, fontSize: 30),
+                  children: [
+                    TextSpan(
+                      text: 'Loved Ones,\nOne ',
+                      style: TextStyle(color: AppColors.myBlackColor),
+                    ),
+                    TextSpan(text: 'Search'),
+                    TextSpan(
+                      text: ' at\na time',
+                      style: TextStyle(color: AppColors.myBlackColor),
+                    ),
+                  ],
+                ),
+              ),
+              Image.asset('assets/images/zulfi.png',width: 20,height: 20,),
+
+            ],
+          ),
+
 
         ],
       ),

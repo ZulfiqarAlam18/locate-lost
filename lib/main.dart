@@ -11,38 +11,26 @@ import 'package:locat_lost/Screens/signup.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/demo.dart';
+import 'package:locat_lost/demo2.dart';
 
 import 'Screens/SplashScreens/splash.dart';
 import 'Screens/drawer_screens/faqs.dart';
 import 'Screens/home_screen.dart';
+import 'Screens/profile.dart';
 import 'Screens/record.dart';
 
-
-
-
 void main() {
-
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
-
-
-
-
-  Widget build(BuildContext context){
-
-
+  Widget build(BuildContext context) {
     return MaterialApp(
-
       theme: ThemeData(
-
         appBarTheme: AppBarTheme(
           foregroundColor: AppColors.secondary,
           backgroundColor: AppColors.primary,
           centerTitle: true,
-
         ),
 
         // elevatedButtonTheme: ElevatedButtonThemeData(
@@ -71,20 +59,17 @@ class MyApp extends StatelessWidget {
         //  )
         //
         // ),
-
-
       ),
 
-    // home: DisplayInfoScreen(),
+      // home: DisplayInfoScreen(),
+      //
       home: Splash(),
 
+      //  home: ProfileScreen(),
+      //home: Demo(),
+      //   home: EmergencyContactScreen(),
     );
-
-
-
   }
-
-
 }
 
 /*

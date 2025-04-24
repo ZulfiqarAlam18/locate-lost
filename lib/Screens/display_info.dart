@@ -37,9 +37,12 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
     };
 
     return Scaffold(
+
       backgroundColor: AppColors.secondary,
 
-      appBar: CustomAppBarr(text: 'Case Details', showBackButton: false),
+      appBar: CustomAppBar(text: 'Missing Child Details', onPressed: (){
+        Navigator.pop(context);
+      }),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

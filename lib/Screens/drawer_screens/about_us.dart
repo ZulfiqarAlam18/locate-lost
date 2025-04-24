@@ -23,23 +23,26 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       ),
       backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 5),
-            _buildProfileCard(
-              imagePath: 'assets/ali.png',
-              name: 'Ali Raza',
-              role: 'Full Stack Developer',
-              position: 'Team Leader',
-            ),
-            SizedBox(height: 20),
-            _buildProfileCard(
-              imagePath: 'assets/zulfiqar.png',
-              name: 'Zulfiqar Alam',
-              role: 'Flutter Developer',
-              position: 'Team Member',
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(height: 5),
+              _buildProfileCard(
+                imagePath: 'assets/images/ali.png',
+                name: 'Ali Raza',
+                role: 'Full Stack Developer',
+                position: 'Team Leader',
+              ),
+              SizedBox(height: 20),
+              _buildProfileCard(
+                imagePath: 'assets/images/zulfiqar.png',
+                name: 'Zulfiqar Alam',
+                role: 'Flutter Developer',
+                position: 'Team Member',
+              ),
+            ],
+          ),
         ),
       ),
     );

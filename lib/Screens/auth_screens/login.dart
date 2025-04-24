@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/auth_screens/forget_password.dart';
 import 'package:locat_lost/Screens/auth_screens/signup.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
@@ -32,7 +33,7 @@ class _SignupState extends State<Login> {
             child: Column(
               children: [
                 SizedBox(height: 100),
-                Image.asset('assets/login.jpg',width: 355,height: 280 ,),
+                Image.asset('assets/images/login.jpg',width: 355,height: 280 ,),
 
                 Text(
                   'Login',
@@ -49,7 +50,7 @@ class _SignupState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Dont Have an account?',
+                      'Don\'t Have an account?',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -93,7 +94,7 @@ class _SignupState extends State<Login> {
                       Container(
                         padding: EdgeInsets.only(left:215,right: 0,top: 0,bottom: 0),
                         child: TextButton(onPressed: (){
-                          //Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPasswordGlass()));
                         }, child: Text(
                           'forgot password?',
                           style: TextStyle(

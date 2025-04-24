@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/founder_screens/image.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'parent_screens/child_info.dart';
+import 'parent_screens/p_child_info.dart';
 
 class ReportCase extends StatefulWidget {
   const ReportCase({super.key});
@@ -17,7 +18,9 @@ class _ReportCaseState extends State<ReportCase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(text: 'Custom App Bar', onPressed: () {}),
+      appBar: CustomAppBar(text: 'Report A Case', onPressed: () {
+        Navigator.pop(context);
+      }),
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
@@ -30,7 +33,7 @@ class _ReportCaseState extends State<ReportCase> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      'assets/report.png',
+                      'assets/images/report.png',
                       width: 355,
                       height: 220,
                       fit: BoxFit.cover,
@@ -91,8 +94,6 @@ class _ReportCaseState extends State<ReportCase> {
                               builder: (context) => ChildDetailsScreens(),
                             ),
                           );
-                          // Perform your action here
-                          print("Card tapped - Report Lost Person");
                         },
                         child: Card(
                           color: Colors.teal,
@@ -109,7 +110,7 @@ class _ReportCaseState extends State<ReportCase> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Image.asset(
-                                    'assets/unlink.png',
+                                    'assets/images/unlink.png',
                                     width: 40,
                                     height: 40,
                                   ),
@@ -159,12 +160,10 @@ class _ReportCaseState extends State<ReportCase> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChildDetailsScreens(),
+                              builder: (context) => CapturePicturesScreen(),
                             ),
                           );
 
-                          // Perform your action here
-                          print("Card tapped - Report Lost Person");
                         },
                         child: Card(
                           color: Colors.teal,
@@ -181,7 +180,7 @@ class _ReportCaseState extends State<ReportCase> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Image.asset(
-                                    'assets/link-03.png',
+                                    'assets/images/link-03.png',
                                     width: 40,
                                     height: 40,
                                   ),

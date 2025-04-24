@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/auth_screens/login.dart';
 import 'package:locat_lost/Screens/drawer_screens/about_us.dart';
+import 'package:locat_lost/Screens/drawer_screens/contact_us.dart';
 import 'package:locat_lost/Screens/drawer_screens/emergency.dart';
 import 'package:locat_lost/Screens/drawer_screens/faqs.dart';
+import 'package:locat_lost/Screens/drawer_screens/terms_and_conditions.dart';
+import 'package:locat_lost/Screens/profile.dart';
 import 'package:locat_lost/Screens/report_case.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
@@ -18,8 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBar(text: 'LocateLost', onPressed: (){}),
-      appBar: AppBar(title: Text('Home Screen')),
+
+      appBar: AppBar(title: Text('LocateLost'),),
+      // appBar: CustomAppBar(text: 'LocateLost', onPressed: (){
+      //  // Navigator.pop(context);
+      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Done Done Done...........')));
+      // },icon: Icons.menu,),
+      //
       backgroundColor: AppColors.secondary,
       body: Center(
         child: Column(
@@ -93,14 +102,26 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.report_gmailerrorred),
-              title: Text('Report a case'),
+              leading: Icon(Icons.person),
+              title: Text('Profile'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ReportCase()),
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.privacy_tip_outlined),
+              title: Text('Terms  & Conditions'),
+              textColor: AppColors.primary,
+              iconColor: AppColors.primary,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TermsAndConditions()),
                 );
               },
             ),
@@ -117,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.warning_amber_outlined),
+              leading: Icon(Icons.support),
               title: Text('Emergency'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
@@ -143,10 +164,27 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.call),
+              title: Text('Contact Us'),
+              textColor: AppColors.primary,
+              iconColor: AppColors.primary,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactUs()),
+                );
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.logout),
               title: Text('Log Out'),
               textColor: AppColors.primary,
               iconColor: AppColors.primary,
+              onTap: (){
+                
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                
+              },
             ),
           ],
         ),

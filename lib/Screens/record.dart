@@ -3,7 +3,7 @@ import 'package:locat_lost/Screens/display_info.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
 
-import 'parent_screens/child_info.dart';
+import 'parent_screens/p_child_info.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -16,10 +16,13 @@ class _RecordScreenState extends State<RecordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(text: 'LocateLost', onPressed: () {}),
+      appBar: CustomAppBar(text: 'LocateLost', onPressed: () {
+        Navigator.pop(context);
+      }),
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
+          SizedBox(height: 5,),
           // AppBar-style top container
           Row(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -88,7 +88,7 @@ class ContactUs extends StatelessWidget {
                 },
                 child: const Text(
                   'Send Message',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: AppColors.secondary),
                 ),
               ),
             ),

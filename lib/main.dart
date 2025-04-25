@@ -6,14 +6,19 @@ import 'package:locat_lost/Screens/display_info.dart';
 import 'package:locat_lost/Screens/drawer_screens/about_us.dart';
 import 'package:locat_lost/Screens/drawer_screens/contact_us.dart';
 import 'package:locat_lost/Screens/drawer_screens/emergency.dart';
+import 'package:locat_lost/Screens/drawer_screens/stats_screen.dart';
 import 'package:locat_lost/Screens/drawer_screens/terms_and_conditions.dart';
+import 'package:locat_lost/Screens/founder_screens/f_child_info.dart';
+import 'package:locat_lost/Screens/founder_screens/founder_info.dart';
 import 'package:locat_lost/Screens/founder_screens/image.dart';
+import 'package:locat_lost/Screens/parent_screens/p_child_info.dart';
+import 'package:locat_lost/Screens/parent_screens/parent_info.dart';
+import 'package:locat_lost/Screens/parent_screens/upload_images.dart';
 import 'package:locat_lost/Screens/report_case.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/demo.dart';
 import 'package:locat_lost/demo2.dart';
-
 import 'Screens/SplashScreens/splash.dart';
 import 'Screens/drawer_screens/faqs.dart';
 import 'Screens/home_screen.dart';
@@ -62,18 +67,36 @@ class MyApp extends StatelessWidget {
         // ),
       ),
 
+
+
+
+
+
+
       // home: DisplayInfoScreen(),
       //
-      home: Splash(),
-    //  home: ReportCase(),
+      //home: Splash(),
+   //  home: ReportCase(),
+   //   home: RecordScreen(),
+     // home: ProfileScreen(),
      // home: TermsAndConditions(),
     //  home: ContactUs(),
     //  home: ForgetPasswordGlass()
-     // home: HomeScreen(),
+   //   home: HomeScreen(),
      // home: CapturePicturesScreen(),
-      //  home: ProfileScreen(),
+      //home: DisplayInfoScreen(),
+      //home: ChildDetailsScreen(),
+     // home: ParentDetailsScreen(),
+      //home: UploadImagesScreen(),
+//      home: FounderDetailsScreen(),
+   // home: ChildInfoScreen(),
+        home: ProfileScreen(),
       //home: Demo(),
       //   home: EmergencyContactScreen(),
+    //  home: DeveloperProfileScreen(),
+     // home: AboutUsScreen(),
+    //  home: StatsScreen(),
+
     );
   }
 }

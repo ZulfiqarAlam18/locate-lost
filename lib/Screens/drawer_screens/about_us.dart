@@ -3,7 +3,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_elevatedButton.dart';
+import '../../Widgets/custom_elevated_button.dart';
 import '../../colors.dart';
+import '../parent_screens/upload_images.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -143,22 +145,37 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+
+
+
                   CustomElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    height: 36,
+                    width: 140,
+                    fontSize: 15,
+                    borderRadius: 10,
                     label: 'Hire Me',
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.secondary,
-                    width: 140,
-                    height: 32,
-                    onPressed: () {},
+
                   ),
                   CustomElevatedButton(
-                    label: 'Resume',
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.secondary,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UploadImagesScreen(),
+                        ),
+                      );
+                    },
+                    height: 36,
                     width: 140,
-                    height: 32,
-                    onPressed: () {},
+                    fontSize: 15,
+                    borderRadius: 10,
+                    label: 'Resume',
                   ),
+
+
                 ],
               ),
             ],

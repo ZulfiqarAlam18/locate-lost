@@ -5,6 +5,8 @@ import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../Widgets/custom_elevated_button.dart';
+
 class ParentDetailsScreen extends StatefulWidget {
   const ParentDetailsScreen({Key? key}) : super(key: key);
 
@@ -247,31 +249,37 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        CustomButton(
-          onPressed: () => Navigator.pop(context),
+
+
+        CustomElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          height: 45,
+          width: 130,
+          fontSize: 15,
+          borderRadius: 10,
+          label: 'Back',
           backgroundColor: AppColors.secondary,
           foregroundColor: AppColors.primary,
-          size: 'small',
-          label: 'Back',
-          border: true,
+          showBorder: true,
         ),
-        CustomButton(
+        CustomElevatedButton(
           onPressed: () {
-            if (_formKey.currentState?.validate() ?? false) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RecordScreen(),
-                ),
-              );
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RecordScreen(),
+              ),
+            );
           },
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.secondary,
-          size: 'small',
+          height: 45,
+          width: 130,
+          fontSize: 15,
+          borderRadius: 10,
           label: 'Next',
-          border: true,
         ),
+
       ],
     );
   }

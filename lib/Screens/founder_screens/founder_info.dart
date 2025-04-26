@@ -5,6 +5,8 @@ import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../Widgets/custom_elevated_button.dart';
+
 class FounderDetailsScreen extends StatefulWidget {
   const FounderDetailsScreen({super.key});
 
@@ -183,33 +185,41 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CustomButton(
+
+
+
+
+                          CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
+                            height: 45,
+                            width: 130,
+                            fontSize: 15,
+                            borderRadius: 10,
+                            label: 'Back',
                             backgroundColor: AppColors.secondary,
                             foregroundColor: AppColors.primary,
-                            size: 'small',
-                            label: 'Back',
-                            border: true,
+                            showBorder: true,
                           ),
-                          CustomButton(
+                          CustomElevatedButton(
                             onPressed: () {
-                              if (_key.currentState?.validate() ?? false) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RecordScreen(),
-                                  ),
-                                );
-                              }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecordScreen(),
+                                ),
+                              );
                             },
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.secondary,
-                            size: 'small',
+                            height: 45,
+                            width: 130,
+                            fontSize: 15,
+                            borderRadius: 10,
                             label: 'Next',
-                            border: true,
                           ),
+
+
+
                         ],
                       ),
                     ],

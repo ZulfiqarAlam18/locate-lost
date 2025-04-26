@@ -33,7 +33,7 @@ class ReportCase extends StatelessWidget {
             const SizedBox(height: 20),
             const Divider(
               thickness: 2,
-              color: Colors.teal,
+              color: AppColors.primary,
               indent: 80,
               endIndent: 80,
             ),
@@ -68,7 +68,7 @@ class ReportCase extends StatelessWidget {
             const SizedBox(height: 20),
             const Divider(
               thickness: 2,
-              color: Colors.teal,
+              color: AppColors.primary,
               indent: 80,
               endIndent: 80,
             ),
@@ -123,7 +123,7 @@ class ReportCase extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Card(
-        color: Colors.teal,
+        color: AppColors.primary,
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

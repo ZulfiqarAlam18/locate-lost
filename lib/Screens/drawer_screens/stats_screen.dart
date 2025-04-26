@@ -109,7 +109,7 @@ class StatsScreen extends StatelessWidget {
               value: 0.875, // 87.5%
               strokeWidth: 10,
               backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
             ),
             SizedBox(height: 10),
             Text(

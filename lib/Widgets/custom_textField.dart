@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String labelText;
@@ -42,10 +43,10 @@ class CustomTextFormField extends StatelessWidget {
             hintText: hintText,
             filled: fillColor != null,
             fillColor: fillColor,
-            prefixIcon: icon != null ? Icon(icon, color: Colors.teal) : null,
+            prefixIcon: icon != null ? Icon(icon, color: AppColors.primary) : null,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.teal),
+              borderSide: const BorderSide(color: AppColors.primary),
               borderRadius: BorderRadius.circular(12),
             ),
           ),

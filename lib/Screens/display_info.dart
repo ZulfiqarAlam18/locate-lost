@@ -4,6 +4,8 @@ import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/demo.dart';
 
 import '../Widgets/custom_appBar.dart';
+import '../Widgets/custom_elevated_button.dart';
+import 'auth_screens/login.dart';
 
 class DisplayInfoScreen extends StatefulWidget {
   const DisplayInfoScreen({super.key});
@@ -100,14 +102,17 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
 
             Center(
               child: CustomElevatedButton(
-                label: 'Edit Details',
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.secondary,
-                width: 130,
-                height: 50,
                 onPressed: () {
-                  // Implement editing functionality here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
+                  );
                 },
+                height: 45,
+                width: 130,
+                fontSize: 15,
+                borderRadius: 10,
+                label: 'Edit Details',
               ),
             ),
           ],
@@ -156,18 +161,6 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:locat_lost/Widgets/custom_elevatedButton.dart';

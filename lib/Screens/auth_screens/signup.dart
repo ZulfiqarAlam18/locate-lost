@@ -3,6 +3,7 @@ import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
 
+import '../../Widgets/custom_elevated_button.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {
@@ -119,14 +120,18 @@ class _SignupState extends State<Signup> {
                       SizedBox(height: 15), // Only a small gap between button and fields
 
                       // Custom Button
-                      CustomButton(onPressed: (){
+                      CustomElevatedButton(onPressed: (){
+
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+
                       },
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.secondary,
-                          size: 'large',
-                          label: 'Create Account',
-                          border: false),
+                        height: 60,
+                        width: 241,
+                        fontSize: 20,
+                        borderRadius: 10,
+                        label: 'Create Account',
+                      ),
+
 
 
 
@@ -137,7 +142,7 @@ class _SignupState extends State<Signup> {
                 SizedBox(height: 20),
 
                 Text(
-                  '----------------------or SignUp with---------------------',
+                  '--------or SignUp with---------',
                   style: TextStyle(color: Colors.black45),
                 ),
 

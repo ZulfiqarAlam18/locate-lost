@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:locat_lost/Screens/SplashScreens/splash1.dart';
 import 'package:locat_lost/Screens/auth_screens/forget_password.dart';
 import 'package:locat_lost/Screens/display_info.dart';
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+
+        textTheme: GoogleFonts.poppinsTextTheme(),
+
+
         appBarTheme: AppBarTheme(
           foregroundColor: AppColors.secondary,
           backgroundColor: AppColors.primary,
@@ -75,7 +80,7 @@ class MyApp extends StatelessWidget {
 
       // home: DisplayInfoScreen(),
       //
-      //home: Splash(),
+      home: Splash(),
    //  home: ReportCase(),
    //   home: RecordScreen(),
      // home: ProfileScreen(),
@@ -90,12 +95,13 @@ class MyApp extends StatelessWidget {
       //home: UploadImagesScreen(),
 //      home: FounderDetailsScreen(),
    // home: ChildInfoScreen(),
-        home: ProfileScreen(),
+       // home: ProfileScreen(),
       //home: Demo(),
       //   home: EmergencyContactScreen(),
     //  home: DeveloperProfileScreen(),
      // home: AboutUsScreen(),
     //  home: StatsScreen(),
+     // home: Demo2(),
 
     );
   }
@@ -104,10 +110,43 @@ class MyApp extends StatelessWidget {
 /*
 
 
-style: TextStyle(
+,style: TextStyle(
 fontSize: 30,
 color: AppColors.primary,
 fontWeight: FontWeight.w600,
 ),
 
 */
+
+/*
+
+  CustomElevatedButton(onPressed: (){
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+
+                      },
+                        height: 60,
+                        width: 241,
+                        fontSize: 20,
+                        borderRadius: 10,
+                        label: 'Create Account',
+                      ),
+
+
+CustomElevatedButton(onPressed: (){
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+
+                      },
+                        height: 45,
+                        width: 130,
+                        fontSize: 15,
+                        borderRadius: 10,
+                        label: 'Create Account',
+                      ),
+
+
+
+
+
+ */

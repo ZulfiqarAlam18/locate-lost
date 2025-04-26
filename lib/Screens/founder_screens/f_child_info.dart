@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:locat_lost/Screens/parent_screens/upload_images.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import '../../Widgets/custom_elevated_button.dart';
 import 'founder_info.dart';
 
 class ChildInfoScreen extends StatefulWidget {
@@ -158,12 +160,7 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
                   key: _key,
                   child: Column(
                     children: [
-                      _buildTextField(
-                        'Name',
-                        'Enter child name',
-                        cName,
-                        true,
-                      ),
+                      _buildTextField('Name', 'Enter child name', cName, true),
                       _buildTextField(
                         'Father\'s Name',
                         'Enter  Person\'s father\'s name',
@@ -197,32 +194,33 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CustomButton(
+                          CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
+                            height: 45,
+                            width: 130,
+                            fontSize: 15,
+                            borderRadius: 10,
+                            label: 'Back',
                             backgroundColor: AppColors.secondary,
                             foregroundColor: AppColors.primary,
-                            size: 'small',
-                            label: 'Back',
-                            border: true,
+                            showBorder: true,
                           ),
-                          CustomButton(
+                          CustomElevatedButton(
                             onPressed: () {
-                              if (_key.currentState?.validate() ?? false) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FounderDetailsScreen(),
-                                  ),
-                                );
-                              }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FounderDetailsScreen(),
+                                ),
+                              );
                             },
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.secondary,
-                            size: 'small',
+                            height: 45,
+                            width: 130,
+                            fontSize: 15,
+                            borderRadius: 10,
                             label: 'Next',
-                            border: true,
                           ),
                         ],
                       ),
@@ -238,11 +236,11 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
   }
 
   Widget _buildTextField(
-      String label,
-      String hint,
-      TextEditingController controller,
-      bool isRequired,
-      ) {
+    String label,
+    String hint,
+    TextEditingController controller,
+    bool isRequired,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
@@ -321,16 +319,6 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:locat_lost/Widgets/custom_button.dart';

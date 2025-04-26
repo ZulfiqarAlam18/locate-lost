@@ -12,6 +12,8 @@ import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/colors.dart';
 
+import '../Widgets/custom_elevated_button.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -25,10 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Function to handle navigation from drawer
   void navigateToScreen(Widget screen) {
     Navigator.pop(context); // Close the drawer
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => screen),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
   }
 
   @override
@@ -43,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //   },
       //   icon: Icons.menu,
       // ),
-      appBar: AppBar(title: Text('LocateLost'),),
+      appBar: AppBar(title: Text('LocateLost')),
       backgroundColor: AppColors.secondary,
       body: Center(
         child: Column(
@@ -51,10 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               'Welcome,',
-              style: TextStyle(
-                fontSize: 18,
-                color: AppColors.primary,
-              ),
+              style: TextStyle(fontSize: 18, color: AppColors.primary),
             ),
             Text(
               username,
@@ -73,18 +69,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 10),
-            CustomButton(
+
+            CustomElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ReportCase()),
                 );
               },
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.secondary,
-              size: 'small',
+              height: 45,
+              width: 130,
+              fontSize: 15,
+              borderRadius: 10,
               label: 'New Case',
-              border: false,
             ),
           ],
         ),
@@ -173,26 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:locat_lost/Screens/auth_screens/login.dart';

@@ -3,6 +3,7 @@ import 'package:locat_lost/Screens/SplashScreens/splash1.dart';
 import 'package:locat_lost/Screens/SplashScreens/splash2.dart';
 import 'package:locat_lost/Screens/SplashScreens/splash3.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
+import 'package:locat_lost/Widgets/custom_elevated_button.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -24,7 +25,7 @@ class _SplashState extends State<Splash> {
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
-          SizedBox(height: 50),
+          SizedBox(height: 20),
           Text(
             'LocateLost',
             style: TextStyle(
@@ -39,7 +40,7 @@ class _SplashState extends State<Splash> {
             endIndent: 80,
             thickness: 2,
           ),
-          SizedBox(height: 30),
+
 
           Expanded(
             child: PageView(
@@ -47,6 +48,7 @@ class _SplashState extends State<Splash> {
               children: [Splash1(), Splash2(), Splash3()],
             ),
           ),
+          SizedBox(height: 10,),
           Padding(
             padding: EdgeInsets.only(bottom: 25),
             child: SmoothPageIndicator(
@@ -54,24 +56,25 @@ class _SplashState extends State<Splash> {
               count: 3,
               effect: WormEffect(
                 dotColor: AppColors.myBlackColor,
-                dotHeight: 10,
-                dotWidth: 10,
+                dotHeight: 15,
+                dotWidth: 15,
                 activeDotColor: AppColors.primary,
               ),
             ),
           ),
-          CustomButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Signup()),
-              );
-            },
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.secondary,
-            size: 'large',
-            label: 'Get Started',
-            border: true,
+
+
+
+          CustomElevatedButton(onPressed: (){
+
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()));
+
+          },
+              height: 60,
+              width: 241,
+              fontSize: 25,
+              borderRadius: 10,
+              label: 'Get Started',
           ),
 
           SizedBox(height: 40),

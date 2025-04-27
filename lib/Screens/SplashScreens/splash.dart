@@ -56,9 +56,10 @@ class _SplashState extends State<Splash> {
               count: 3,
               effect: WormEffect(
                 dotColor: AppColors.myBlackColor,
-                dotHeight: 15,
-                dotWidth: 15,
+                dotHeight: 12,
+                dotWidth: 12,
                 activeDotColor: AppColors.primary,
+                spacing: 12,
               ),
             ),
           ),

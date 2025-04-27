@@ -1,30 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:locat_lost/Screens/SplashScreens/splash1.dart';
-import 'package:locat_lost/Screens/auth_screens/forget_password.dart';
-import 'package:locat_lost/Screens/display_info.dart';
-import 'package:locat_lost/Screens/drawer_screens/about_us.dart';
-import 'package:locat_lost/Screens/drawer_screens/contact_us.dart';
-import 'package:locat_lost/Screens/drawer_screens/emergency.dart';
-import 'package:locat_lost/Screens/drawer_screens/stats_screen.dart';
-import 'package:locat_lost/Screens/drawer_screens/terms_and_conditions.dart';
-import 'package:locat_lost/Screens/founder_screens/f_child_info.dart';
-import 'package:locat_lost/Screens/founder_screens/founder_info.dart';
-import 'package:locat_lost/Screens/founder_screens/image.dart';
-import 'package:locat_lost/Screens/parent_screens/p_child_info.dart';
-import 'package:locat_lost/Screens/parent_screens/parent_info.dart';
-import 'package:locat_lost/Screens/parent_screens/upload_images.dart';
-import 'package:locat_lost/Screens/report_case.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/demo.dart';
 import 'package:locat_lost/demo2.dart';
-import 'Screens/SplashScreens/splash.dart';
-import 'Screens/drawer_screens/faqs.dart';
-import 'Screens/home_screen.dart';
-import 'Screens/profile.dart';
-import 'Screens/record.dart';
+import 'package:locat_lost/views/SplashScreens/splash.dart';
 
 void main() {
   runApp(MyApp());

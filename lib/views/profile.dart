@@ -1,0 +1,347 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:locat_lost/colors.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.secondary,
+      body: Stack(
+        children: [
+          // 🔷 Background Image
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/bgg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Text(
+                'Profile',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: AppColors.secondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+
+          // 🔷 White Card Section
+          Positioned(
+            top: 200,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height - 200,
+              decoration: BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
+              ),
+            ),
+          ),
+
+          // 🔷 Profile Picture
+          Positioned(
+            top: 110,
+            left: MediaQuery.of(context).size.width / 2 - 70,
+            child: DottedBorder(
+              borderType: BorderType.RRect,
+              radius: Radius.circular(70),
+              dashPattern: [8, 4],
+              color: Colors.teal,
+              strokeWidth: 2,
+              child: Card(
+                shape: CircleBorder(side: BorderSide(color: AppColors.primary)),
+                elevation: 16,
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage('assets/images/zulfi.png'),
+                ),
+              ),
+            ),
+          ),
+
+          // 🔷 Profile Name
+          Positioned(
+            top: 275,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Text(
+                'Zulfiqar Alam',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+
+          // 🔷 Tiles (My Profile, Security, Settings)
+          Positioned(
+            top: 330,
+            left: 20,
+            right: 20,
+            child: Column(
+              children: [
+                _buildProfileTile(
+                  title: 'My Profile',
+                  icon: Icons.person,
+                  onTap: () {
+                    // TODO: Navigate to profile page
+                  },
+                ),
+                _buildProfileTile(
+                  title: 'Security Details',
+                  icon: Icons.security,
+                  onTap: () {
+                    // TODO: Navigate to security details
+                  },
+                ),
+                _buildProfileTile(
+                  title: 'Settings',
+                  icon: Icons.settings,
+                  onTap: () {
+                    // TODO: Navigate to settings
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          // back icon
+          Positioned(
+            top: 60,
+            left: 13,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_circle_left_outlined,
+                size: 40,
+                color: AppColors.secondary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Custom method to create profile tiles to avoid redundancy
+  Widget _buildProfileTile({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      title: Text(title),
+      leading: Icon(icon),
+      trailing: Icon(Icons.arrow_forward_ios_rounded),
+      iconColor: AppColors.primary,
+      textColor: AppColors.primary,
+      onTap: onTap,
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import 'package:dotted_border/dotted_border.dart';
+// import 'package:flutter/material.dart';
+// import 'package:locat_lost/colors.dart';
+//
+// class ProfileScreen extends StatefulWidget {
+//   const ProfileScreen({super.key});
+//
+//   @override
+//   State<ProfileScreen> createState() => _ProfileScreenState();
+// }
+//
+// class _ProfileScreenState extends State<ProfileScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: AppColors.secondary,
+//       body: Stack(
+//         children: [
+//           // 🔷 Background Image
+//           Container(
+//             decoration: BoxDecoration(
+//               // color: Colors.teal,
+//               image: DecorationImage(
+//                 image: AssetImage('assets/images/bgg.png'),
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//             alignment: Alignment.topCenter,
+//             child: Padding(
+//               padding: const EdgeInsets.only(top: 60),
+//               child: Text(
+//                 'Profile',
+//                 style: TextStyle(
+//                   fontSize: 30,
+//                   color: AppColors.secondary,
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//               ),
+//             ),
+//           ),
+//
+//           // 🔷 White Card Section
+//           Positioned(
+//             top: 200,
+//             left: 0,
+//             right: 0,
+//             child: Container(
+//               width: double.infinity,
+//               height: MediaQuery.of(context).size.height - 200,
+//               decoration: BoxDecoration(
+//                 color: AppColors.secondary,
+//                 borderRadius: BorderRadius.only(
+//                   topLeft: Radius.circular(40),
+//                   topRight: Radius.circular(40),
+//                 ),
+//               ),
+//             ),
+//           ),
+//
+//           // 🔷 Profile Picture
+//           Positioned(
+//             top: 110,
+//             left: MediaQuery.of(context).size.width / 2 - 70,
+//             child: DottedBorder(
+//               borderType: BorderType.RRect,
+//               radius: Radius.circular(70),
+//               dashPattern: [8, 4],
+//               color: Colors.teal,
+//               strokeWidth: 2,
+//
+//               child: Card(
+//                 shape: CircleBorder(side: BorderSide(color: AppColors.primary)),
+//                 elevation: 16,
+//                 child: CircleAvatar(
+//                   radius: 70,
+//                   backgroundImage: AssetImage('assets/images/zulfi.png'),
+//                 ),
+//               ),
+//             ),
+//           ),
+//
+//           // 🔷 Profile Name
+//           Positioned(
+//             top: 260,
+//             left: 0,
+//             right: 0,
+//             child: Center(
+//               child: Text(
+//                 'Zulfiqar Alam',
+//                 style: TextStyle(
+//                   fontSize: 30,
+//                   color: AppColors.primary,
+//                   fontWeight: FontWeight.w600,
+//                 ),
+//               ),
+//             ),
+//           ),
+//
+//           // 🔷 Tiles (My Profile, Security, Settings)
+//           Positioned(
+//             top: 330,
+//             left: 20,
+//             right: 20,
+//             child: Column(
+//               children: [
+//                 ListTile(
+//                   title: Text('My Profile'),
+//                   leading: Icon(Icons.person),
+//                   trailing: Icon(Icons.arrow_forward_ios_rounded),
+//                   iconColor: AppColors.primary,
+//                   textColor: AppColors.primary,
+//                   onTap: () {
+//                     // TODO: Navigate to profile page
+//                   },
+//                 ),
+//                 ListTile(
+//                   title: Text('Security Details'),
+//                   leading: Icon(Icons.security),
+//                   trailing: Icon(Icons.arrow_forward_ios_rounded),
+//                   iconColor: AppColors.primary,
+//                   textColor: AppColors.primary,
+//                   onTap: () {
+//                     // TODO: Navigate to security details
+//                   },
+//                 ),
+//                 ListTile(
+//                   title: Text('Settings'),
+//                   leading: Icon(Icons.settings),
+//                   trailing: Icon(Icons.arrow_forward_ios_rounded),
+//                   iconColor: AppColors.primary,
+//                   textColor: AppColors.primary,
+//                   onTap: () {
+//                     // TODO: Navigate to settings
+//                   },
+//                 ),
+//               ],
+//             ),
+//           ),
+//
+//           // back icon
+//           Positioned(
+//             top: 60,
+//             left: 13,
+//
+//             child: IconButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               icon: Icon(
+//                 Icons.arrow_circle_left_outlined,
+//                 size: 40,
+//                 color: AppColors.secondary,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

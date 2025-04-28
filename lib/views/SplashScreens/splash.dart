@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/SplashScreens/splash1.dart';
-import 'package:locat_lost/Screens/SplashScreens/splash2.dart';
-import 'package:locat_lost/Screens/SplashScreens/splash3.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_elevated_button.dart';
 import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/views/SplashScreens/splash1.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../auth_screens/signup.dart';
+import 'splash2.dart';
+import 'splash3.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

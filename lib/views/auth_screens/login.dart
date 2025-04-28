@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/auth_screens/forget_password.dart';
-import 'package:locat_lost/Screens/auth_screens/signup.dart';
+import 'package:locat_lost/views/auth_screens/forget_password.dart';
+import 'package:locat_lost/views/auth_screens/signup.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';

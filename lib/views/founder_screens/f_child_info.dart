@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/parent_screens/upload_images.dart';
+import 'package:locat_lost/views/parent_screens/upload_images.dart';
 import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';

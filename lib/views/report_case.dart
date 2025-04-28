@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Screens/founder_screens/image.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
 import 'package:locat_lost/colors.dart';
 
+import 'founder_screens/image.dart';
 import 'parent_screens/p_child_info.dart';
 
 class ReportCase extends StatelessWidget {

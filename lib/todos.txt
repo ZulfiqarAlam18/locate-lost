@@ -1,0 +1,9 @@
+1. thesis
+2. custom text field
+3. openCv
+4. font issue
+5. localization
+6. state management
+7. responsiviness
+8. about us screen ui change
+9.

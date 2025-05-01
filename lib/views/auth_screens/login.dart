@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/views/auth_screens/forget_password.dart';
 import 'package:locat_lost/views/auth_screens/signup.dart';
-import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_textField.dart';
 import 'package:locat_lost/colors.dart';
-
 import '../../Widgets/custom_elevated_button.dart';
 import '../home_screen.dart';
 
@@ -13,10 +11,10 @@ class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _SignupState();
+  State<Login> createState() => _LoginState();
 }
 
-class _SignupState extends State<Login> {
+class _LoginState extends State<Login> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final TextEditingController cCNIC = TextEditingController();

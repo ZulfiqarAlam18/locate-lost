@@ -6,4 +6,4 @@
 6. state management
 7. responsiviness
 8. about us screen ui change
-9.
+9. professional nameing to classes and files

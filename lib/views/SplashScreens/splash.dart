@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_button.dart';
 import 'package:locat_lost/Widgets/custom_elevated_button.dart';
 import 'package:locat_lost/colors.dart';
 import 'package:locat_lost/views/SplashScreens/splash1.dart';

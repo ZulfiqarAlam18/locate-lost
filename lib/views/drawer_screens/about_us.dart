@@ -1,8 +1,6 @@
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:locat_lost/Widgets/custom_appBar.dart';
-import 'package:locat_lost/Widgets/custom_elevatedButton.dart';
 import '../../Widgets/custom_elevated_button.dart';
 import '../../colors.dart';
 import '../parent_screens/upload_images.dart';

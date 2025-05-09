@@ -7,3 +7,6 @@
 7. responsiviness
 8. about us screen ui change
 9. professional nameing to classes and files
+10. fyp half presentation
+11. fyp full presentation
+12.

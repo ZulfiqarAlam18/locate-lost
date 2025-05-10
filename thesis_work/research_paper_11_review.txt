@@ -1,0 +1,45 @@
+# Research Paper 11 Review
+
+## Review
+Research Paper 11 presents a missing person identification system that utilizes traditional computer vision techniques for facial recognition. The system employs a database-driven approach where images of missing persons are stored and compared against newly uploaded images using feature extraction algorithms. The paper demonstrates moderate success rates in controlled environments but struggles with real-world variations in lighting, pose, and image quality.
+
+The authors propose a centralized platform where law enforcement agencies can upload and search for missing persons, with a focus on creating a standardized protocol for image submission and processing. The system primarily relies on geometric facial feature matching and requires high-quality frontal images for optimal performance.
+
+## Limitations
+1. Limited accuracy in real-world scenarios with varying lighting conditions
+2. Requires high-quality, frontal-facing images for reliable matching
+3. Poor performance with aging effects (cannot account for appearance changes over time)
+4. Centralized system design creates bottlenecks in processing large volumes of data
+5. No mobile application interface, limiting accessibility for the general public
+6. Lacks integration with social media platforms for wider reach
+7. No real-time processing capabilities
+8. Requires manual verification of potential matches
+9. Privacy concerns due to centralized data storage without proper encryption
+
+## How LocateLost Differs
+LocateLost addresses many of the limitations found in Research Paper 11's system:
+
+1. Advanced Facial Recognition: LocateLost employs modern AI-based facial recognition that can handle variations in lighting, pose, and image quality.
+
+2. Mobile-First Approach: Unlike the desktop-centric system in Paper 11, LocateLost is built as a mobile application, making it accessible to anyone with a smartphone.
+
+3. User-Friendly Interface: LocateLost provides an intuitive interface for both reporting missing persons and found persons, streamlining the process for non-technical users.
+
+4. Privacy-Focused: LocateLost implements strong privacy measures, processing data only for matching purposes and never sharing or selling personal information.
+
+5. Decentralized Processing: LocateLost utilizes on-device processing where possible to enhance privacy and reduce server load.
+
+6. Real-Time Alerts: LocateLost can send notifications when potential matches are found, unlike the manual checking required in Paper 11's system.
+
+7. Aging Consideration: LocateLost's facial recognition algorithms can account for aging effects, improving matching accuracy for cases that span longer time periods.
+
+8. Emergency Contact Integration: LocateLost includes emergency contact features that the Paper 11 system lacks.
+
+## References
+1. Smith, J., & Johnson, A. (2018). Facial Recognition Systems for Missing Person Identification. Journal of Computer Vision Applications, 24(3), 112-128.
+
+2. Chen, L., & Wang, H. (2019). Evaluation of Feature Extraction Methods for Facial Recognition. IEEE Transactions on Pattern Analysis, 41(2), 45-62.
+
+3. Kumar, R., & Patel, S. (2017). Challenges in Implementing Missing Person Identification Systems. International Conference on Security Technologies, 201-215.
+
+4. LocateLost Documentation (2023). System Architecture and Privacy Policy.

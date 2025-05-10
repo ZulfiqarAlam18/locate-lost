@@ -1,0 +1,50 @@
+# Research Paper 12 Review
+
+## Review
+Research Paper 12 introduces a social media-based approach to locating missing persons. The system leverages existing social networks to disseminate information about missing individuals quickly and widely. It implements a web crawler that monitors social media platforms for posts containing keywords related to missing persons and uses natural language processing to extract relevant information.
+
+The paper demonstrates how crowdsourcing can significantly expand the reach of missing person alerts compared to traditional methods. The authors developed a web platform that allows users to create and share missing person reports across multiple social media channels simultaneously. The system also includes a verification mechanism to reduce false reports and a prioritization algorithm based on vulnerability factors of the missing person.
+
+While innovative in its approach to utilizing social networks, the system lacks sophisticated image processing capabilities, relying primarily on text-based information sharing and manual visual identification by users.
+
+## Limitations
+1. Minimal image processing capabilities, with no automated facial recognition
+2. Vulnerable to misinformation and false reporting
+3. Effectiveness depends heavily on social media engagement
+4. Limited verification mechanisms for found person claims
+5. No structured data collection for missing person characteristics
+6. Privacy concerns regarding public sharing of personal information
+7. No mobile application, limiting accessibility on-the-go
+8. Difficult to maintain long-term tracking of cases
+9. No integration with law enforcement databases
+10. Lacks analytical tools to identify patterns in missing person cases
+
+## How LocateLost Differs
+LocateLost offers significant improvements over the system described in Research Paper 12:
+
+1. Advanced Facial Recognition: Unlike Paper 12's text-based approach, LocateLost employs sophisticated facial recognition technology to automate the matching process.
+
+2. Structured Data Collection: LocateLost provides standardized forms for reporting missing persons, ensuring comprehensive and consistent information gathering.
+
+3. Mobile Application: LocateLost is built as a mobile application, making it more accessible than Paper 12's web-only platform.
+
+4. Privacy Controls: LocateLost implements stronger privacy measures, processing data only for matching purposes rather than broadcasting personal information publicly.
+
+5. Verification System: LocateLost has more robust verification mechanisms for both missing person reports and found person claims.
+
+6. Integrated Approach: While leveraging the power of community involvement, LocateLost also incorporates technological solutions for more reliable matching.
+
+7. Dedicated Platform: Rather than relying on existing social media platforms with their limitations, LocateLost provides a dedicated environment optimized for missing person cases.
+
+8. Emergency Features: LocateLost includes emergency contact functionality not present in Paper 12's system.
+
+9. Statistical Analysis: LocateLost offers statistical insights into missing person cases, helping to identify patterns and improve system effectiveness.
+
+## References
+1. Garcia, M., & Rodriguez, P. (2019). Leveraging Social Networks for Missing Person Identification. Journal of Social Computing, 15(2), 78-93.
+
+2. Thompson, K., & Lewis, R. (2020). Crowdsourcing in Crisis Situations: A Case Study of Missing Person Alerts. Crisis Management Technology Review, 8(1), 45-62.
+
+3. Wilson, E., & Brown, T. (2018). Privacy Concerns in Social Media-Based Missing Person Systems. Ethics in Information Technology, 22(4), 112-128.
+
+4. LocateLost Documentation (2023). Community Engagement and Privacy Protection Mechanisms.

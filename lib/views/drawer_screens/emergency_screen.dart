@@ -1,16 +1,16 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import '../../colors.dart';
+import 'package:locat_lost/widgets/custom_app_bar.dart';
+import '../../utils/app_colors.dart';
 
-class EmergencyContactScreen extends StatefulWidget {
-  const EmergencyContactScreen({super.key});
+class EmergencyScreen extends StatefulWidget {
+  const EmergencyScreen({super.key});
 
   @override
-  State<EmergencyContactScreen> createState() => _EmergencyContactScreenState();
+  State<EmergencyScreen> createState() => _EmergencyScreenState();
 }
 
-class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
+class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

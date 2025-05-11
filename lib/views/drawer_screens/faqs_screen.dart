@@ -1,7 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import '../../colors.dart';
+import 'package:locat_lost/widgets/custom_app_bar.dart';
+import '../../utils/app_colors.dart';
 
 class FAQsScreen extends StatefulWidget {
   const FAQsScreen({super.key});
@@ -53,7 +53,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                           padding: EdgeInsets.all(16),
                           color: Colors.white,
                           child: Text(
-                            'Smarter Solution for reuniting missing children with their parents, with advanced ai featured, LoCAT alkdfj al kdjfa ;lksjfd ;lk jfa lslfkjj alaksjd a;ldkjf a;l kjaf;ldskj fakdsfj;ak jd;lfkja ;lkf;lakjf',
+                            'Smarter Solution for reuniting missing children with their parents, with advanced AI features. LocateLost helps by utilizing modern technologies for efficient and fast reunification.',
                           ),
                         ),
                       ],
@@ -75,7 +75,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                     margin: EdgeInsets.all(10),
                     child: ExpansionTile(
                       title: Text(
-                        'What this app is about?',
+                        'How does facial recognition work?',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -91,7 +91,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                           padding: EdgeInsets.all(16),
                           color: Colors.white,
                           child: Text(
-                            'Smarter Solution for reuniting missing children with their parents, with advanced ai featured, LoCAT alkdfj al kdjfa ;lksjfd ;lk jfa lslfkjj alaksjd a;ldkjf a;l kjaf;ldskj fakdsfj;ak jd;lfkja ;lkf;lakjf',
+                            'Our facial recognition technology uses advanced algorithms to analyze facial features and match them against our database of reported missing persons. The system is designed to be accurate even with changes in appearance over time.',
                           ),
                         ),
                       ],
@@ -113,7 +113,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                     margin: EdgeInsets.all(10),
                     child: ExpansionTile(
                       title: Text(
-                        'What this app is about?',
+                        'Is my data secure?',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -129,7 +129,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                           padding: EdgeInsets.all(16),
                           color: Colors.white,
                           child: Text(
-                            'Smarter Solution for reuniting missing children with their parents, with advanced ai featured, LoCAT alkdfj al kdjfa ;lksjfd ;lk jfa lslfkjj alaksjd a;ldkjf a;l kjaf;ldskj fakdsfj;ak jd;lfkja ;lkf;lakjf',
+                            'Yes, we take data security very seriously. All personal information and images are encrypted and stored securely. We only use your data for the purpose of finding missing persons and never share it with third parties without your consent.',
                           ),
                         ),
                       ],
@@ -151,7 +151,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                     margin: EdgeInsets.all(10),
                     child: ExpansionTile(
                       title: Text(
-                        'What this app is about?',
+                        'How can I report a missing person?',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -167,7 +167,7 @@ class _FAQsScreenState extends State<FAQsScreen> {
                           padding: EdgeInsets.all(16),
                           color: Colors.white,
                           child: Text(
-                            'Smarter Solution for reuniting missing children with their parents, with advanced ai featured, LoCAT alkdfj al kdjfa ;lksjfd ;lk jfa lslfkjj alaksjd a;ldkjf a;l kjaf;ldskj fakdsfj;ak jd;lfkja ;lkf;lakjf',
+                            'To report a missing person, go to the home screen and select "Report a Missing Person." You\'ll need to provide details about the missing person, including their name, age, last seen location, and clear photos. We recommend also reporting to local authorities in addition to using our app.',
                           ),
                         ),
                       ],

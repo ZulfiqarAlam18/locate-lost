@@ -1,8 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import '../../Widgets/custom_elevated_button.dart';
-import '../../colors.dart';
+import 'package:locat_lost/widgets/custom_app_bar.dart';
+import '../../widgets/custom_elevated_button.dart';
+import '../../utils/app_colors.dart';
 import '../parent_screens/upload_images.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -115,7 +115,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'I’m a Software Engineering student and one of the developers behind LocateLost. My expertise lies in web development, where I specialize in creating scalable and efficient web applications.  .',
+                            'I\'m a Software Engineering student and one of the developers behind LocateLost. My expertise lies in web development, where I specialize in creating scalable and efficient web applications.',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppColors.myBlackColor,
@@ -131,7 +131,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               ),
               SizedBox(height: 12),
               Text(
-                'From frontend design to backend functionality,I ensure a seamless and user-friendly experience for LocateLost’s web platform, Passionate about innovation and problem-solving, I’m committed to making LocateLost a reliable tool for reconnecting people with their loved ones.',
+                'From frontend design to backend functionality, I ensure a seamless and user-friendly experience for LocateLost\'s web platform. Passionate about innovation and problem-solving, I\'m committed to making LocateLost a reliable tool for reconnecting people with their loved ones.',
                 style: TextStyle(
                   fontSize: 11,
                   color: AppColors.myBlackColor,
@@ -143,9 +143,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
-
-
                   CustomElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -155,7 +152,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     fontSize: 15,
                     borderRadius: 10,
                     label: 'Hire Me',
-
                   ),
                   CustomElevatedButton(
                     onPressed: () {
@@ -172,8 +168,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     borderRadius: 10,
                     label: 'Resume',
                   ),
-
-
                 ],
               ),
             ],

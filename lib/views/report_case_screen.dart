@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/widgets/custom_app_bar.dart';
+import 'package:locat_lost/utils/app_colors.dart';
 
-import 'founder_screens/image.dart';
-import 'parent_screens/p_child_info.dart';
+import 'founder_screens/camera_capture.dart';
+import 'parent_screens/missing_person_details.dart';
 
-class ReportCase extends StatelessWidget {
-  const ReportCase({super.key});
+class ReportCaseScreen extends StatelessWidget {
+  const ReportCaseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +79,14 @@ class ReportCase extends StatelessWidget {
                 _buildCaseCard(
                   context,
                   title1: 'Report a',
-                  title2: 'Lost Person',
+                  title2: 'Missing Person',
                   description:
-                  'If you are looking for someone who is lost, tap here to report it.',
+                  'If you are looking for someone who is missing, tap here to report it.',
                   image: 'assets/images/unlink.png',
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ChildDetailsScreen()),
+                        builder: (context) => const MissingPersonDetailsScreen()),
                   ),
                 ),
                 _buildCaseCard(
@@ -99,8 +99,7 @@ class ReportCase extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => FinderCameraScreen()),
-                   //  builder: (context) => CapturePicturesScreen()),
+                        builder: (context) => CameraCaptureScreen()),
                   ),
                 ),
               ],
@@ -178,24 +177,3 @@ class ReportCase extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

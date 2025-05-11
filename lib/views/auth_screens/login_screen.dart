@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/views/auth_screens/forget_password.dart';
-import 'package:locat_lost/views/auth_screens/signup.dart';
-import 'package:locat_lost/Widgets/custom_textField.dart';
-import 'package:locat_lost/colors.dart';
-import '../../Widgets/custom_elevated_button.dart';
+import 'package:locat_lost/views/auth_screens/forgot_password_screen.dart';
+import 'package:locat_lost/views/auth_screens/signup_screen.dart';
+import 'package:locat_lost/widgets/custom_text_field.dart';
+import 'package:locat_lost/utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
 import '../home_screen.dart';
 
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final TextEditingController cCNIC = TextEditingController();
@@ -58,7 +58,7 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupScreen()));
                       },
                       child: Text(
                         'Sign Up',
@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
                       Container(
                         padding: EdgeInsets.only(left:215,right: 0,top: 0,bottom: 0),
                         child: TextButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPasswordGlass()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordScreen()));
                         }, child: Text(
                           'forgot password?',
                           style: TextStyle(

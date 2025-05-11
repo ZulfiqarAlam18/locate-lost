@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_elevated_button.dart';
-import 'package:locat_lost/views/record.dart';
-import 'package:locat_lost/Widgets/custom_textField.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/widgets/custom_elevated_button.dart';
+import 'package:locat_lost/views/case_summary.dart';
+import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../utils/app_colors.dart';
 
-class ParentDetailsScreen extends StatefulWidget {
-  const ParentDetailsScreen({Key? key}) : super(key: key);
+
+class ReporterDetailsScreen extends StatefulWidget {
+  const ReporterDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  _ParentDetailsScreenState createState() => _ParentDetailsScreenState();
+  _ReporterDetailsScreenState createState() => _ReporterDetailsScreenState();
 }
 
-class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
+class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Map<String, TextEditingController> _controllers = {
-    'parentName': TextEditingController(),
+    'reporterName': TextEditingController(),
     'relationship': TextEditingController(),
     'phoneNumber': TextEditingController(),
     'emergencyContact': TextEditingController(),
@@ -50,7 +51,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
         SizedBox(height: 50),
         Center(
           child: Text(
-            'Lost Person',
+            'Missing Person',
             style: TextStyle(
               fontSize: 25,
               color: AppColors.primary,
@@ -104,7 +105,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
                     ),
                     SizedBox(height: 6),
                     Text(
-                      'Enter missing person\'s real\nname to continue',
+                      'Enter your details\nto continue',
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.myRedColor,
@@ -150,7 +151,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
           child: Column(
             children: [
               _buildInstructionText(),
-              _buildSectionTitle('Parent Details:'),
+              _buildSectionTitle('Reporter Details:'),
               ..._buildFormFields(),
               _buildNavigationButtons(),
             ],
@@ -164,7 +165,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
     return Column(
       children: [
         Text(
-          'Please complete the form with the accurate details of the missing person',
+          'Please complete the form with your accurate details',
           style: TextStyle(
             fontSize: 16,
             color: AppColors.myBlackColor,
@@ -192,7 +193,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
 
   List<Widget> _buildFormFields() {
     return [
-      _buildTextField('Parent name', 'Enter Missing Person\'s parent name', 'parentName', true),
+      _buildTextField('Your name', 'Enter your full name', 'reporterName', true),
       _buildTextField('Relationship with missing person', 'What is your relationship with missing person', 'relationship', true),
       _buildTextField('Phone Number', 'Enter your phone number', 'phoneNumber', true),
       _buildTextField('Emergency Contact', 'Enter emergency contact if phone is off', 'emergencyContact', true),
@@ -248,8 +249,6 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-
-
         CustomElevatedButton(
           onPressed: () {
             Navigator.pop(context);
@@ -268,7 +267,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RecordScreen(),
+                builder: (context) => CaseSummaryScreen(),
               ),
             );
           },
@@ -278,19 +277,7 @@ class _ParentDetailsScreenState extends State<ParentDetailsScreen> {
           borderRadius: 10,
           label: 'Next',
         ),
-
       ],
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/widgets/custom_app_bar.dart';
+import 'package:locat_lost/utils/app_colors.dart';
 
-import '../../Widgets/custom_elevated_button.dart';
-import '../auth_screens/login.dart';
+import '../../widgets/custom_elevated_button.dart';
+import '../auth_screens/login_screen.dart';
 
-class TermsAndConditions extends StatefulWidget {
-  const TermsAndConditions({super.key});
+class TermsAndConditionsScreen extends StatefulWidget {
+  const TermsAndConditionsScreen({super.key});
 
   @override
-  State<TermsAndConditions> createState() => _TermsAndConditionsState();
+  State<TermsAndConditionsScreen> createState() => _TermsAndConditionsScreenState();
 }
 
-class _TermsAndConditionsState extends State<TermsAndConditions> {
+class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
   bool agreed = false;
 
   @override
@@ -61,7 +61,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                       'Your data is processed only for matching purposes and never shared or sold. Photos and details are secured.',
                     ),
 
-                    SectionTitle('What We Don’t Guarantee'),
+                    SectionTitle('What We Don\'t Guarantee'),
                     SectionBody(
                       'We cannot promise a successful match or reunion. Please always report missing/found cases to local authorities.',
                     ),
@@ -100,7 +100,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
               height: 60,

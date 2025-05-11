@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/utils/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Splash2 extends StatelessWidget {
-  const Splash2({super.key});
+class SplashScreen2 extends StatelessWidget {
+  const SplashScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +70,3 @@ class Splash2 extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-

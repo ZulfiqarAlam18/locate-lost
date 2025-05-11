@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_textField.dart';
-import 'package:locat_lost/colors.dart';
-import '../../Widgets/custom_elevated_button.dart';
-import 'login.dart';
+import 'package:locat_lost/widgets/custom_text_field.dart';
+import 'package:locat_lost/utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
+import 'login_screen.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupScreenState extends State<SignupScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController cName = TextEditingController();
   final TextEditingController cCNIC = TextEditingController();
@@ -57,7 +57,7 @@ class _SignupState extends State<Signup> {
                     TextButton(
                       onPressed: () {
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
 
                       },
                       child: Text(
@@ -120,7 +120,7 @@ class _SignupState extends State<Signup> {
                       // Custom Button
                       CustomElevatedButton(onPressed: (){
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
 
                       },
                         height: 60,

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../../Widgets/custom_elevated_button.dart';
-import '../../Widgets/custom_textField.dart';
+import '../../utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_text_field.dart';
 import 'upload_images.dart';
 
-class ChildDetailsScreen extends StatefulWidget {
-  const ChildDetailsScreen({Key? key}) : super(key: key);
+class MissingPersonDetailsScreen extends StatefulWidget {
+  const MissingPersonDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  _ChildDetailsScreenState createState() => _ChildDetailsScreenState();
+  _MissingPersonDetailsScreenState createState() => _MissingPersonDetailsScreenState();
 }
 
-class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
+class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Map<String, TextEditingController> _controllers = {
@@ -56,7 +56,7 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
         SizedBox(height: 50),
         Center(
           child: Text(
-            'Lost Person',
+            'Missing Person',
             style: TextStyle(
               fontSize: 25,
               color: AppColors.primary,
@@ -117,7 +117,7 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
           ),
           SizedBox(height: 6),
           Text(
-            'Enter missing person\'s real\nname to continue',
+            'Enter missing person\'s details\nto continue',
             style: TextStyle(
               fontSize: 14,
               color: AppColors.myRedColor,
@@ -161,7 +161,7 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
           child: Column(
             children: [
               _buildSectionTitle('Please complete the form with the accurate details of the missing person'),
-              _buildSectionTitle('Missing Child/Person Details:', size: 20),
+              _buildSectionTitle('Missing Person Details:', size: 20),
               ..._buildFormFields(),
             ],
           ),
@@ -247,8 +247,6 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-
-
         CustomElevatedButton(
           onPressed: () {
             Navigator.pop(context);
@@ -277,27 +275,7 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
           borderRadius: 10,
           label: 'Next',
         ),
-
-
-
-
       ],
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

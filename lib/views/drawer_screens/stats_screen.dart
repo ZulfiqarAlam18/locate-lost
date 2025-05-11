@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import 'package:locat_lost/colors.dart';
+
+import '../../utils/app_colors.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class StatsScreen extends StatelessWidget {
   // Sample data - replace with your actual data

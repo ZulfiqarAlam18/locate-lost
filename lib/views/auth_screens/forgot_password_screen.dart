@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/utils/app_colors.dart';
 
-class ForgetPasswordGlass extends StatelessWidget {
-  const ForgetPasswordGlass({super.key});
+class ForgotPasswordScreen extends StatelessWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class ForgetPasswordGlass extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   const Text(
-                    'We’ll send a reset link to your email',
+                    'We\'ll send a reset link to your email',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black87),
                   ),

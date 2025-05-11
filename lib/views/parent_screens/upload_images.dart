@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/views//parent_screens/parent_info.dart' show ParentDetailsScreen;
-import 'package:locat_lost/Widgets/custom_textField.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/views/auth_screens/login_screen.dart';
+import 'package:locat_lost/views/parent_screens/reporter_details.dart';
+import 'package:locat_lost/views/report_case_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../../Widgets/custom_elevated_button.dart';
+import '../../utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
 
 class UploadImagesScreen extends StatefulWidget {
   const UploadImagesScreen({super.key});
@@ -176,7 +177,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ParentDetailsScreen(),
+                          builder: (context) => ReporterDetailsScreen(),
                         ),
                       );
                     },

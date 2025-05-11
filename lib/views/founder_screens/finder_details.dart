@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/views//record.dart';
-import 'package:locat_lost/Widgets/custom_textField.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/views/case_summary.dart';
+import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../../Widgets/custom_elevated_button.dart';
+import '../../utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
 
-class FounderDetailsScreen extends StatefulWidget {
-  const FounderDetailsScreen({super.key});
+class FinderDetailsScreen extends StatefulWidget {
+  const FinderDetailsScreen({super.key});
 
   @override
-  State<FounderDetailsScreen> createState() => _FounderDetailsScreenState();
+  State<FinderDetailsScreen> createState() => _FinderDetailsScreenState();
 }
 
-class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
+class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final TextEditingController cName = TextEditingController();
@@ -35,7 +35,7 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
             SizedBox(height: 50),
             Center(
               child: Text(
-                'Lost Person',
+                'Found Person',
                 style: TextStyle(
                   fontSize: 25,
                   color: AppColors.primary,
@@ -88,7 +88,7 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
                             ),
                             SizedBox(height: 6),
                             Text(
-                              'Enter missing person\'s real\nname to continue',
+                              'Enter your details\nto continue',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: AppColors.myRedColor,
@@ -133,7 +133,7 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              'Please complete the form with the accurate details of the missing person',
+              'Please complete the form with your accurate details',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.myBlackColor,
@@ -142,7 +142,7 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              'Parent Details:',
+              'Finder Details:',
               style: TextStyle(
                 fontSize: 20,
                 color: AppColors.primary,
@@ -184,10 +184,6 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
-
-
-
                           CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
@@ -206,7 +202,7 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RecordScreen(),
+                                  builder: (context) => CaseSummaryScreen(),
                                 ),
                               );
                             },
@@ -216,9 +212,6 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
                             borderRadius: 10,
                             label: 'Next',
                           ),
-
-
-
                         ],
                       ),
                     ],
@@ -280,17 +273,3 @@ class _FounderDetailsScreenState extends State<FounderDetailsScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/views/parent_screens/upload_images.dart';
-import 'package:locat_lost/Widgets/custom_textField.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../../Widgets/custom_elevated_button.dart';
-import 'founder_info.dart';
+import '../../utils/app_colors.dart';
+import '../../widgets/custom_elevated_button.dart';
+import 'finder_details.dart';
 
-class ChildInfoScreen extends StatefulWidget {
-  const ChildInfoScreen({super.key});
+class FoundPersonDetailsScreen extends StatefulWidget {
+  const FoundPersonDetailsScreen({super.key});
 
   @override
-  State<ChildInfoScreen> createState() => _ChildDetailsScreenState();
+  State<FoundPersonDetailsScreen> createState() => _FoundPersonDetailsScreenState();
 }
 
-class _ChildDetailsScreenState extends State<ChildInfoScreen> {
+class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController cName = TextEditingController();
   final TextEditingController cGender = TextEditingController();
@@ -39,7 +39,7 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
             SizedBox(height: 50),
             Center(
               child: Text(
-                'Lost Person',
+                'Found Person',
                 style: TextStyle(
                   fontSize: 25,
                   color: AppColors.primary,
@@ -91,7 +91,7 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
                             ),
                             SizedBox(height: 6),
                             Text(
-                              'Enter missing person\'s real\nname to continue',
+                              'Enter found person\'s details\nto continue',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: AppColors.myRedColor,
@@ -136,7 +136,7 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              'Please complete the form with the accurate details of the missing person',
+              'Please complete the form with the accurate details of the found person',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.myBlackColor,
@@ -145,7 +145,7 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              'Missing Child/Person Details:',
+              'Found Person Details:',
               style: TextStyle(
                 fontSize: 20,
                 color: AppColors.primary,
@@ -159,34 +159,34 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
                   key: _key,
                   child: Column(
                     children: [
-                      _buildTextField('Name', 'Enter child name', cName, true),
+                      _buildTextField('Name', 'Enter person\'s name', cName, true),
                       _buildTextField(
                         'Father\'s Name',
-                        'Enter  Person\'s father\'s name',
+                        'Enter person\'s father\'s name',
                         cFName,
                         true,
                       ),
                       _buildTextField(
                         'Gender',
-                        'Enter Missing Person\'s gender',
+                        'Enter person\'s gender',
                         cGender,
                         true,
                       ),
                       _buildTextField(
                         'Hair Color',
-                        'Enter Missing Person\'s hair color',
+                        'Enter person\'s hair color',
                         cHairColor,
                         true,
                       ),
                       _buildTextField(
                         'Place',
-                        'Enter place where child was found',
+                        'Enter place where person was found',
                         cLocation,
                         true,
                       ),
                       _buildTextField(
                         'Time',
-                        'Enter the time when child was found',
+                        'Enter the time when person was found',
                         cTime,
                         true,
                       ),
@@ -211,7 +211,7 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FounderDetailsScreen(),
+                                  builder: (context) => FinderDetailsScreen(),
                                 ),
                               );
                             },
@@ -278,42 +278,6 @@ class _ChildDetailsScreenState extends State<ChildInfoScreen> {
             },
           ),
         ],
-      ),
-    );
-  }
-}
-
-// 🔻 CustomTextFormField Widget Implementation
-class CustomTextFormField extends StatelessWidget {
-  final String labelText;
-  final String hintText;
-  final TextEditingController controller;
-  final FormFieldValidator<String>? validator;
-
-  const CustomTextFormField({
-    super.key,
-    required this.labelText,
-    required this.hintText,
-    required this.controller,
-    this.validator,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: labelText,
-        hintText: hintText,
-        hintStyle: const TextStyle(fontSize: 13),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 14,
-        ),
-        filled: true,
-        fillColor: Colors.white,
       ),
     );
   }

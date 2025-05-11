@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/views/auth_screens/login.dart';
-import 'package:locat_lost/views/drawer_screens/about_us.dart';
-import 'package:locat_lost/views/drawer_screens/contact_us.dart';
-import 'package:locat_lost/views/drawer_screens/emergency.dart';
-import 'package:locat_lost/views/drawer_screens/faqs.dart';
-import 'package:locat_lost/views/drawer_screens/stats_screen.dart';
-import 'package:locat_lost/views/drawer_screens/terms_and_conditions.dart';
-import 'package:locat_lost/views/profile.dart';
-import 'package:locat_lost/views/report_case.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import 'package:locat_lost/colors.dart';
 
-import '../Widgets/custom_elevated_button.dart';
+import '../utils/app_colors.dart';
+import '../widgets/custom_elevated_button.dart';
+import 'auth_screens/login_screen.dart';
+import 'drawer_screens/about_us_screen.dart';
+import 'drawer_screens/contact_us_screen.dart';
+import 'drawer_screens/emergency_screen.dart';
+import 'drawer_screens/faqs_screen.dart';
+import 'drawer_screens/stats_screen.dart';
+import 'drawer_screens/terms_and_conditions_screen.dart';
+import 'profile_screen.dart';
+import 'report_case_screen.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ReportCase()),
+                  MaterialPageRoute(builder: (context) => ReportCaseScreen()),
                 );
               },
               height: 45,
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildDrawerItem(
               icon: Icons.privacy_tip_outlined,
               title: 'Terms  & Conditions',
-              onTap: () => navigateToScreen(TermsAndConditions()),
+              onTap: () => navigateToScreen(TermsAndConditionsScreen()),
             ),
             _buildDrawerItem(
               icon: Icons.help_outlined,
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildDrawerItem(
               icon: Icons.support,
               title: 'Emergency',
-              onTap: () => navigateToScreen(EmergencyContactScreen()),
+              onTap: () => navigateToScreen(EmergencyScreen()),
             ),
             _buildDrawerItem(
               icon: Icons.info_outline,
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildDrawerItem(
               icon: Icons.call,
               title: 'Contact Us',
-              onTap: () => navigateToScreen(ContactUs()),
+              onTap: () => navigateToScreen(ContactUsScreen()),
             ),
             _buildDrawerItem(
               icon: Icons.logout,
@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
             ),

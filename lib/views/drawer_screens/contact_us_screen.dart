@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_appBar.dart';
-import 'package:locat_lost/colors.dart';
+import 'package:locat_lost/widgets/custom_app_bar.dart';
+import 'package:locat_lost/utils/app_colors.dart';
 
-class ContactUs extends StatelessWidget {
-  const ContactUs({super.key});
+class ContactUsScreen extends StatelessWidget {
+  const ContactUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,6 @@ class ContactUs extends StatelessWidget {
     final TextEditingController messageController = TextEditingController();
 
     return Scaffold(
-
       appBar: CustomAppBar(text: 'Contact Us', onPressed: (){
         Navigator.pop(context);
       }),
@@ -24,7 +23,7 @@ class ContactUs extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'We’d love to hear from you!',
+              'We\'d love to hear from you!',
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
@@ -33,7 +32,7 @@ class ContactUs extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              'Feel free to share any feedback, questions or issues you’re facing.',
+              'Feel free to share any feedback, questions or issues you\'re facing.',
               style: TextStyle(fontSize: 16, color: Colors.black87),
             ),
             const SizedBox(height: 24),

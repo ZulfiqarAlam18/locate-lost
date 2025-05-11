@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/Widgets/custom_elevated_button.dart';
-import 'package:locat_lost/colors.dart';
-import 'package:locat_lost/views/SplashScreens/splash1.dart';
+import 'package:locat_lost/widgets/custom_elevated_button.dart';
+import 'package:locat_lost/utils/app_colors.dart';
+import 'package:locat_lost/views/splash_screens/splash_screen_1.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../auth_screens/signup.dart';
-import 'splash2.dart';
-import 'splash3.dart';
+import '../auth_screens/signup_screen.dart';
+import 'splash_screen_2.dart';
+import 'splash_screen_3.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashScreenState extends State<SplashScreen> {
   final PageController _controller = PageController();
 
   @override
@@ -44,7 +44,7 @@ class _SplashState extends State<Splash> {
           Expanded(
             child: PageView(
               controller: _controller,
-              children: [Splash1(), Splash2(), Splash3()],
+              children: [SplashScreen1(), SplashScreen2(), SplashScreen3()],
             ),
           ),
           SizedBox(height: 10,),
@@ -67,7 +67,7 @@ class _SplashState extends State<Splash> {
 
           CustomElevatedButton(onPressed: (){
 
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupScreen()));
 
           },
               height: 60,

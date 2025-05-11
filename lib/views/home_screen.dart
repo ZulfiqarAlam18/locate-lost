@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utils/app_colors.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_elevated_button.dart';
 import 'auth_screens/login_screen.dart';
 import 'drawer_screens/about_us_screen.dart';
@@ -32,16 +33,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBar(
-      //   text: 'LocateLost',
-      //   onPressed: () {
-      //     ScaffoldMessenger.of(context).showSnackBar(
-      //       SnackBar(content: Text('Done Done Done...........')),
-      //     );
-      //   },
-      //   icon: Icons.menu,
-      // ),
-      appBar: AppBar(title: Text('LocateLost')),
+      appBar: CustomAppBar(
+        text: 'LocateLost',
+        onPressed: () {
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(content: Text('Done Done Done...........')),
+          // );
+        },
+        icon: Icons.menu,
+      ),
+
+     // appBar: AppBar(title: Text('LocateLost')),
       backgroundColor: AppColors.secondary,
       body: Center(
         child: Column(
@@ -85,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+
       drawer: Drawer(
         backgroundColor: Colors.white,
         child: ListView(
@@ -151,10 +154,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+
     );
+
   }
 
-  // Reusable method to build drawer items
+ // Reusable method to build drawer items
   ListTile _buildDrawerItem({
     required IconData icon,
     required String title,

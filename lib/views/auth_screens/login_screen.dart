@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fillColor: AppColors.background,
                       ),
                       Container(
-                        padding: EdgeInsets.only(left:215,right: 0,top: 0,bottom: 0),
+                        padding: EdgeInsets.only(left:195,right: 0,top: 0,bottom: 0),
                         child: TextButton(onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordScreen()));
                         }, child: Text(

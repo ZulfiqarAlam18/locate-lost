@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:locat_lost/utils/app_colors.dart';
-import 'package:locat_lost/demo.dart';
 
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_elevated_button.dart';

@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: AppColors.secondary,
       body: Column(
         children: [
-          SizedBox(height: 20.h),
+          SizedBox(height: 71.h),
           Text(
             'LocateLost',
             style: TextStyle(
@@ -36,8 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Divider(
             color: AppColors.primary,
-            indent: 80.w,
-            endIndent: 80.w,
+            indent: 90.w,
+            endIndent: 90.w,
             thickness: 2.h,
           ),
 
@@ -49,15 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           SizedBox(height: 10.h),
           Padding(
-            padding: EdgeInsets.only(bottom: 25.h),
+            padding: EdgeInsets.only(bottom: 27.h),
             child: SmoothPageIndicator(
               controller: _controller,
               count: 3,
+
               effect: WormEffect(
                 dotColor: AppColors.myBlackColor,
                 dotHeight: 12.h,
                 dotWidth: 12.w,
+
                 activeDotColor: AppColors.primary,
+
                 spacing: 12.w,
               ),
             ),
@@ -83,9 +86,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
-
-
-
-
-

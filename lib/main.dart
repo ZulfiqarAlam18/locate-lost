@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 import 'package:locat_lost/views/splash_screens/splash_screen.dart';
@@ -10,11 +12,11 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
-  const InforatoApp({super.key});
+  const MyApp({super.key});
 
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(403.6, 874), // <-- Match your Figma base size
+      designSize: Size(430, 932), // i phone 15 pro max
       minTextAdapt: true,
       splitScreenMode: true,
 

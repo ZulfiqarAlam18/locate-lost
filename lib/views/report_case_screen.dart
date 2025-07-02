@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import 'package:locat_lost/utils/app_colors.dart';
-
-import 'founder_screens/camera_capture.dart';
-import 'parent_screens/missing_person_details.dart';
+import '../routes/app_routes.dart';
 
 class ReportCaseScreen extends StatelessWidget {
   const ReportCaseScreen({super.key});
@@ -81,36 +80,19 @@ class ReportCaseScreen extends StatelessWidget {
                   context,
                   title1: 'Report a',
                   title2: 'Missing Person',
-                  description:
-                      'If you are looking for someone who is missing, tap here to report it.',
                   image: 'assets/images/unlink.png',
-                  onTap:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => const MissingPersonDetailsScreen(),
-                        ),
-                      ),
+                  onTap: () => Get.toNamed(AppRoutes.missingPersonDetails),
                 ),
                 _buildCaseCard(
                   context,
                   title1: 'Report a',
                   title2: 'Found Person',
-                  description:
-                      'If you found someone who is lost, tap here to report it.',
                   image: 'assets/images/link-03.png',
-                  onTap:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CameraCaptureScreen(),
-                        ),
-                      ),
+                  onTap: () => Get.toNamed(AppRoutes.cameraCapture),
                 ),
               ],
             ),
-            SizedBox(height: 40.h),
+            //  SizedBox(height: 40.h),
           ],
         ),
       ),
@@ -121,7 +103,6 @@ class ReportCaseScreen extends StatelessWidget {
     BuildContext context, {
     required String title1,
     required String title2,
-    required String description,
     required String image,
     required VoidCallback onTap,
   }) {
@@ -135,41 +116,42 @@ class ReportCaseScreen extends StatelessWidget {
         ),
         child: SizedBox(
           width: 160.w,
-          height: 205.h,
+          height: 190.h, // Much reduced height since no description
           child: Padding(
-            padding: EdgeInsets.all(14.w),
+            padding: EdgeInsets.all(12.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(image, width: 40.w, height: 40.h),
-                SizedBox(height: 10.h),
-                Text(
-                  title1,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(image, width: 40.w, height: 40.h),
+                    SizedBox(height: 12.h),
+                    Text(
+                      title1,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      title2,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  title2,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: 6.h),
-                Text(
-                  description,
-                  style: TextStyle(color: Colors.white, fontSize: 10.sp),
-                ),
-                const Spacer(),
                 const Align(
                   alignment: Alignment.bottomRight,
                   child: Icon(
                     Icons.arrow_circle_right_rounded,
                     color: Colors.white,
+                    size: 24,
                   ),
                 ),
               ],

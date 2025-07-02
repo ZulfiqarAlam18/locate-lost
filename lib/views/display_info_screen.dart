@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/utils/app_colors.dart';
-
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_elevated_button.dart';
-import 'auth_screens/login_screen.dart';
+import '../routes/app_routes.dart';
 
 class DisplayInfoScreen extends StatefulWidget {
   const DisplayInfoScreen({super.key});
@@ -102,10 +102,7 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
             Center(
               child: CustomElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
+                  Get.toNamed(AppRoutes.login);
                 },
                 height: 45.h,
                 width: 130.w,

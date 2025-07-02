@@ -291,7 +291,10 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CaseSummaryScreen()),
+              MaterialPageRoute(
+                builder:
+                    (context) => const CaseSummaryScreen(userType: 'parent'),
+              ),
             );
           },
           height: 45.h,

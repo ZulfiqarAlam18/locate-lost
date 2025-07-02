@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locat_lost/views/parent_screens/upload_images.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'finder_details.dart';
+import '../../routes/app_routes.dart';
 
 class FoundPersonDetailsScreen extends StatefulWidget {
   const FoundPersonDetailsScreen({super.key});
@@ -215,12 +215,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                           ),
                           CustomElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FinderDetailsScreen(),
-                                ),
-                              );
+                              Get.toNamed(AppRoutes.finderDetails);
                             },
                             height: 45,
                             width: 130,

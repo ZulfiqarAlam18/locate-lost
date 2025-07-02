@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locat_lost/views/auth_screens/forgot_password_screen.dart';
-import 'package:locat_lost/views/auth_screens/signup_screen.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
-import '../home_screen.dart';
+import '../../routes/app_routes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -59,12 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignupScreen(),
-                          ),
-                        );
+                        Get.toNamed(AppRoutes.signup);
                       },
                       child: Text(
                         'Sign Up',
@@ -105,12 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ForgotPasswordScreen(),
-                              ),
-                            );
+                            Get.toNamed(AppRoutes.forgotPassword);
                           },
                           child: Text(
                             'forgot password?',
@@ -130,12 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Custom Button
                       CustomElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
+                          Get.toNamed(AppRoutes.home);
                         },
                         height: 60.h,
                         width: 241.w,

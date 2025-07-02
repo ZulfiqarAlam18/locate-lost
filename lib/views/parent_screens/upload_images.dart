@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locat_lost/views/auth_screens/login_screen.dart';
-import 'package:locat_lost/views/parent_screens/reporter_details.dart';
-import 'package:locat_lost/views/report_case_screen.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../routes/app_routes.dart';
 
 class UploadImagesScreen extends StatefulWidget {
   const UploadImagesScreen({super.key});
@@ -173,12 +172,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                   ),
                   CustomElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReporterDetailsScreen(),
-                        ),
-                      );
+                      Get.toNamed(AppRoutes.reporterDetails);
                     },
                     height: 45.h,
                     width: 130.w,

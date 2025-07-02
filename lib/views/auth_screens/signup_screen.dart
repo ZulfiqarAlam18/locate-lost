@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'login_screen.dart';
+import '../../routes/app_routes.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -55,12 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
+                        Get.toNamed(AppRoutes.login);
                       },
                       child: Text(
                         'Login',
@@ -123,12 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       // Custom Button
                       CustomElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            ),
-                          );
+                          Get.toNamed(AppRoutes.login);
                         },
                         height: 60.h,
                         width: 241.w,

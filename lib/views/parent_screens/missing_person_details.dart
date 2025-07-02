@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_field.dart';
-import 'upload_images.dart';
+import '../../routes/app_routes.dart';
 
 class MissingPersonDetailsScreen extends StatefulWidget {
   const MissingPersonDetailsScreen({Key? key}) : super(key: key);
@@ -319,10 +320,7 @@ class _MissingPersonDetailsScreenState
         ),
         CustomElevatedButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UploadImagesScreen()),
-            );
+            Get.toNamed(AppRoutes.uploadImages);
           },
           height: 45.h,
           width: 130.w,

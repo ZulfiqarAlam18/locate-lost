@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:get/get.dart';
 import '../utils/app_colors.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_elevated_button.dart';
-import 'auth_screens/login_screen.dart';
-import 'drawer_screens/about_us_screen.dart';
-import 'drawer_screens/contact_us_screen.dart';
-import 'drawer_screens/emergency_screen.dart';
-import 'drawer_screens/faqs_screen.dart';
-import 'drawer_screens/stats_screen.dart';
-import 'drawer_screens/terms_and_conditions_screen.dart';
-import 'profile_screen.dart';
-import 'report_case_screen.dart';
+import '../routes/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,9 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String username = 'Zohaib Khoso'; // Dynamically update this as needed
 
   // Function to handle navigation from drawer
-  void navigateToScreen(Widget screen) {
+  void navigateToScreen(String routeName) {
     Navigator.pop(context); // Close the drawer
-    Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+    Get.toNamed(routeName);
   }
 
   @override
@@ -73,10 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             CustomElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ReportCaseScreen()),
-                );
+                Get.toNamed(AppRoutes.reportCase);
               },
               height: 45.h,
               width: 130.w,
@@ -104,51 +93,49 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildDrawerItem(
               icon: Icons.home,
               title: 'Home',
-              onTap: () => navigateToScreen(HomeScreen()),
+              onTap: () => navigateToScreen(AppRoutes.home),
             ),
             _buildDrawerItem(
               icon: Icons.person,
               title: 'Profile',
-              onTap: () => navigateToScreen(ProfileScreen()),
+              onTap: () => navigateToScreen(AppRoutes.profile),
             ),
             _buildDrawerItem(
               icon: Icons.bar_chart,
               title: 'Stats',
-              onTap: () => navigateToScreen(StatsScreen()),
+              onTap: () => navigateToScreen(AppRoutes.stats),
             ),
             _buildDrawerItem(
               icon: Icons.privacy_tip_outlined,
               title: 'Terms  & Conditions',
-              onTap: () => navigateToScreen(TermsAndConditionsScreen()),
+              onTap: () => navigateToScreen(AppRoutes.termsAndConditions),
             ),
             _buildDrawerItem(
               icon: Icons.help_outlined,
               title: 'FAQs',
-              onTap: () => navigateToScreen(FAQsScreen()),
+              onTap: () => navigateToScreen(AppRoutes.faqs),
             ),
             _buildDrawerItem(
               icon: Icons.support,
               title: 'Emergency',
-              onTap: () => navigateToScreen(EmergencyScreen()),
+              onTap: () => navigateToScreen(AppRoutes.emergency),
             ),
             _buildDrawerItem(
               icon: Icons.info_outline,
               title: 'About Us',
-              onTap: () => navigateToScreen(AboutUsScreen()),
+              onTap: () => navigateToScreen(AppRoutes.aboutUs),
             ),
             _buildDrawerItem(
               icon: Icons.call,
               title: 'Contact Us',
-              onTap: () => navigateToScreen(ContactUsScreen()),
+              onTap: () => navigateToScreen(AppRoutes.contactUs),
             ),
             _buildDrawerItem(
               icon: Icons.logout,
               title: 'Log Out',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+                Navigator.pop(context); // Close drawer first
+                Get.toNamed(AppRoutes.login);
               },
             ),
           ],

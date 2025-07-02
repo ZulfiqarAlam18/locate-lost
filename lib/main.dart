@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:locat_lost/views/splash_screens/splash_screen.dart';
-
+import 'package:get/get.dart';
+import 'routes/app_pages.dart';
+import 'routes/app_routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,12 +44,11 @@ class MyApp extends StatelessWidget {
           //   ),
           // ),
           //
+          initialRoute: AppRoutes.splash,
+          getPages: AppPages.pages,
 
-          // initialRoute: AppRoutes.getstarted,
-          // getPages: AppPages.pages,
-
-
-          home: SplashScreen(),
+          // Old navigation - now using GetX routes
+          // home: SplashScreen(),
           // home: DisplayInfoScreen(),
           //  home: ReportCase(),
           //   home: RecordScreen(),
@@ -72,19 +71,11 @@ class MyApp extends StatelessWidget {
           // home: AboutUsScreen(),
           //  home: StatsScreen(),
           // home: Demo2(),
-
-
         );
       },
     );
   }
-
-
 }
-
-
-
-
 
 /*
 

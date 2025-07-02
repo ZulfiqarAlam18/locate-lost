@@ -203,7 +203,10 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CaseSummaryScreen(),
+                                  builder:
+                                      (context) => const CaseSummaryScreen(
+                                        userType: 'finder',
+                                      ),
                                 ),
                               );
                             },

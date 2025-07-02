@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import '../../utils/app_colors.dart';
 
@@ -24,7 +25,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0.w),
             child: RichText(
               text: TextSpan(
                 text:
@@ -34,7 +35,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                     'these helplines are available to support you. ',
                 style: TextStyle(
                   color: AppColors.myBlackColor,
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                 ),
                 children: [
@@ -46,17 +47,17 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
               ),
             ),
           ),
-          Divider(color: AppColors.primary, endIndent: 80, indent: 80),
+          Divider(color: AppColors.primary, endIndent: 80.w, indent: 80.w),
           ...List.generate(5, (index) => buildExpansionCard()),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.w),
             child: Text(
               '"A strong society is one that stands together in times of need. '
               "Helping those in distress isn't just kindness—it's our"
               ' shared responsibility."',
               style: TextStyle(
                 color: AppColors.myBlackColor,
-                fontSize: 15,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
@@ -71,14 +72,14 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(width: 1, color: AppColors.primary),
+        borderRadius: BorderRadius.circular(12.r),
+        side: BorderSide(width: 1.w, color: AppColors.primary),
       ),
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10.w),
       child: ExpansionTile(
         title: Text(
           'What this app is about?',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         iconColor: AppColors.primary,
         textColor: AppColors.primary,
@@ -88,16 +89,18 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
           Container(
             width: double.infinity,
             color: Colors.teal[100],
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.w),
             child: Text(
               'Smarter Solution for reuniting missing children with their parents, with advanced AI features. LoCAT helps by utilizing modern technologies for efficient and fast reunification.',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14.sp),
             ),
           ),
         ],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
         collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
       ),
     );

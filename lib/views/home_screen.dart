@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 import '../widgets/custom_app_bar.dart';
@@ -12,7 +13,6 @@ import 'drawer_screens/stats_screen.dart';
 import 'drawer_screens/terms_and_conditions_screen.dart';
 import 'profile_screen.dart';
 import 'report_case_screen.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: Icons.menu,
       ),
 
-     // appBar: AppBar(title: Text('LocateLost')),
+      // appBar: AppBar(title: Text('LocateLost')),
       backgroundColor: AppColors.secondary,
       body: Center(
         child: Column(
@@ -51,12 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               'Welcome,',
-              style: TextStyle(fontSize: 18, color: AppColors.primary),
+              style: TextStyle(fontSize: 18.sp, color: AppColors.primary),
             ),
             Text(
               username,
               style: TextStyle(
-                fontSize: 25,
+                fontSize: 25.sp,
                 color: AppColors.primary,
                 fontWeight: FontWeight.w600,
               ),
@@ -64,12 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               'You have not reported any case yet',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
 
             CustomElevatedButton(
               onPressed: () {
@@ -78,10 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (context) => ReportCaseScreen()),
                 );
               },
-              height: 45,
-              width: 130,
-              fontSize: 15,
-              borderRadius: 10,
+              height: 45.h,
+              width: 130.w,
+              fontSize: 15.sp,
+              borderRadius: 10.r,
               label: 'New Case',
             ),
           ],
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(color: AppColors.primary),
               child: Text(
                 'Welcome, $username!',
-                style: TextStyle(fontSize: 24, color: AppColors.secondary),
+                style: TextStyle(fontSize: 24.sp, color: AppColors.secondary),
               ),
             ),
             // Simplifying the drawer items with the reuse of navigateToScreen method
@@ -154,12 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
     );
-
   }
 
- // Reusable method to build drawer items
+  // Reusable method to build drawer items
   ListTile _buildDrawerItem({
     required IconData icon,
     required String title,
@@ -174,5 +172,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

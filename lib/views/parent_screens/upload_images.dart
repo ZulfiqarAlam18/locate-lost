@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/views/auth_screens/login_screen.dart';
 import 'package:locat_lost/views/parent_screens/reporter_details.dart';
 import 'package:locat_lost/views/report_case_screen.dart';
@@ -22,16 +23,16 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
       backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 50),
+              SizedBox(height: 50.h),
               Center(
                 child: Text(
                   'Lost Person',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 25.sp,
                     color: AppColors.primary,
                     fontWeight: FontWeight.w500,
                   ),
@@ -40,29 +41,29 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
 
               Divider(
                 color: AppColors.primary,
-                indent: 100,
-                endIndent: 100,
-                thickness: 2,
+                indent: 100.w,
+                endIndent: 100.w,
+                thickness: 2.h,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
 
               Container(
-                width: 390,
-                height: 140,
+                width: 390.w,
+                height: 140.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.primary, width: 1.5),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: AppColors.primary, width: 1.5.w),
                 ),
                 child: Card(
                   elevation: 6,
                   color: AppColors.secondary,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 12,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0.w,
+                      vertical: 12.h,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,16 +77,16 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                               Text(
                                 'Application Progress',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              SizedBox(height: 6),
+                              SizedBox(height: 6.h),
                               Text(
                                 'Enter missing person\'s real\nname to continue',
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   color: AppColors.myRedColor,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -96,8 +97,8 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                         Expanded(
                           flex: 1,
                           child: CircularPercentIndicator(
-                            radius: 40,
-                            lineWidth: 8.0,
+                            radius: 40.r,
+                            lineWidth: 8.0.w,
                             percent: progressPercent,
                             animation: true,
                             animationDuration: 1000,
@@ -107,7 +108,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                             center: Text(
                               "${(progressPercent * 100).toInt()}%",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.teal[800],
                               ),
@@ -120,23 +121,23 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Divider(
                 color: AppColors.primary,
-                indent: 100,
-                endIndent: 100,
-                thickness: 2,
+                indent: 100.w,
+                endIndent: 100.w,
+                thickness: 2.h,
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Text(
                 'Upload clear and front facing images/videos of the missing person.',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: AppColors.myBlackColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
 
               // Reusable widget for the upload buttons
               _buildUploadButton(
@@ -145,7 +146,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                 isRequired: true,
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
 
               _buildUploadButton(
                 icon: Icons.camera_alt,
@@ -153,20 +154,18 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                 isRequired: false,
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
-
                   CustomElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    height: 45,
-                    width: 130,
-                    fontSize: 15,
-                    borderRadius: 10,
+                    height: 45.h,
+                    width: 130.w,
+                    fontSize: 15.sp,
+                    borderRadius: 10.r,
                     label: 'Back',
                     backgroundColor: AppColors.secondary,
                     foregroundColor: AppColors.primary,
@@ -181,13 +180,12 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                         ),
                       );
                     },
-                    height: 45,
-                    width: 130,
-                    fontSize: 15,
-                    borderRadius: 10,
+                    height: 45.h,
+                    width: 130.w,
+                    fontSize: 15.sp,
+                    borderRadius: 10.r,
                     label: 'Next',
                   ),
-
                 ],
               ),
             ],
@@ -204,34 +202,30 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
     required bool isRequired,
   }) {
     return Container(
-      width: 430,
-      height: 200,
+      width: 430.w,
+      height: 200.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary, width: 1.5),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: AppColors.primary, width: 1.5.w),
       ),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 14.0.w, vertical: 10.h),
           child: Column(
             children: [
               IconButton(
                 onPressed: () {},
-                icon: Icon(
-                  icon,
-                  color: AppColors.primary,
-                  size: 49,
-                ),
+                icon: Icon(icon, color: AppColors.primary, size: 49.sp),
               ),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               if (isRequired)
                 Text(
                   'YOU MUST UPLOAD AT LEAST ONE IMAGE/VIDEO OF THE PERSON',
@@ -257,16 +251,3 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

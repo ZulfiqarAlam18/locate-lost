@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:locat_lost/utils/app_colors.dart';
 import 'package:locat_lost/views/splash_screens/splash_screen.dart';
 
 

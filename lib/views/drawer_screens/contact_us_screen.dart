@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 
@@ -12,40 +13,45 @@ class ContactUsScreen extends StatelessWidget {
     final TextEditingController messageController = TextEditingController();
 
     return Scaffold(
-      appBar: CustomAppBar(text: 'Contact Us', onPressed: (){
-        Navigator.pop(context);
-      }),
+      appBar: CustomAppBar(
+        text: 'Contact Us',
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
 
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'We\'d love to hear from you!',
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 26.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
             ),
-            const SizedBox(height: 12),
-            const Text(
+            SizedBox(height: 12.h),
+            Text(
               'Feel free to share any feedback, questions or issues you\'re facing.',
-              style: TextStyle(fontSize: 16, color: Colors.black87),
+              style: TextStyle(fontSize: 16.sp, color: Colors.black87),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             TextField(
               controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Your Name',
                 filled: true,
                 fillColor: Colors.white,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -53,10 +59,12 @@ class ContactUsScreen extends StatelessWidget {
                 labelText: 'Email Address',
                 filled: true,
                 fillColor: Colors.white,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             TextField(
               controller: messageController,
               maxLines: 4,
@@ -65,29 +73,37 @@ class ContactUsScreen extends StatelessWidget {
                 alignLabelWithHint: true,
                 filled: true,
                 fillColor: Colors.white,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
               ),
             ),
-            const SizedBox(height: 28),
+            SizedBox(height: 28.h),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 50.h,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
                 onPressed: () {
                   // You can add logic to send message
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Your message has been sent!')),
+                    const SnackBar(
+                      content: Text('Your message has been sent!'),
+                    ),
                   );
                 },
-                child: const Text(
+                child: Text(
                   'Send Message',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: AppColors.secondary),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.secondary,
+                  ),
                 ),
               ),
             ),

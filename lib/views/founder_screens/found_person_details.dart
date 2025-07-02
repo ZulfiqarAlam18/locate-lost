@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/views/parent_screens/upload_images.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -10,7 +11,8 @@ class FoundPersonDetailsScreen extends StatefulWidget {
   const FoundPersonDetailsScreen({super.key});
 
   @override
-  State<FoundPersonDetailsScreen> createState() => _FoundPersonDetailsScreenState();
+  State<FoundPersonDetailsScreen> createState() =>
+      _FoundPersonDetailsScreenState();
 }
 
 class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
@@ -41,7 +43,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
               child: Text(
                 'Found Person',
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 25.sp,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w500,
                 ),
@@ -84,7 +86,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             Text(
                               'Application Progress',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -93,7 +95,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             Text(
                               'Enter found person\'s details\nto continue',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 color: AppColors.myRedColor,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -115,7 +117,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                           center: Text(
                             "${(progressPercent * 100).toInt()}%",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.teal[800],
                             ),
@@ -138,7 +140,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
             Text(
               'Please complete the form with the accurate details of the found person',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 color: AppColors.myBlackColor,
                 fontWeight: FontWeight.w600,
               ),
@@ -147,7 +149,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
             Text(
               'Found Person Details:',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 color: AppColors.primary,
                 fontWeight: FontWeight.w700,
               ),
@@ -159,7 +161,12 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                   key: _key,
                   child: Column(
                     children: [
-                      _buildTextField('Name', 'Enter person\'s name', cName, true),
+                      _buildTextField(
+                        'Name',
+                        'Enter person\'s name',
+                        cName,
+                        true,
+                      ),
                       _buildTextField(
                         'Father\'s Name',
                         'Enter person\'s father\'s name',
@@ -199,7 +206,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             },
                             height: 45,
                             width: 130,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                             borderRadius: 10,
                             label: 'Back',
                             backgroundColor: AppColors.secondary,
@@ -217,7 +224,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             },
                             height: 45,
                             width: 130,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                             borderRadius: 10,
                             label: 'Next',
                           ),
@@ -248,17 +255,17 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
           RichText(
             text: TextSpan(
               text: label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
-                fontSize: 15,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w300,
               ),
               children: [
                 TextSpan(
                   text: isRequired ? ' *' : '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

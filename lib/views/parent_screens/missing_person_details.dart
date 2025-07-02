@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -9,10 +10,12 @@ class MissingPersonDetailsScreen extends StatefulWidget {
   const MissingPersonDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  _MissingPersonDetailsScreenState createState() => _MissingPersonDetailsScreenState();
+  _MissingPersonDetailsScreenState createState() =>
+      _MissingPersonDetailsScreenState();
 }
 
-class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen> {
+class _MissingPersonDetailsScreenState
+    extends State<MissingPersonDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Map<String, TextEditingController> _controllers = {
@@ -36,7 +39,7 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,12 +56,12 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
   Widget _buildHeader() {
     return Column(
       children: [
-        SizedBox(height: 50),
+        SizedBox(height: 50.h),
         Center(
           child: Text(
             'Missing Person',
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 25.sp,
               color: AppColors.primary,
               fontWeight: FontWeight.w500,
             ),
@@ -66,9 +69,9 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
         ),
         Divider(
           color: AppColors.primary,
-          indent: 100,
-          endIndent: 100,
-          thickness: 2,
+          indent: 100.w,
+          endIndent: 100.w,
+          thickness: 2.h,
         ),
       ],
     );
@@ -76,25 +79,22 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
 
   Widget _buildProgressCard() {
     return Container(
-      width: 390,
-      height: 140,
+      width: 390.w,
+      height: 140.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary, width: 1.5),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: AppColors.primary, width: 1.5.w),
       ),
       child: Card(
         elevation: 6,
         color: AppColors.secondary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 12.h),
           child: Row(
-            children: [
-              _buildProgressText(),
-              _buildProgressIndicator(),
-            ],
+            children: [_buildProgressText(), _buildProgressIndicator()],
           ),
         ),
       ),
@@ -110,16 +110,16 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
           Text(
             'Application Progress',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 18.sp,
               color: AppColors.primary,
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 6),
+          SizedBox(height: 6.h),
           Text(
             'Enter missing person\'s details\nto continue',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               color: AppColors.myRedColor,
               fontWeight: FontWeight.w400,
             ),
@@ -133,8 +133,8 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
     return Expanded(
       flex: 1,
       child: CircularPercentIndicator(
-        radius: 40,
-        lineWidth: 8.0,
+        radius: 40.r,
+        lineWidth: 8.0.w,
         percent: progressPercent,
         animation: true,
         animationDuration: 1000,
@@ -144,7 +144,7 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
         center: Text(
           "${(progressPercent * 100).toInt()}%",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Colors.teal[800],
           ),
@@ -160,7 +160,9 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
           key: _formKey,
           child: Column(
             children: [
-              _buildSectionTitle('Please complete the form with the accurate details of the missing person'),
+              _buildSectionTitle(
+                'Please complete the form with the accurate details of the missing person',
+              ),
               _buildSectionTitle('Missing Person Details:', size: 20),
               ..._buildFormFields(),
             ],
@@ -173,46 +175,101 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
   List<Widget> _buildFormFields() {
     return [
       _buildTextField('Name', 'Enter Missing Person\'s name', 'name', true),
-      _buildTextField('Father\'s Name', 'Enter Missing Person\'s father\'s name', 'fatherName', true),
-      _buildTextField('Surname', 'Enter Missing Person\'s surname', 'caste', true),
-      _buildTextField('Gender', 'Enter Missing Person\'s gender', 'gender', true),
-      _buildTextField('Height', 'Enter Missing Person\'s height (ft)', 'height', true),
-      _buildTextField('Skin Color', 'Enter Missing Person\'s skin color', 'skinColor', true),
-      _buildTextField('Hair Color', 'Enter Missing Person\'s hair color', 'hairColor', true),
-      _buildTextField('Disability (if any)', 'Enter Missing Person\'s disability', 'disability', false),
-      _buildTextField('Last Seen Place', 'Where was the person seen last?', 'lastSeenPlace', true),
-      _buildTextField('Last Seen Time', 'Enter Missing Person\'s last seen time', 'lastSeenTime', true),
-      _buildTextField('Phone Number (optional)', 'Enter Missing Person\'s phone number', 'phoneNumber', false),
+      _buildTextField(
+        'Father\'s Name',
+        'Enter Missing Person\'s father\'s name',
+        'fatherName',
+        true,
+      ),
+      _buildTextField(
+        'Surname',
+        'Enter Missing Person\'s surname',
+        'caste',
+        true,
+      ),
+      _buildTextField(
+        'Gender',
+        'Enter Missing Person\'s gender',
+        'gender',
+        true,
+      ),
+      _buildTextField(
+        'Height',
+        'Enter Missing Person\'s height (ft)',
+        'height',
+        true,
+      ),
+      _buildTextField(
+        'Skin Color',
+        'Enter Missing Person\'s skin color',
+        'skinColor',
+        true,
+      ),
+      _buildTextField(
+        'Hair Color',
+        'Enter Missing Person\'s hair color',
+        'hairColor',
+        true,
+      ),
+      _buildTextField(
+        'Disability (if any)',
+        'Enter Missing Person\'s disability',
+        'disability',
+        false,
+      ),
+      _buildTextField(
+        'Last Seen Place',
+        'Where was the person seen last?',
+        'lastSeenPlace',
+        true,
+      ),
+      _buildTextField(
+        'Last Seen Time',
+        'Enter Missing Person\'s last seen time',
+        'lastSeenTime',
+        true,
+      ),
+      _buildTextField(
+        'Phone Number (optional)',
+        'Enter Missing Person\'s phone number',
+        'phoneNumber',
+        false,
+      ),
     ];
   }
 
-  Widget _buildTextField(String label, String hint, String controllerKey, bool isRequired) {
+  Widget _buildTextField(
+    String label,
+    String hint,
+    String controllerKey,
+    bool isRequired,
+  ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
             text: TextSpan(
               text: label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
-                fontSize: 15,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w300,
               ),
               children: [
                 TextSpan(
                   text: isRequired ? ' *' : '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: 5.h),
           CustomTextFormField(
             labelText: label,
             hintText: hint,
@@ -231,11 +288,11 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
 
   Widget _buildSectionTitle(String title, {double size = 16}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Text(
         title,
         style: TextStyle(
-          fontSize: size,
+          fontSize: size.sp,
           color: AppColors.myBlackColor,
           fontWeight: FontWeight.w600,
         ),
@@ -251,10 +308,10 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
           onPressed: () {
             Navigator.pop(context);
           },
-          height: 45,
-          width: 130,
-          fontSize: 15,
-          borderRadius: 10,
+          height: 45.h,
+          width: 130.w,
+          fontSize: 15.sp,
+          borderRadius: 10.r,
           label: 'Back',
           backgroundColor: AppColors.secondary,
           foregroundColor: AppColors.primary,
@@ -264,15 +321,13 @@ class _MissingPersonDetailsScreenState extends State<MissingPersonDetailsScreen>
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => UploadImagesScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => UploadImagesScreen()),
             );
           },
-          height: 45,
-          width: 130,
-          fontSize: 15,
-          borderRadius: 10,
+          height: 45.h,
+          width: 130.w,
+          fontSize: 15.sp,
+          borderRadius: 10.r,
           label: 'Next',
         ),
       ],

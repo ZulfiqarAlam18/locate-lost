@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/percent_indicator.dart'; // Add this package
 
 import '../../utils/app_colors.dart';
@@ -21,30 +22,37 @@ class StatsScreen extends StatelessWidget {
         onPressed: () => Navigator.pop(context),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Reuniting Missing Children',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Wrap(
-              spacing: 16,
-              runSpacing: 16,
+              spacing: 16.w,
+              runSpacing: 16.h,
               alignment: WrapAlignment.center,
-              children: stats.entries
-                  .where((entry) => entry.key != 'Success Rate')
-                  .map((entry) => _buildStatCard(entry.key, entry.value.toString(), context))
-                  .toList(),
+              children:
+                  stats.entries
+                      .where((entry) => entry.key != 'Success Rate')
+                      .map(
+                        (entry) => _buildStatCard(
+                          entry.key,
+                          entry.value.toString(),
+                          context,
+                        ),
+                      )
+                      .toList(),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             _buildSuccessRateCard(context),
           ],
         ),
@@ -57,34 +65,31 @@ class StatsScreen extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.42,
       decoration: BoxDecoration(
         color: Colors.teal.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade300,
-            blurRadius: 4,
-            offset: Offset(2, 3),
+            blurRadius: 4.r,
+            offset: Offset(2.w, 3.h),
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
       child: Column(
         children: [
           Text(
             value,
             style: TextStyle(
-              fontSize: 26,
+              fontSize: 26.sp,
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.black87),
           ),
         ],
       ),
@@ -96,28 +101,28 @@ class StatsScreen extends StatelessWidget {
 
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.w),
         child: Column(
           children: [
             Text(
               'Success Rate',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             CircularPercentIndicator(
-              radius: 70.0,
-              lineWidth: 12.0,
+              radius: 70.r,
+              lineWidth: 12.w,
               percent: successRate,
               center: Text(
                 '${(successRate * 100).toStringAsFixed(1)}%',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primary,
                 ),
@@ -127,10 +132,10 @@ class StatsScreen extends StatelessWidget {
               circularStrokeCap: CircularStrokeCap.round,
               animation: true,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Text(
               '${stats['Success Rate']} of cases resolved successfully',
-              style: TextStyle(fontSize: 14, color: Colors.black87),
+              style: TextStyle(fontSize: 14.sp, color: Colors.black87),
               textAlign: TextAlign.center,
             ),
           ],

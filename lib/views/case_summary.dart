@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 
 import '../utils/app_colors.dart';
@@ -24,29 +25,29 @@ class _CaseSummaryScreenState extends State<CaseSummaryScreen> {
       ),
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Center(
               child: Text(
                 'Case Summary',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            const Divider(
-              thickness: 2,
+            SizedBox(height: 10.h),
+            Divider(
+              thickness: 2.h,
               color: AppColors.primary,
-              indent: 80,
-              endIndent: 80,
+              indent: 80.w,
+              endIndent: 80.w,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -73,7 +74,7 @@ class _CaseSummaryScreenState extends State<CaseSummaryScreen> {
                       'Phone: +1 234 567 8901',
                       'Email: jane.doe@example.com',
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     _buildActionButtons(),
                   ],
                 ),
@@ -87,11 +88,11 @@ class _CaseSummaryScreenState extends State<CaseSummaryScreen> {
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Text(
         title,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 18.sp,
           color: AppColors.primary,
           fontWeight: FontWeight.w600,
         ),
@@ -99,25 +100,30 @@ class _CaseSummaryScreenState extends State<CaseSummaryScreen> {
     );
   }
 
-  Widget _buildInfoCard(String line1, String line2, String line3, String line4) {
+  Widget _buildInfoCard(
+    String line1,
+    String line2,
+    String line3,
+    String line4,
+  ) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: AppColors.primary.withOpacity(0.5), width: 1),
+        borderRadius: BorderRadius.circular(12.r),
+        side: BorderSide(color: AppColors.primary.withOpacity(0.5), width: 1.w),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(line1, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 8),
-            Text(line2, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 8),
-            Text(line3, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 8),
-            Text(line4, style: const TextStyle(fontSize: 16)),
+            Text(line1, style: TextStyle(fontSize: 16.sp)),
+            SizedBox(height: 8.h),
+            Text(line2, style: TextStyle(fontSize: 16.sp)),
+            SizedBox(height: 8.h),
+            Text(line3, style: TextStyle(fontSize: 16.sp)),
+            SizedBox(height: 8.h),
+            Text(line4, style: TextStyle(fontSize: 16.sp)),
           ],
         ),
       ),
@@ -142,7 +148,7 @@ class _CaseSummaryScreenState extends State<CaseSummaryScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           ),
         ),
         ElevatedButton.icon(
@@ -159,7 +165,7 @@ class _CaseSummaryScreenState extends State<CaseSummaryScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           ),
         ),
       ],

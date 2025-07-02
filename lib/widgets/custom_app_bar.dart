@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 
@@ -15,19 +16,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(110);
+  Size get preferredSize => Size.fromHeight(110.h);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 60),
+      padding: EdgeInsets.only(top: 60.h),
       width: double.infinity,
-      height: 110,
+      height: 110.h,
       decoration: BoxDecoration(
         color: AppColors.primary,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(30),
-          bottomLeft: Radius.circular(30),
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(30.r),
+          bottomLeft: Radius.circular(30.r),
         ),
       ),
       child: Stack(
@@ -36,28 +37,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Text(
             text,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 22.sp,
               color: AppColors.secondary,
               fontWeight: FontWeight.w600,
             ),
           ),
           Positioned(
-            left: 10,
+            left: 10.w,
             top: 0,
             bottom: 0,
             child: Builder(
-              builder: (context) => IconButton(
-                icon: Icon(icon, color: AppColors.secondary, size: 30),
-                onPressed: () {
-                  if (icon == Icons.menu) {
-                    Scaffold.of(context).openDrawer();
-                  } else {
-                    if (onPressed != null) {
-                      onPressed!();
-                    }
-                  }
-                },
-              ),
+              builder:
+                  (context) => IconButton(
+                    icon: Icon(icon, color: AppColors.secondary, size: 30.w),
+                    onPressed: () {
+                      if (icon == Icons.menu) {
+                        Scaffold.of(context).openDrawer();
+                      } else {
+                        if (onPressed != null) {
+                          onPressed!();
+                        }
+                      }
+                    },
+                  ),
             ),
           ),
         ],
@@ -65,14 +67,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 //

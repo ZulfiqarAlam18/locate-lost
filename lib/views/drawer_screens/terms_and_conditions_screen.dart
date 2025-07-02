@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 
@@ -9,7 +10,8 @@ class TermsAndConditionsScreen extends StatefulWidget {
   const TermsAndConditionsScreen({super.key});
 
   @override
-  State<TermsAndConditionsScreen> createState() => _TermsAndConditionsScreenState();
+  State<TermsAndConditionsScreen> createState() =>
+      _TermsAndConditionsScreenState();
 }
 
 class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
@@ -28,7 +30,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
       backgroundColor: AppColors.secondary,
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
         child: Column(
           children: [
             Expanded(
@@ -74,7 +76,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -90,12 +92,12 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 Expanded(
                   child: Text(
                     'I have read and agree to the Terms & Conditions.',
-                    style: const TextStyle(fontSize: 14),
+                    style: TextStyle(fontSize: 14.sp),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             CustomElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -103,13 +105,13 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
-              height: 60,
-              width: 241,
-              fontSize: 20,
-              borderRadius: 10,
+              height: 60.h,
+              width: 241.w,
+              fontSize: 20.sp,
+              borderRadius: 10.r,
               label: 'Create Account',
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
           ],
         ),
       ),
@@ -124,11 +126,11 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 18, bottom: 6),
+      padding: EdgeInsets.only(top: 18.h, bottom: 6.h),
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 18.sp,
           color: AppColors.primary,
           fontWeight: FontWeight.w600,
         ),
@@ -145,7 +147,7 @@ class SectionBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 15, color: Colors.black87, height: 1.6),
+      style: TextStyle(fontSize: 15.sp, color: Colors.black87, height: 1.6),
     );
   }
 }

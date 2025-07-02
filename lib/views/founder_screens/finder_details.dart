@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/views/case_summary.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -28,16 +29,16 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // Padding adjusted for consistency
+        padding: EdgeInsets.all(16.0.w), // Padding adjusted for consistency
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 50.h),
             Center(
               child: Text(
                 'Found Person',
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 25.sp,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w500,
                 ),
@@ -45,29 +46,29 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
             ),
             Divider(
               color: AppColors.primary,
-              indent: 100,
-              endIndent: 100,
-              thickness: 2,
+              indent: 100.w,
+              endIndent: 100.w,
+              thickness: 2.h,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
             Container(
-              width: 390,
-              height: 140,
+              width: 390.w,
+              height: 140.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.primary, width: 1.5),
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(color: AppColors.primary, width: 1.5.w),
               ),
               child: Card(
                 elevation: 6,
                 color: AppColors.secondary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0.w,
+                    vertical: 12.h,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,16 +82,16 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                             Text(
                               'Application Progress',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 6),
+                            SizedBox(height: 6.h),
                             Text(
                               'Enter your details\nto continue',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 color: AppColors.myRedColor,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -101,8 +102,8 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                       Expanded(
                         flex: 1,
                         child: CircularPercentIndicator(
-                          radius: 40,
-                          lineWidth: 8.0,
+                          radius: 40.r,
+                          lineWidth: 8.0.w,
                           percent: progressPercent,
                           animation: true,
                           animationDuration: 1000,
@@ -112,7 +113,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                           center: Text(
                             "${(progressPercent * 100).toInt()}%",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.teal[800],
                             ),
@@ -124,27 +125,27 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Divider(
               color: AppColors.primary,
-              indent: 100,
-              endIndent: 100,
-              thickness: 2,
+              indent: 100.w,
+              endIndent: 100.w,
+              thickness: 2.h,
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Text(
               'Please complete the form with your accurate details',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 color: AppColors.myBlackColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Text(
               'Finder Details:',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 color: AppColors.primary,
                 fontWeight: FontWeight.w700,
               ),
@@ -190,7 +191,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                             },
                             height: 45,
                             width: 130,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                             borderRadius: 10,
                             label: 'Back',
                             backgroundColor: AppColors.secondary,
@@ -208,7 +209,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                             },
                             height: 45,
                             width: 130,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                             borderRadius: 10,
                             label: 'Next',
                           ),
@@ -226,11 +227,11 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
   }
 
   Widget _buildTextField(
-      String label,
-      String hint,
-      TextEditingController controller,
-      bool isRequired,
-      ) {
+    String label,
+    String hint,
+    TextEditingController controller,
+    bool isRequired,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
@@ -239,17 +240,17 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
           RichText(
             text: TextSpan(
               text: label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
-                fontSize: 15,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w300,
               ),
               children: [
                 TextSpan(
                   text: isRequired ? ' *' : '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

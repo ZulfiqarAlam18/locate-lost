@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -27,9 +28,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     if (status.isGranted) {
       _initializeCamera();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Camera permission is required')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Camera permission is required')));
     }
   }
 
@@ -68,84 +69,95 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: Text("Picture Captured"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.file(_capturedImages.last, height: 200),
-            SizedBox(height: 8),
-            Text("More pictures help with better accuracy."),
-            Text("You can upload up to 5.", style: TextStyle(fontSize: 12)),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              setState(() {
-                _showCarousel = true;
-              });
-            },
-            child: Text("Yes, take more"),
+      builder:
+          (_) => AlertDialog(
+            title: Text("Picture Captured"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.file(_capturedImages.last, height: 200.h),
+                SizedBox(height: 8.h),
+                Text("More pictures help with better accuracy."),
+                Text(
+                  "You can upload up to 5.",
+                  style: TextStyle(fontSize: 12.sp),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _showCarousel = true;
+                  });
+                },
+                child: Text("Yes, take more"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _showFinalReview();
+                },
+                child: Text("No, I'm done"),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _showFinalReview();
-            },
-            child: Text("No, I'm done"),
-          ),
-        ],
-      ),
     );
   }
 
   void _showFinalReview() {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text("Review Your Images"),
-        content: _capturedImages.isNotEmpty
-            ? CarouselSlider(
-          items: _capturedImages.map((img) {
-            return Stack(
-              children: [
-                Image.file(img, fit: BoxFit.cover, width: double.infinity),
-                Positioned(
-                  top: 5,
-                  right: 5,
-                  child: IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      setState(() {
-                        _capturedImages.remove(img);
-                      });
-                      Navigator.of(context).pop();
-                      _showFinalReview(); // Refresh carousel
-                    },
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
-          options: CarouselOptions(
-            height: 250,
-            enlargeCenterPage: true,
-            enableInfiniteScroll: false,
+      builder:
+          (_) => AlertDialog(
+            title: Text("Review Your Images"),
+            content:
+                _capturedImages.isNotEmpty
+                    ? CarouselSlider(
+                      items:
+                          _capturedImages.map((img) {
+                            return Stack(
+                              children: [
+                                Image.file(
+                                  img,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                                Positioned(
+                                  top: 5.h,
+                                  right: 5.w,
+                                  child: IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {
+                                      setState(() {
+                                        _capturedImages.remove(img);
+                                      });
+                                      Navigator.of(context).pop();
+                                      _showFinalReview(); // Refresh carousel
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                      options: CarouselOptions(
+                        height: 250.h,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                      ),
+                    )
+                    : Text("No images to review."),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, '/foundPersonDetailsScreen');
+                },
+                child: Text("Submit & Proceed"),
+              ),
+            ],
           ),
-        )
-            : Text("No images to review."),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/foundPersonDetailsScreen');
-            },
-            child: Text("Submit & Proceed"),
-          ),
-        ],
-      ),
     );
   }
 
@@ -156,7 +168,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   }
 
   Widget _buildCameraPreview() {
-    if (!_isCameraInitialized) return Center(child: CircularProgressIndicator());
+    if (!_isCameraInitialized)
+      return Center(child: CircularProgressIndicator());
     return CameraPreview(_controller);
   }
 
@@ -168,27 +181,27 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         children: [
           _buildCameraPreview(),
           Positioned(
-            top: 40,
-            left: 10,
+            top: 40.h,
+            left: 10.w,
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.pop(context),
             ),
           ),
           Positioned(
-            bottom: 30,
+            bottom: 30.h,
             left: 0,
             right: 0,
             child: Center(
               child: GestureDetector(
                 onTap: _takePicture,
                 child: Container(
-                  width: 70,
-                  height: 70,
+                  width: 70.w,
+                  height: 70.h,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
-                    border: Border.all(width: 5, color: Colors.teal),
+                    border: Border.all(width: 5.w, color: Colors.teal),
                   ),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../utils/app_colors.dart';
@@ -25,17 +26,17 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0.w),
           child: Column(
             children: [
-              SizedBox(height: 5),
+              SizedBox(height: 5.h),
               _buildProfileCard(
                 imagePath: 'assets/images/ali.png',
                 name: 'Ali Raza',
                 role: 'Full Stack Developer',
                 position: 'Team Leader',
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               _buildProfileCard(
                 imagePath: 'assets/images/zulfiqar.png',
                 name: 'Zulfiqar Alam',
@@ -56,51 +57,53 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     required String position,
   }) {
     return DottedBorder(
-      strokeWidth: 2,
+      strokeWidth: 2.w,
       padding: EdgeInsets.zero,
       borderType: BorderType.RRect,
       dashPattern: [8, 4],
       color: AppColors.primary,
-      radius: Radius.circular(12),
+      radius: Radius.circular(12.r),
       child: Card(
         elevation: 16,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.w),
           child: Column(
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                     child: Image.asset(
                       imagePath,
-                      width: 140,
-                      height: 180,
+                      width: 140.w,
+                      height: 180.h,
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 4),
+                      padding: EdgeInsets.only(top: 4.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             name,
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 22.sp,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          SizedBox(height: 6),
+                          SizedBox(height: 6.h),
                           Text(
                             role,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w600,
                             ),
@@ -108,16 +111,16 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           Text(
                             position,
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                           Text(
                             'I\'m a Software Engineering student and one of the developers behind LocateLost. My expertise lies in web development, where I specialize in creating scalable and efficient web applications.',
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 11.sp,
                               color: AppColors.myBlackColor,
                               fontWeight: FontWeight.w400,
                               height: 1.4,
@@ -129,17 +132,17 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 'From frontend design to backend functionality, I ensure a seamless and user-friendly experience for LocateLost\'s web platform. Passionate about innovation and problem-solving, I\'m committed to making LocateLost a reliable tool for reconnecting people with their loved ones.',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 11.sp,
                   color: AppColors.myBlackColor,
                   fontWeight: FontWeight.w400,
                   height: 1.4,
                 ),
               ),
-              SizedBox(height: 14),
+              SizedBox(height: 14.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -147,10 +150,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    height: 36,
-                    width: 140,
-                    fontSize: 15,
-                    borderRadius: 10,
+                    height: 36.h,
+                    width: 140.w,
+                    fontSize: 15.sp,
+                    borderRadius: 10.r,
                     label: 'Hire Me',
                   ),
                   CustomElevatedButton(
@@ -162,10 +165,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         ),
                       );
                     },
-                    height: 36,
-                    width: 140,
-                    fontSize: 15,
-                    borderRadius: 10,
+                    height: 36.h,
+                    width: 140.w,
+                    fontSize: 15.sp,
+                    borderRadius: 10.r,
                     label: 'Resume',
                   ),
                 ],

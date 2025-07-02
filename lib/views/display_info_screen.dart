@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 
 import '../widgets/custom_app_bar.dart';
@@ -45,26 +46,26 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
         },
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Uploaded Child Images:', style: sectionTitle()),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
 
             SizedBox(
-              height: 180,
+              height: 180.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: dummyImages.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    width: 140,
-                    height: 180,
+                    margin: EdgeInsets.only(right: 10.w),
+                    width: 140.w,
+                    height: 180.h,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(15.r),
                       border: Border.all(color: AppColors.primary),
                       image: DecorationImage(
                         image: NetworkImage(dummyImages[index]),
@@ -76,27 +77,27 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
-            Divider(color: AppColors.primary, thickness: 1.5),
+            Divider(color: AppColors.primary, thickness: 1.5.h),
 
             Text('Child Details:', style: sectionTitle()),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
 
             ..._buildInfoList(childDetails),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
-            Divider(color: AppColors.primary, thickness: 1.5),
+            Divider(color: AppColors.primary, thickness: 1.5.h),
 
             Text('Parent Info:', style: sectionTitle()),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
 
             ..._buildInfoList(parentDetails),
 
-            const SizedBox(height: 30),
+            SizedBox(height: 30.h),
 
             Center(
               child: CustomElevatedButton(
@@ -106,10 +107,10 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
-                height: 45,
-                width: 130,
-                fontSize: 15,
-                borderRadius: 10,
+                height: 45.h,
+                width: 130.w,
+                fontSize: 15.sp,
+                borderRadius: 10.r,
                 label: 'Edit Details',
               ),
             ),
@@ -122,12 +123,12 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
   List<Widget> _buildInfoList(Map<String, String> data) {
     return data.entries.map((entry) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        padding: EdgeInsets.symmetric(vertical: 4.0.h),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.circle, size: 8, color: Colors.grey),
-            const SizedBox(width: 8),
+            Icon(Icons.circle, size: 8.sp, color: Colors.grey),
+            SizedBox(width: 8.w),
             Expanded(
               child: RichText(
                 text: TextSpan(
@@ -152,8 +153,8 @@ class _DisplayInfoScreenState extends State<DisplayInfoScreen> {
   }
 
   TextStyle sectionTitle() {
-    return const TextStyle(
-      fontSize: 18,
+    return TextStyle(
+      fontSize: 18.sp,
       fontWeight: FontWeight.bold,
       color: AppColors.primary,
     );

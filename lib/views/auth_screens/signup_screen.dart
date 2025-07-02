@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -26,22 +27,20 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: EdgeInsets.symmetric(horizontal: 32.w),
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: 100),
+                SizedBox(height: 100.h),
 
                 Text(
                   'Create an account',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 30.sp,
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-
-
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -49,21 +48,24 @@ class _SignupScreenState extends State<SignupScreen> {
                     Text(
                       'Already have an account?',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     TextButton(
                       onPressed: () {
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
                       },
                       child: Text(
                         'Login',
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           color: AppColors.primary,
                           fontWeight: FontWeight.w700,
                         ),
@@ -115,43 +117,47 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
 
                       // Removing extra spacing between fields
-                      SizedBox(height: 15), // Only a small gap between button and fields
-
+                      SizedBox(
+                        height: 15.h,
+                      ), // Only a small gap between button and fields
                       // Custom Button
-                      CustomElevatedButton(onPressed: (){
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-
-                      },
-                        height: 60,
-                        width: 241,
-                        fontSize: 20,
-                        borderRadius: 10,
+                      CustomElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        },
+                        height: 60.h,
+                        width: 241.w,
+                        fontSize: 20.sp,
+                        borderRadius: 10.r,
                         label: 'Create Account',
                       ),
-
-
-
-
                     ],
                   ),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 Text(
                   '--------or SignUp with---------',
-                  style: TextStyle(color: Colors.black45),
+                  style: TextStyle(color: Colors.black45, fontSize: 14.sp),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 // Social Media Buttons Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SocialIconButton(icon: Icons.facebook, onPressed: () {}),
-                    SocialIconButton(icon: Icons.g_mobiledata, onPressed: () {}),
+                    SocialIconButton(
+                      icon: Icons.g_mobiledata,
+                      onPressed: () {},
+                    ),
                     SocialIconButton(icon: Icons.apple, onPressed: () {}),
                   ],
                 ),
@@ -169,20 +175,24 @@ class SocialIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
 
-  const SocialIconButton({super.key, required this.icon, required this.onPressed});
+  const SocialIconButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 70,
-      height: 70,
+      width: 70.w,
+      height: 70.h,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.teal),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: IconButton(
         onPressed: onPressed,
-        icon: Icon(icon, color: Colors.teal),
+        icon: Icon(icon, color: Colors.teal, size: 24.sp),
       ),
     );
   }

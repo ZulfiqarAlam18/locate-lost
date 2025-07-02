@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -14,57 +15,80 @@ class ForgotPasswordScreen extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              padding: const EdgeInsets.all(24),
-              margin: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.all(24.w),
+              margin: EdgeInsets.symmetric(horizontal: 24.w),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.85),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.primary.withOpacity(0.2),
-                    blurRadius: 15,
-                    offset: const Offset(0, 10),
+                    blurRadius: 15.r,
+                    offset: Offset(0, 10.h),
                   ),
                 ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.lock_reset_rounded, size: 48, color: AppColors.primary),
-                  const SizedBox(height: 16),
+                  Icon(
+                    Icons.lock_reset_rounded,
+                    size: 48.sp,
+                    color: AppColors.primary,
+                  ),
+                  SizedBox(height: 16.h),
                   Text(
                     'Reset Password',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary),
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
+                  SizedBox(height: 12.h),
+                  Text(
                     'We\'ll send a reset link to your email',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black87),
+                    style: TextStyle(color: Colors.black87, fontSize: 16.sp),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   TextField(
                     controller: emailController,
                     decoration: InputDecoration(
                       hintText: 'you@example.com',
+                      hintStyle: TextStyle(fontSize: 14.sp),
                       filled: true,
                       fillColor: Colors.grey.shade100,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide.none,
                       ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 12.h,
+                      ),
                     ),
+                    style: TextStyle(fontSize: 14.sp),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      minimumSize: Size(120.w, 48.h),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      child: Text('Send Link', style: TextStyle(color: Colors.white)),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 32.w,
+                        vertical: 12.h,
+                      ),
+                      child: Text(
+                        'Send Link',
+                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                      ),
                     ),
                   ),
                 ],
@@ -72,10 +96,14 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 40,
-            left: 16,
+            top: 40.h,
+            left: 16.w,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new, color: AppColors.primary),
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: AppColors.primary,
+                size: 24.sp,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
           ),

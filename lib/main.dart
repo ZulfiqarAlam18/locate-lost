@@ -47,12 +47,7 @@ class MyApp extends StatelessWidget {
           initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
 
-          // Old navigation - now using GetX routes
-          // home: SplashScreen(),
-          // home: DisplayInfoScreen(),
-          //  home: ReportCase(),
-          //   home: RecordScreen(),
-          // home: ProfileScreen(),
+        
           // home: TermsAndConditions(),
           //  home: ContactUs(),
           //  home: ForgetPasswordGlass()

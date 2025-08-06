@@ -17,7 +17,7 @@ class SplashScreen3 extends StatelessWidget {
           Positioned(
             top: 41.h,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
+              padding: EdgeInsets.symmetric(horizontal: 35.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -32,7 +32,7 @@ class SplashScreen3 extends StatelessWidget {
                       text: 'Bridging',
                       style: TextStyle(
                         color: AppColors.primary,
-                        fontSize: 30,
+                        fontSize: 30.sp,
                         fontWeight: FontWeight.w700,
                       ),
                       children: [
@@ -40,7 +40,7 @@ class SplashScreen3 extends StatelessWidget {
                           text: ' the',
                           style: TextStyle(
                             color: AppColors.myBlackColor,
-                            fontSize: 30,
+                            fontSize: 30.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -49,7 +49,7 @@ class SplashScreen3 extends StatelessWidget {
                           text: '   Between',
                           style: TextStyle(
                             color: AppColors.myBlackColor,
-                            fontSize: 30,
+                            fontSize: 30.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -58,7 +58,7 @@ class SplashScreen3 extends StatelessWidget {
                           text: ' and\n',
                           style: TextStyle(
                             color: AppColors.myBlackColor,
-                            fontSize: 30,
+                            fontSize: 30.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),

@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
+import 'services/location_permission_service.dart';
 
 void main() {
+  // Reset location permission check on app start
+  LocationPermissionService.resetSessionCheck();
   runApp(MyApp());
 }
 
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(430, 932), // i phone 15 pro max
+      designSize: Size(360, 690), // i phone 15 pro max
       minTextAdapt: true,
       splitScreenMode: true,
 
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
 
-          title: 'Inforato',
+          title: 'LocateLost',
 
           // theme: ThemeData(
           //   scaffoldBackgroundColor: AppColors.background,
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
           //   textTheme: const TextTheme(
           //     bodyLarge: TextStyle(color: AppColors.textPrimary),
           //     bodyMedium: TextStyle(color: AppColors.textSecondary),
-          //   ),
+                  //   ),
           //   iconTheme: const IconThemeData(color: AppColors.secondary),
           //   colorScheme: ColorScheme.fromSwatch().copyWith(
           //     primary: AppColors.primary,
@@ -71,3 +74,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

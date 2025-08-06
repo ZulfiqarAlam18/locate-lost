@@ -83,7 +83,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                               ),
                               SizedBox(height: 6.h),
                               Text(
-                                'Enter missing person\'s real\nname to continue',
+                                'Enter missing person real name to continue',
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.myRedColor,
@@ -224,16 +224,16 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                 Text(
                   'YOU MUST UPLOAD AT LEAST ONE IMAGE/VIDEO OF THE PERSON',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: AppColors.myRedColor,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Text(
-                '(Image/video size shouldn’t be more than 10 MBs.)',
+                'Image/video size should not be more than 10 MBs.',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: AppColors.myRedColor,
                   fontWeight: FontWeight.w300,
                 ),

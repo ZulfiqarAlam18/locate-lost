@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../utils/app_colors.dart';
-import 'display_info_screen.dart';
+import '../routes/app_routes.dart';
+import '../utils/dialog_utils.dart';
 import 'founder_screens/found_person_details.dart';
 
 // Finder Case data model
@@ -1132,39 +1134,84 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
   void _submitReport() {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Text('Submit Found Person Report'),
+        content: Text(
+          'Are you sure you want to submit this report? It will be shared with law enforcement and families searching for missing persons.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _performSubmission();
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: Text(
+              'Submit Report',
+              style: TextStyle(color: Colors.white),
             ),
-            title: Text('Submit Found Person Report'),
-            content: Text(
-              'Are you sure you want to submit this report? It will be shared with law enforcement and families searching for missing persons.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DisplayInfoScreen(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(
-                  'Submit Report',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  void _performSubmission() async {
+    // Show loading indicator
+    Get.dialog(
+      Center(
+        child: Container(
+          padding: EdgeInsets.all(20.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(color: AppColors.primary),
+              SizedBox(height: 16.h),
+              Text('Submitting report...'),
             ],
           ),
+        ),
+      ),
+      barrierDismissible: false,
     );
+    
+    // Simulate API call
+    await Future.delayed(Duration(seconds: 2));
+    
+    // Close loading dialog
+    Get.back();
+    
+    // Simulate success/failure (replace with actual API logic)
+    bool isSuccess = DateTime.now().millisecondsSinceEpoch % 2 == 0; // Random success/failure for demo
+    
+    if (isSuccess) {
+      DialogUtils.showCaseSubmissionSuccess(
+        title: 'Found Person Report Submitted!',
+        message: 'Your report has been submitted successfully. We\'ll help match this person with missing person reports.',
+        onViewCases: () {
+          Get.toNamed(AppRoutes.myCases);
+        },
+      );
+    } else {
+      DialogUtils.showCaseSubmissionError(
+        title: 'Found Person Report Failed',
+        message: 'Unable to submit your found person report. Please check your connection and try again.',
+        onRetry: () {
+          _performSubmission(); // Retry submission
+        },
+      );
+    }
   }
 
   void _contactAuthorities() {

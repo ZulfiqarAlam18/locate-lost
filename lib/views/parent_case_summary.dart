@@ -5,6 +5,7 @@ import 'package:locat_lost/widgets/custom_app_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../utils/app_colors.dart';
 import '../routes/app_routes.dart';
+import '../utils/dialog_utils.dart';
 
 // Parent Case data model
 class ParentCaseData {
@@ -1032,34 +1033,80 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   void _submitReport() {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Text('Submit Missing Person Report'),
+        content: Text(
+          'Are you sure you want to submit this report? Once submitted, it will be shared with law enforcement and volunteers.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _performSubmission();
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: Text(
+              'Submit Report',
+              style: TextStyle(color: Colors.white),
             ),
-            title: Text('Submit Missing Person Report'),
-            content: Text(
-              'Are you sure you want to submit this report? Once submitted, it will be shared with law enforcement and volunteers.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Get.toNamed(AppRoutes.displayInfo);
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(
-                  'Submit Report',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  void _performSubmission() async {
+    // Show loading indicator
+    Get.dialog(
+      Center(
+        child: Container(
+          padding: EdgeInsets.all(20.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(color: AppColors.primary),
+              SizedBox(height: 16.h),
+              Text('Submitting report...'),
             ],
           ),
+        ),
+      ),
+      barrierDismissible: false,
     );
+    
+    // Simulate API call
+    await Future.delayed(Duration(seconds: 2));
+    
+    // Close loading dialog
+    Get.back();
+    
+    // Simulate success/failure (replace with actual API logic)
+    bool isSuccess = DateTime.now().millisecondsSinceEpoch % 2 == 0; // Random success/failure for demo
+    
+    if (isSuccess) {
+      DialogUtils.showCaseSubmissionSuccess(
+        onViewCases: () {
+          Get.toNamed(AppRoutes.myCases);
+        },
+      );
+    } else {
+      DialogUtils.showCaseSubmissionError(
+        onRetry: () {
+          _performSubmission(); // Retry submission
+        },
+      );
+    }
   }
 
   void _shareReport() {

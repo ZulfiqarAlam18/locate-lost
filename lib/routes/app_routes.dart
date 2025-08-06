@@ -7,12 +7,17 @@ class AppRoutes {
   static const String login = '/login';
   static const String signup = '/signup';
   static const String forgotPassword = '/forgot-password';
+  static const String otpVerification = '/otp-verification';
 
   // Main Routes
+  static const String mainNavigation = '/main-navigation';
   static const String home = '/home';
   static const String profile = '/profile';
   static const String reportCase = '/report-case';
   static const String displayInfo = '/display-info';
+  static const String myCases = '/my-cases';
+  static const String caseDetails = '/case-details';
+  static const String mapNearbyReports = '/map-nearby-reports';
 
   // Parent Routes
   static const String missingPersonDetails = '/missing-person-details';
@@ -33,6 +38,29 @@ class AppRoutes {
   static const String faqs = '/faqs';
   static const String stats = '/stats';
   static const String termsAndConditions = '/terms-conditions';
+
+    // Settings routes
+  static const String settings = '/settings';
+  static const String accountSettings = '/settings/account';
+  static const String settingsAccount = '/settings/account'; // Alias for accountSettings
+  static const String notificationSettings = '/settings/notifications';
+  static const String settingsNotifications = '/settings/notifications'; // Alias for notificationSettings
+  static const String appearanceSettings = '/settings/appearance';
+  static const String settingsAppearance = '/settings/appearance'; // Alias for appearanceSettings
+  static const String privacySettings = '/settings/privacy';
+  static const String languageSettings = '/settings/language';
+  static const String supportSettings = '/settings/support';
+  static const String aboutSettings = '/settings/about';
+  static const String dangerZoneSettings = '/settings/danger-zone';
+  
+  // Demo Routes
+  static const String dialogDemo = '/dialog-demo';
+  static const String locationPermissionTest = '/location-permission-test';
+  static const String settingsPrivacy = '/settings/privacy';
+  static const String settingsLanguage = '/settings/language';
+  static const String settingsSupport = '/settings/support';
+  static const String settingsAbout = '/settings/about';
+  static const String settingsDangerZone = '/settings/danger-zone';
 
   // Legacy/Redirector Routes
   static const String caseSummary = '/case-summary';

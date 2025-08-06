@@ -6,10 +6,14 @@ import '../views/splash_screens/splash_screen_3.dart';
 import '../views/auth_screens/login_screen.dart';
 import '../views/auth_screens/signup_screen.dart';
 import '../views/auth_screens/forgot_password_screen.dart';
-import '../views/home_screen.dart';
+import '../views/auth_screens/otp_verification_screen.dart';
+import '../views/main_navigation_screen.dart';
 import '../views/profile_screen.dart';
 import '../views/report_case_screen.dart';
 import '../views/display_info_screen.dart';
+import '../views/my_cases_screen.dart';
+import '../views/case_details_screen.dart';
+import '../views/map_nearby_reports_screen.dart';
 import '../views/parent_screens/missing_person_details.dart';
 import '../views/parent_screens/reporter_details.dart';
 import '../views/parent_screens/upload_images.dart';
@@ -25,6 +29,17 @@ import '../views/drawer_screens/faqs_screen.dart';
 import '../views/drawer_screens/stats_screen.dart';
 import '../views/drawer_screens/terms_and_conditions_screen.dart';
 import '../views/case_summary.dart';
+import '../views/settings_screens/settings_screen.dart';
+import '../views/settings_screens/account_settings_screen.dart';
+import '../views/settings_screens/notification_settings_screen.dart';
+import '../views/settings_screens/appearance_settings_screen.dart';
+import '../views/settings_screens/privacy_settings_screen.dart';
+import '../views/settings_screens/language_settings_screen.dart';
+import '../views/settings_screens/support_settings_screen.dart';
+import '../views/settings_screens/about_settings_screen.dart';
+import '../views/settings_screens/danger_zone_settings_screen.dart';
+import '../views/dialog_demo_screen.dart';
+import '../views/location_permission_test_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -74,12 +89,24 @@ class AppPages {
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
+    GetPage(
+      name: AppRoutes.otpVerification,
+      page: () => const OtpVerificationScreen(),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
 
     // Main Routes
     GetPage(
+      name: AppRoutes.mainNavigation,
+      page: () => const MainNavigationScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
       name: AppRoutes.home,
-      page: () => const HomeScreen(),
-      transition: Transition.cupertino,
+      page: () => const MainNavigationScreen(), // Route home to MainNavigationScreen
+      transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
@@ -88,15 +115,33 @@ class AppPages {
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
+    // GetPage(
+    //   name: AppRoutes.reportCase,
+    //   page: () => const ReportCaseScreen(),
+    //   transition: Transition.cupertino,
+    //   transitionDuration: const Duration(milliseconds: 300),
+    // ),
     GetPage(
-      name: AppRoutes.reportCase,
-      page: () => const ReportCaseScreen(),
+      name: AppRoutes.displayInfo,
+      page: () => const DisplayInfoScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
-      name: AppRoutes.displayInfo,
-      page: () => const DisplayInfoScreen(),
+      name: AppRoutes.myCases,
+      page: () => const MyCasesScreen(),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.caseDetails,
+      page: () => const CaseDetailsScreen(),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.mapNearbyReports,
+      page: () => const MapNearbyReportsScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -196,6 +241,94 @@ class AppPages {
       name: AppRoutes.caseSummary,
       page: () => const CaseSummaryScreen(),
       transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+
+    // Settings Routes
+    GetPage(
+      name: AppRoutes.settings,
+      page: () => const SettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.accountSettings,
+      page: () => const AccountSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.settingsAccount,
+      page: () => const AccountSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.notificationSettings,
+      page: () => const NotificationSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.settingsNotifications,
+      page: () => const NotificationSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.appearanceSettings,
+      page: () => const AppearanceSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.settingsAppearance,
+      page: () => const AppearanceSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.privacySettings,
+      page: () => const PrivacySettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.languageSettings,
+      page: () => const LanguageSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.supportSettings,
+      page: () => const SupportSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.aboutSettings,
+      page: () => const AboutSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.dangerZoneSettings,
+      page: () => const DangerZoneSettingsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    
+    // Demo Routes
+    GetPage(
+      name: AppRoutes.dialogDemo,
+      page: () => const DialogDemoScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.locationPermissionTest,
+      page: () => const LocationPermissionTestScreen(),
+      transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
   ];

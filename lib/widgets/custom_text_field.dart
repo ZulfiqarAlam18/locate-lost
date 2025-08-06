@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 
@@ -29,11 +30,9 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5), // Reduced padding here
+      padding: EdgeInsets.symmetric(vertical: 5.h),
       child: SizedBox(
-        height:
-            height ??
-            50, // Default height reduced to 50 for a more compact field
+        height: height ?? 75.h, // Fixed height that includes space for error text
         child: TextFormField(
           controller: controller,
           obscureText: isPassword,
@@ -45,11 +44,17 @@ class CustomTextFormField extends StatelessWidget {
             filled: fillColor != null,
             fillColor: fillColor,
             prefixIcon: icon != null ? Icon(icon, color: AppColors.primary) : null,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: AppColors.primary),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
+            errorMaxLines: 1, // Limit error text to single line
+            errorStyle: TextStyle(
+              fontSize: 12.sp,
+              height: 1.2, // Control line height of error text
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           ),
         ),
       ),

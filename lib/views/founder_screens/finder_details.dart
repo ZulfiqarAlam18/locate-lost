@@ -22,7 +22,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
   final TextEditingController cEmergencyNum = TextEditingController();
   final TextEditingController cCNIC = TextEditingController();
 
-  double progressPercent = .85;
+  double progressPercent = 1.0; // Final step in the process
 
   @override
   Widget build(BuildContext context) {
@@ -189,10 +189,10 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            height: 45,
-                            width: 130,
+                            height: 45.h,
+                            width: 130.w,
                             fontSize: 15.sp,
-                            borderRadius: 10,
+                            borderRadius: 10.r,
                             label: 'Back',
                             backgroundColor: AppColors.secondary,
                             foregroundColor: AppColors.primary,
@@ -210,10 +210,10 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                                 ),
                               );
                             },
-                            height: 45,
-                            width: 130,
+                            height: 45.h,
+                            width: 130.w,
                             fontSize: 15.sp,
-                            borderRadius: 10,
+                            borderRadius: 10.r,
                             label: 'Next',
                           ),
                         ],

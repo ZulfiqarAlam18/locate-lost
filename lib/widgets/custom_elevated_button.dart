@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 
@@ -11,7 +12,7 @@ class CustomElevatedButton extends StatelessWidget {
   final String label;
 
   // Optional fields with defaults
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   final Color backgroundColor;
   final Color foregroundColor;
   final FontWeight fontWeight;
@@ -25,7 +26,7 @@ class CustomElevatedButton extends StatelessWidget {
     required this.fontSize,
     required this.borderRadius,
     required this.label,
-    this.padding = const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+    this.padding,
     this.backgroundColor = AppColors.primary,
     this.foregroundColor = AppColors.secondary,
     this.fontWeight = FontWeight.w500,
@@ -40,11 +41,11 @@ class CustomElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          padding: padding,
+          padding: padding ?? EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: BorderRadius.circular(borderRadius.r),
             side: showBorder
                 ? BorderSide(color: Colors.teal)
                 : BorderSide.none,

@@ -16,8 +16,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController cName = TextEditingController();
-  final TextEditingController cCNIC = TextEditingController();
-  final TextEditingController cMail = TextEditingController();
+  final TextEditingController cEmail = TextEditingController();
   final TextEditingController cPass = TextEditingController();
   final TextEditingController ccPass = TextEditingController();
   final TextEditingController cNum = TextEditingController();
@@ -76,40 +75,83 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     children: [
                       CustomTextFormField(
-                        labelText: 'Name',
-                        hintText: 'Name',
+                        labelText: 'Full Name',
+                        hintText: 'Enter your full name',
                         controller: cName,
                         fillColor: AppColors.background,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Name is required';
+                          }
+                          if (value!.length < 2) {
+                            return 'Name must be at least 2 characters';
+                          }
+                          return null;
+                        },
                       ),
                       CustomTextFormField(
-                        labelText: 'E-Mail Address',
-                        hintText: 'E-Mail Address',
-                        controller: cMail,
+                        labelText: 'Email Address',
+                        hintText: 'Enter your email',
+                        controller: cEmail,
                         fillColor: AppColors.background,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Email is required';
+                          }
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                       ),
                       CustomTextFormField(
                         labelText: 'Phone Number',
-                        hintText: 'Phone Number',
+                        hintText: 'Enter your phone number',
                         controller: cNum,
                         fillColor: AppColors.background,
-                      ),
-                      CustomTextFormField(
-                        labelText: 'CNIC Number',
-                        hintText: 'CNIC Number',
-                        controller: cCNIC,
-                        fillColor: AppColors.background,
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Phone number is required';
+                          }
+                          if (value!.length < 10) {
+                            return 'Please enter a valid phone number';
+                          }
+                          return null;
+                        },
                       ),
                       CustomTextFormField(
                         labelText: 'Password',
-                        hintText: 'Password',
+                        hintText: 'Enter your password',
                         controller: cPass,
                         fillColor: AppColors.background,
+                        isPassword: true,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Password is required';
+                          }
+                          if (value!.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
                       ),
                       CustomTextFormField(
                         labelText: 'Confirm Password',
-                        hintText: 'Confirm',
+                        hintText: 'Confirm your password',
                         controller: ccPass,
                         fillColor: AppColors.background,
+                        isPassword: true,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Please confirm your password';
+                          }
+                          if (value != cPass.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
                       ),
 
                       // Removing extra spacing between fields
@@ -119,7 +161,22 @@ class _SignupScreenState extends State<SignupScreen> {
                       // Custom Button
                       CustomElevatedButton(
                         onPressed: () {
-                          Get.toNamed(AppRoutes.login);
+                          if (_key.currentState!.validate()) {
+                            // All validation passed
+                            Get.toNamed(AppRoutes.otpVerification);
+                          } else {
+                            // Show validation error
+                            Get.snackbar(
+                              'Validation Error',
+                              'Please fill in all required fields correctly',
+                              backgroundColor: Colors.orange[600],
+                              colorText: Colors.white,
+                              snackPosition: SnackPosition.TOP,
+                              margin: EdgeInsets.all(16.w),
+                              borderRadius: 12.r,
+                              icon: Icon(Icons.warning_rounded, color: Colors.white),
+                            );
+                          }
                         },
                         height: 60.h,
                         width: 241.w,

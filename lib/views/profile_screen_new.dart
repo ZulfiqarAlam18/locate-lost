@@ -573,9 +573,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ? SizedBox(
                             height: 20.h,
                             width: 20.w,
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               color: Colors.white,
-                              strokeWidth: 2.w,
+                              strokeWidth: 2,
                             ),
                           )
                         : Text(
@@ -973,9 +973,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ? SizedBox(
                       height: 20.h,
                       width: 20.w,
-                      child: CircularProgressIndicator(
+                      child: const CircularProgressIndicator(
                         color: Colors.white,
-                        strokeWidth: 2.w,
+                        strokeWidth: 2,
                       ),
                     )
                   : Text(

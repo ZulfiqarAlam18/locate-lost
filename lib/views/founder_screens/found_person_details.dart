@@ -27,7 +27,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   final TextEditingController cCloths = TextEditingController();
   final TextEditingController cExtraDetails = TextEditingController();
 
-  double progressPercent = .25;
+  double progressPercent = .33; // First step in the 3-step process
 
   @override
   Widget build(BuildContext context) {
@@ -55,24 +55,24 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
               endIndent: 100,
               thickness: 2,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Container(
-              width: 390,
-              height: 140,
+              width: 390.w,
+              height: 140.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.primary, width: 1.5),
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(color: AppColors.primary, width: 1.5.w),
               ),
               child: Card(
                 elevation: 6,
                 color: AppColors.secondary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0.w,
+                    vertical: 12.h,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,7 +93,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             ),
                             SizedBox(height: 6),
                             Text(
-                              'Enter found person\'s details\nto continue',
+                              'Enter found person\'s details\nNext: Photos & Contact Info',
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: AppColors.myRedColor,
@@ -138,7 +138,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              'Please complete the form with the accurate details of the found person',
+              'Please complete the form with the accurate details of the found person. After submitting, you\'ll take photos and provide your contact information.',
               style: TextStyle(
                 fontSize: 16.sp,
                 color: AppColors.myBlackColor,
@@ -204,10 +204,10 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            height: 45,
-                            width: 130,
+                            height: 45.h,
+                            width: 130.w,
                             fontSize: 15.sp,
-                            borderRadius: 10,
+                            borderRadius: 10.r,
                             label: 'Back',
                             backgroundColor: AppColors.secondary,
                             foregroundColor: AppColors.primary,
@@ -215,12 +215,27 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                           ),
                           CustomElevatedButton(
                             onPressed: () {
-                              Get.toNamed(AppRoutes.finderDetails);
+                              // Validate form before proceeding to camera
+                              if (_key.currentState!.validate()) {
+                                Get.toNamed(AppRoutes.cameraCapture);
+                              } else {
+                                // Show validation error
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Please fill in all required fields'),
+                                    backgroundColor: Colors.red,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                  ),
+                                );
+                              }
                             },
-                            height: 45,
-                            width: 130,
+                            height: 45.h,
+                            width: 130.w,
                             fontSize: 15.sp,
-                            borderRadius: 10,
+                            borderRadius: 10.r,
                             label: 'Next',
                           ),
                         ],

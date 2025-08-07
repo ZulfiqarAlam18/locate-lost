@@ -21,6 +21,10 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController ccPass = TextEditingController();
   final TextEditingController cNum = TextEditingController();
 
+  // Password visibility state
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +130,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: 'Enter your password',
                         controller: cPass,
                         fillColor: AppColors.background,
-                        isPassword: true,
+                        isPassword: _obscurePassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey[600],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Password is required';
@@ -142,7 +157,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: 'Confirm your password',
                         controller: ccPass,
                         fillColor: AppColors.background,
-                        isPassword: true,
+                        isPassword: _obscureConfirmPassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey[600],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureConfirmPassword = !_obscureConfirmPassword;
+                            });
+                          },
+                        ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Please confirm your password';

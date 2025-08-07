@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:locat_lost/widgets/custom_text_field.dart';
+import  'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/animated_loading_dialog.dart';
@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController cPass = TextEditingController();
   
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   // Simulate login with error handling
   Future<bool> _performLogin() async {
@@ -298,7 +299,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: 'Enter your password',
                         controller: cPass,
                         fillColor: AppColors.background,
-                        isPassword: true,
+                        isPassword: _obscurePassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey[600],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Password is required';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:locat_lost/views/home_screen.dart';
 import '../widgets/main_bottom_navigation.dart';
-import 'home_screen.dart';
 import 'my_cases_screen.dart';
 import 'case_details_screen.dart';
 import 'map_nearby_reports_screen.dart';

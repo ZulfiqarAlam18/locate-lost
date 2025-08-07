@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:dotted_border/dotted_border.dart';
 import '../utils/app_colors.dart';
 import '../widgets/main_bottom_navigation.dart';
 import '../routes/app_routes.dart';
@@ -189,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Profile updated successfully'),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primary,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         ),
@@ -221,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Password changed successfully'),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primary,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         ),
@@ -1312,5 +1313,3 @@ class _ProfileScreenState extends State<ProfileScreen>
       onTap: onTap,
     );
   }
-  // another method
-}

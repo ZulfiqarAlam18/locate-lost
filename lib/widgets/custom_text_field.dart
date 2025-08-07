@@ -11,6 +11,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
   final IconData? icon;
+  final Widget? suffixIcon;
   final Color? fillColor; // background color
   final double? height; // height of input field
 
@@ -23,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.icon,
+    this.suffixIcon,
     this.fillColor,
     this.height,
   });
@@ -44,6 +46,7 @@ class CustomTextFormField extends StatelessWidget {
             filled: fillColor != null,
             fillColor: fillColor,
             prefixIcon: icon != null ? Icon(icon, color: AppColors.primary) : null,
+            suffixIcon: suffixIcon,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: AppColors.primary),

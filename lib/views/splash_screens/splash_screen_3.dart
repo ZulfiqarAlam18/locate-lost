@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locat_lost/utils/app_colors.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen3 extends StatelessWidget {
   const SplashScreen3({super.key});

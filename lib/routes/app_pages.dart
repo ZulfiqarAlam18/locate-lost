@@ -9,7 +9,6 @@ import '../views/auth_screens/forgot_password_screen.dart';
 import '../views/auth_screens/otp_verification_screen.dart';
 import '../views/main_navigation_screen.dart';
 import '../views/profile_screen.dart';
-import '../views/report_case_screen.dart';
 import '../views/display_info_screen.dart';
 import '../views/my_cases_screen.dart';
 import '../views/case_details_screen.dart';

@@ -12,12 +12,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  @override
   const MyApp({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(360, 690), // i phone 15 pro max
+      designSize: Size(360, 690 
+      ), // i phone 15 pro max
       minTextAdapt: true,
       splitScreenMode: true,
 

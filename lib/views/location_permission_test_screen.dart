@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../services/location_permission_service.dart';
 import '../utils/app_colors.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import  'package:locat_lost/widgets/custom_text_field.dart';
+import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/animated_loading_dialog.dart';
@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController cEmail = TextEditingController();
   final TextEditingController cPass = TextEditingController();
-  
+
   bool _isLoading = false;
   bool _obscurePassword = true;
 
@@ -27,12 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Simulate network delay
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // Simulate random failure for demo (remove in production)
       // if (Random().nextBool()) {
       //   throw Exception('Network error');
       // }
-      
+
       return true; // Success
     } catch (e) {
       return false; // Failure
@@ -82,9 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.red[600],
                       ),
                     ),
-                    
+
                     SizedBox(height: 20.h),
-                    
+
                     Text(
                       'Login Failed',
                       style: TextStyle(
@@ -93,9 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.red[700],
                       ),
                     ),
-                    
+
                     SizedBox(height: 12.h),
-                    
+
                     Text(
                       error,
                       style: TextStyle(
@@ -104,9 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     SizedBox(height: 24.h),
-                    
+
                     Row(
                       children: [
                         Expanded(
@@ -127,9 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        
+
                         SizedBox(width: 12.w),
-                        
+
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (_isLoading) return;
-    
+
     setState(() {
       _isLoading = true;
     });
@@ -199,12 +199,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Perform login
     final success = await _performLogin();
-    
+
     // Close loading dialog
     if (mounted) {
       LoadingDialogHelper.hide(context);
     }
-    
+
     setState(() {
       _isLoading = false;
     });
@@ -214,7 +214,9 @@ class _LoginScreenState extends State<LoginScreen> {
       _showLocationPermissionPopup();
     } else {
       // Show error dialog with retry
-      _showErrorDialog('Unable to connect to server. Please check your internet connection and try again.');
+      _showErrorDialog(
+        'Unable to connect to server. Please check your internet connection and try again.',
+      );
     }
   }
 
@@ -287,7 +289,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             return 'Email is required';
                           }
                           // Email validation regex
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                          if (!RegExp(
+                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          ).hasMatch(value!)) {
                             return 'Please enter a valid email';
                           }
                           return null;
@@ -302,7 +306,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         isPassword: _obscurePassword,
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             color: Colors.grey[600],
                           ),
                           onPressed: () {
@@ -321,34 +327,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 195.w,
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                        ),
+
+                      // Forgot password button with minimal spacing
+                      Align(
+                        alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
                             Get.toNamed(AppRoutes.forgotPassword);
                           },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            visualDensity: VisualDensity.compact,
+                          ),
                           child: Text(
-                            'forgot password?',
+                            'Forgot password?',
                             style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.black,
+                              fontSize: 13.sp,
+                              color: AppColors.primary,
                               fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                              decorationColor: AppColors.primary,
                             ),
                           ),
                         ),
                       ),
 
-                      // Removing extra spacing between fields
-                      SizedBox(
-                        height: 15.h,
-                      ), // Only a small gap between button and fields
-                      
-                      // Simple Login Button
+                      SizedBox(height: 16.h),
+
+                      // Login Button
                       CustomElevatedButton(
                         onPressed: () {
                           if (!_isLoading) {
@@ -432,7 +440,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primary.withValues(alpha: 0.3),
+                                  color: AppColors.primary.withValues(
+                                    alpha: 0.3,
+                                  ),
                                   blurRadius: 20.r,
                                   spreadRadius: 2.r,
                                 ),
@@ -447,9 +457,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ),
-                    
+
                     SizedBox(height: 24.h),
-                    
+
                     // Title with fade-in animation
                     TweenAnimationBuilder<double>(
                       duration: const Duration(milliseconds: 800),
@@ -471,13 +481,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ),
-                    
+
                     SizedBox(height: 16.h),
-                    
+
                     // Description with slide-in animation
                     TweenAnimationBuilder<Offset>(
                       duration: const Duration(milliseconds: 1000),
-                      tween: Tween(begin: const Offset(0, 0.3), end: Offset.zero),
+                      tween: Tween(
+                        begin: const Offset(0, 0.3),
+                        end: Offset.zero,
+                      ),
                       curve: Curves.easeOut,
                       builder: (context, offset, child) {
                         return Transform.translate(
@@ -495,9 +508,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ),
-                    
+
                     SizedBox(height: 32.h),
-                    
+
                     // Animated buttons
                     TweenAnimationBuilder<double>(
                       duration: const Duration(milliseconds: 1200),
@@ -516,7 +529,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     _navigateToHome();
                                   },
                                   style: TextButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 16.h,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16.r),
                                       side: BorderSide(
@@ -535,9 +550,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              
+
                               SizedBox(width: 16.w),
-                              
+
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
@@ -548,12 +563,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColors.primary,
                                     foregroundColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 16.h,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16.r),
                                     ),
                                     elevation: 8,
-                                    shadowColor: AppColors.primary.withValues(alpha: 0.4),
+                                    shadowColor: AppColors.primary.withValues(
+                                      alpha: 0.4,
+                                    ),
                                   ),
                                   child: Text(
                                     'Enable Location',
@@ -622,10 +641,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ],
     );
-    
+
     // Add slight delay for better UX
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     // Navigate to home
     _navigateToHome();
   }

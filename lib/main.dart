@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(360, 690 
-      ), // i phone 15 pro max
+      //  designSize: Size(375, 812), more generic 
+      designSize: Size(430, 932),
+
       minTextAdapt: true,
       splitScreenMode: true,
 
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           //   textTheme: const TextTheme(
           //     bodyLarge: TextStyle(color: AppColors.textPrimary),
           //     bodyMedium: TextStyle(color: AppColors.textSecondary),
-                  //   ),
+          //   ),
           //   iconTheme: const IconThemeData(color: AppColors.secondary),
           //   colorScheme: ColorScheme.fromSwatch().copyWith(
           //     primary: AppColors.primary,
@@ -50,13 +51,8 @@ class MyApp extends StatelessWidget {
           //
           initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
-
-        
-          
         );
       },
     );
   }
 }
-
-

@@ -52,24 +52,7 @@ class MyApp extends StatelessWidget {
           getPages: AppPages.pages,
 
         
-          // home: TermsAndConditions(),
-          //  home: ContactUs(),
-          //  home: ForgetPasswordGlass()
-          //   home: HomeScreen(),
-          // home: CapturePicturesScreen(),
-          //home: DisplayInfoScreen(),
-          //home: ChildDetailsScreen(),
-          // home: ParentDetailsScreen(),
-          //home: UploadImagesScreen(),
-          //      home: FounderDetailsScreen(),
-          // home: ChildInfoScreen(),
-          // home: ProfileScreen(),
-          //home: Demo(),
-          //   home: EmergencyContactScreen(),
-          //  home: DeveloperProfileScreen(),
-          // home: AboutUsScreen(),
-          //  home: StatsScreen(),
-          // home: Demo2(),
+          
         );
       },
     );

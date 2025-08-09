@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_elevated_button.dart';
-import 'package:locat_lost/views/case_summary.dart';
 import 'package:locat_lost/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../utils/app_colors.dart';
+import '../../routes/app_routes.dart';
 
 class ReporterDetailsScreen extends StatefulWidget {
   const ReporterDetailsScreen({Key? key}) : super(key: key);
@@ -289,13 +290,7 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
         ),
         CustomElevatedButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => const CaseSummaryScreen(userType: 'parent'),
-              ),
-            );
+            Get.toNamed(AppRoutes.parentCaseSummary);
           },
           height: 45.h,
           width: 130.w,

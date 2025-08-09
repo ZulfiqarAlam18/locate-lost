@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import '../utils/app_colors.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/main_bottom_navigation.dart';
+import '../routes/app_routes.dart';
 
 class MapNearbyReportsScreen extends StatefulWidget {
   final bool isInNavigation;
-  
+
   const MapNearbyReportsScreen({super.key, this.isInNavigation = false});
 
   @override
@@ -68,9 +69,11 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
     } catch (e) {
       navController = Get.put(MainNavigationController());
     }
-    
+
     if (!widget.isInNavigation) {
-      navController.setIndex(3); // Set Map as active only if not in navigation wrapper
+      navController.setIndex(
+        3,
+      ); // Set Map as active only if not in navigation wrapper
     }
     _loadNearbyReports();
   }
@@ -98,9 +101,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
       body: Column(
         children: [
           _buildToggleButtons(),
-          Expanded(
-            child: _showList ? _buildListView() : _buildMapView(),
-          ),
+          Expanded(child: _showList ? _buildListView() : _buildMapView()),
         ],
       ),
       floatingActionButton: Padding(
@@ -116,10 +117,15 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       extendBody: !widget.isInNavigation,
-      bottomNavigationBar: widget.isInNavigation ? null : Obx(() => MainBottomNavigation(
-        currentIndex: navController.selectedIndex.value,
-        onTap: navController.changeIndex,
-      )),
+      bottomNavigationBar:
+          widget.isInNavigation
+              ? null
+              : Obx(
+                () => MainBottomNavigation(
+                  currentIndex: navController.selectedIndex.value,
+                  onTap: navController.changeIndex,
+                ),
+              ),
     );
   }
 
@@ -153,14 +159,16 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                   children: [
                     Icon(
                       Icons.map,
-                      color: !_showList ? Colors.white : AppColors.textSecondary,
+                      color:
+                          !_showList ? Colors.white : AppColors.textSecondary,
                       size: 20.w,
                     ),
                     SizedBox(width: 8.w),
                     Text(
                       'Map View',
                       style: TextStyle(
-                        color: !_showList ? Colors.white : AppColors.textSecondary,
+                        color:
+                            !_showList ? Colors.white : AppColors.textSecondary,
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
                       ),
@@ -191,7 +199,8 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                     Text(
                       'List View',
                       style: TextStyle(
-                        color: _showList ? Colors.white : AppColors.textSecondary,
+                        color:
+                            _showList ? Colors.white : AppColors.textSecondary,
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
                       ),
@@ -212,7 +221,12 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
     }
 
     return Container(
-      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, widget.isInNavigation ? 200.h : 220.h),
+      margin: EdgeInsets.fromLTRB(
+        16.w,
+        0,
+        16.w,
+        widget.isInNavigation ? 200.h : 220.h,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
@@ -242,11 +256,11 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
           ...nearbyReports.asMap().entries.map((entry) {
             int index = entry.key;
             Map<String, dynamic> report = entry.value;
-            
+
             // Calculate position based on index (dummy positioning)
             double left = 50.0 + (index * 80.0);
             double top = 100.0 + (index * 60.0);
-            
+
             return Positioned(
               left: left,
               top: top,
@@ -264,11 +278,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                 borderRadius: BorderRadius.circular(20.r),
                 border: Border.all(color: Colors.white, width: 3),
               ),
-              child: Icon(
-                Icons.my_location,
-                color: Colors.white,
-                size: 20.w,
-              ),
+              child: Icon(Icons.my_location, color: Colors.white, size: 20.w),
             ),
           ),
           // Map controls
@@ -326,11 +336,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
             ),
           ],
         ),
-        child: Icon(
-          icon,
-          color: AppColors.textSecondary,
-          size: 20.w,
-        ),
+        child: Icon(icon, color: AppColors.textSecondary, size: 20.w),
       ),
     );
   }
@@ -347,7 +353,12 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
     return RefreshIndicator(
       onRefresh: _loadNearbyReports,
       child: ListView.builder(
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, widget.isInNavigation ? 200.h : 220.h),
+        padding: EdgeInsets.fromLTRB(
+          16.w,
+          16.h,
+          16.w,
+          widget.isInNavigation ? 200.h : 220.h,
+        ),
         itemCount: nearbyReports.length,
         itemBuilder: (context, index) {
           final report = nearbyReports[index];
@@ -359,12 +370,14 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
 
   Widget _buildReportCard(Map<String, dynamic> report) {
     bool isMissing = report['type'] == 'missing';
-    
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         child: InkWell(
           onTap: () => _showReportDetails(report),
           borderRadius: BorderRadius.circular(16.r),
@@ -389,7 +402,8 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                       child: Container(
                         padding: EdgeInsets.all(4.w),
                         decoration: BoxDecoration(
-                          color: isMissing ? AppColors.error : AppColors.success,
+                          color:
+                              isMissing ? AppColors.error : AppColors.success,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Icon(
@@ -418,7 +432,10 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.h,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.info.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12.r),
@@ -444,9 +461,9 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        isMissing 
-                          ? 'Last seen: ${report['lastSeen']}'
-                          : 'Found at: ${report['location']}',
+                        isMissing
+                            ? 'Last seen: ${report['lastSeen']}'
+                            : 'Found at: ${report['location']}',
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: AppColors.textMuted,
@@ -488,7 +505,12 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
 
   Widget _buildLoadingState() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, widget.isInNavigation ? 200.h : 220.h),
+      padding: EdgeInsets.fromLTRB(
+        0,
+        0,
+        0,
+        widget.isInNavigation ? 200.h : 220.h,
+      ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -497,10 +519,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
             SizedBox(height: 16.h),
             Text(
               'Loading nearby reports...',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -511,15 +530,16 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
   Widget _buildEmptyState() {
     return Center(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(32.w, 32.h, 32.w, widget.isInNavigation ? 232.h : 252.h),
+        padding: EdgeInsets.fromLTRB(
+          32.w,
+          32.h,
+          32.w,
+          widget.isInNavigation ? 232.h : 252.h,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.location_off,
-              size: 80.w,
-              color: AppColors.textMuted,
-            ),
+            Icon(Icons.location_off, size: 80.w, color: AppColors.textMuted),
             SizedBox(height: 24.h),
             Text(
               'No Nearby Reports',
@@ -533,10 +553,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
             Text(
               'No missing or found person reports in your area.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
             ),
             SizedBox(height: 32.h),
             ElevatedButton(
@@ -551,10 +568,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
               ),
               child: Text(
                 'Refresh',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -568,94 +582,96 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            topRight: Radius.circular(20.r),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder:
+          (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Report Details',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+                  // Add detailed report information here
                   Text(
-                    'Report Details',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
+                    'Name: ${report['name']}',
+                    style: TextStyle(fontSize: 16.sp),
                   ),
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.close),
+                  Text(
+                    'Age: ${report['age']}',
+                    style: TextStyle(fontSize: 16.sp),
                   ),
+                  Text(
+                    'Distance: ${report['distance']}',
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                  // Add more details as needed
                 ],
               ),
-              SizedBox(height: 20.h),
-              // Add detailed report information here
-              Text(
-                'Name: ${report['name']}',
-                style: TextStyle(fontSize: 16.sp),
-              ),
-              Text(
-                'Age: ${report['age']}',
-                style: TextStyle(fontSize: 16.sp),
-              ),
-              Text(
-                'Distance: ${report['distance']}',
-                style: TextStyle(fontSize: 16.sp),
-              ),
-              // Add more details as needed
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
   void _showReportOptions() {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Add New Report',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+      builder:
+          (context) => Container(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Add New Report',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                ListTile(
+                  leading: Icon(Icons.person_search, color: AppColors.error),
+                  title: Text('Report Missing Person'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.toNamed(AppRoutes.reportCase);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.camera_alt, color: AppColors.success),
+                  title: Text('Report Found Person'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.toNamed(AppRoutes.cameraCapture);
+                  },
+                ),
+              ],
             ),
-            SizedBox(height: 20.h),
-            ListTile(
-              leading: Icon(Icons.person_search, color: AppColors.error),
-              title: Text('Report Missing Person'),
-              onTap: () {
-                Navigator.pop(context);
-                Get.toNamed('/report-case');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.camera_alt, color: AppColors.success),
-              title: Text('Report Found Person'),
-              onTap: () {
-                Navigator.pop(context);
-                Get.toNamed('/camera-capture');
-              },
-            ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 }

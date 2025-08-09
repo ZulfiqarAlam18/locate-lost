@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:locat_lost/widgets/custom_app_bar.dart';
 import 'package:locat_lost/utils/app_colors.dart';
 
 import '../../widgets/custom_elevated_button.dart';
-import '../auth_screens/login_screen.dart';
+import '../../routes/app_routes.dart';
 
 class TermsAndConditionsScreen extends StatefulWidget {
   const TermsAndConditionsScreen({super.key});
@@ -100,10 +101,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
             SizedBox(height: 8.h),
             CustomElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+                Get.toNamed(AppRoutes.login);
               },
               height: 60.h,
               width: 241.w,

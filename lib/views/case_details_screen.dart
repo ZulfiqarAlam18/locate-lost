@@ -5,10 +5,11 @@ import '../utils/app_colors.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/main_bottom_navigation.dart';
 import '../widgets/skeleton_loader.dart';
+import '../routes/app_routes.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   final bool isInNavigation;
-  
+
   const CaseDetailsScreen({super.key, this.isInNavigation = false});
 
   @override
@@ -66,9 +67,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     } catch (e) {
       navController = Get.put(MainNavigationController());
     }
-    
+
     if (!widget.isInNavigation) {
-      navController.setIndex(2); // Set Case Details as active only if not in navigation wrapper
+      navController.setIndex(
+        2,
+      ); // Set Case Details as active only if not in navigation wrapper
     }
     _loadStatus();
   }
@@ -97,7 +100,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         onRefresh: _loadStatus,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, widget.isInNavigation ? 140.h : 160.h),
+          padding: EdgeInsets.fromLTRB(
+            16.w,
+            16.h,
+            16.w,
+            widget.isInNavigation ? 140.h : 160.h,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -111,10 +119,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         ),
       ),
       extendBody: !widget.isInNavigation,
-      bottomNavigationBar: widget.isInNavigation ? null : Obx(() => MainBottomNavigation(
-        currentIndex: navController.selectedIndex.value,
-        onTap: navController.changeIndex,
-      )),
+      bottomNavigationBar:
+          widget.isInNavigation
+              ? null
+              : Obx(
+                () => MainBottomNavigation(
+                  currentIndex: navController.selectedIndex.value,
+                  onTap: navController.changeIndex,
+                ),
+              ),
     );
   }
 
@@ -178,7 +191,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
@@ -200,11 +218,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24.w,
-            ),
+            child: Icon(icon, color: color, size: 24.w),
           ),
           SizedBox(height: 12.h),
           Text(
@@ -218,10 +232,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           SizedBox(height: 4.h),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -302,11 +313,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 20.w,
-            ),
+            child: Icon(icon, color: color, size: 20.w),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -332,10 +339,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 SizedBox(height: 4.h),
                 Text(
                   activity['time'],
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.textMuted,
-                  ),
+                  style: TextStyle(fontSize: 12.sp, color: AppColors.textMuted),
                 ),
               ],
             ),
@@ -368,7 +372,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 () {
                   // Navigate to My Cases screen with index 0 (missing cases)
                   Get.back();
-                  Get.toNamed('/my-cases');
+                  Get.toNamed(AppRoutes.myCases);
                 },
               ),
             ),
@@ -379,7 +383,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 Icons.emergency,
                 AppColors.error,
                 () {
-                  Get.toNamed('/emergency');
+                  Get.toNamed(AppRoutes.emergency);
                 },
               ),
             ),
@@ -394,7 +398,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 Icons.support_agent,
                 AppColors.info,
                 () {
-                  Get.toNamed('/contact-us');
+                  Get.toNamed(AppRoutes.contactUs);
                 },
               ),
             ),
@@ -438,10 +442,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           SizedBox(height: 8.h),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
           ),
         ],

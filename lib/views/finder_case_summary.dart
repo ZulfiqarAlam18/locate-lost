@@ -6,7 +6,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../utils/app_colors.dart';
 import '../routes/app_routes.dart';
 import '../utils/dialog_utils.dart';
-import 'founder_screens/found_person_details.dart';
 
 // Finder Case data model
 class FinderCaseData {
@@ -1125,44 +1124,42 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
 
   // Action methods
   void _editReport() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const FoundPersonDetailsScreen()),
-    );
+    Get.toNamed(AppRoutes.foundPersonDetails);
   }
 
   void _submitReport() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        title: Text('Submit Found Person Report'),
-        content: Text(
-          'Are you sure you want to submit this report? It will be shared with law enforcement and families searching for missing persons.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _performSubmission();
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(
-              'Submit Report',
-              style: TextStyle(color: Colors.white),
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.r),
             ),
+            title: Text('Submit Found Person Report'),
+            content: Text(
+              'Are you sure you want to submit this report? It will be shared with law enforcement and families searching for missing persons.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _performSubmission();
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                child: Text(
+                  'Submit Report',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
-  
+
   void _performSubmission() async {
     // Show loading indicator
     Get.dialog(
@@ -1185,20 +1182,23 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
       ),
       barrierDismissible: false,
     );
-    
+
     // Simulate API call
     await Future.delayed(Duration(seconds: 2));
-    
+
     // Close loading dialog
     Get.back();
-    
+
     // Simulate success/failure (replace with actual API logic)
-    bool isSuccess = DateTime.now().millisecondsSinceEpoch % 2 == 0; // Random success/failure for demo
-    
+    bool isSuccess =
+        DateTime.now().millisecondsSinceEpoch % 2 ==
+        0; // Random success/failure for demo
+
     if (isSuccess) {
       DialogUtils.showCaseSubmissionSuccess(
         title: 'Found Person Report Submitted!',
-        message: 'Your report has been submitted successfully. We\'ll help match this person with missing person reports.',
+        message:
+            'Your report has been submitted successfully. We\'ll help match this person with missing person reports.',
         onViewCases: () {
           Get.toNamed(AppRoutes.myCases);
         },
@@ -1206,7 +1206,8 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     } else {
       DialogUtils.showCaseSubmissionError(
         title: 'Found Person Report Failed',
-        message: 'Unable to submit your found person report. Please check your connection and try again.',
+        message:
+            'Unable to submit your found person report. Please check your connection and try again.',
         onRetry: () {
           _performSubmission(); // Retry submission
         },

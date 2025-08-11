@@ -389,121 +389,226 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         child: TweenAnimationBuilder<double>(
-          duration: const Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 500),
           tween: Tween(begin: 0.0, end: 1.0),
           curve: Curves.elasticOut,
           builder: (context, scale, child) {
             return Transform.scale(
               scale: scale,
               child: Container(
-                padding: EdgeInsets.all(28.w),
-                margin: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.all(32.w),
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(24.r),
+                  borderRadius: BorderRadius.circular(28.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
-                      blurRadius: 30.r,
-                      offset: Offset(0, 10.h),
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 40.r,
+                      offset: Offset(0, 20.h),
+                      spreadRadius: 0,
                     ),
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                      blurRadius: 60.r,
-                      spreadRadius: 5.r,
+                      color: AppColors.primary.withValues(alpha: 0.12),
+                      blurRadius: 80.r,
+                      spreadRadius: 10.r,
+                      offset: Offset(0, 5.h),
                     ),
                   ],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Animated icon with glow effect
+                    // Enhanced animated icon with pulsing effect
                     TweenAnimationBuilder<double>(
-                      duration: const Duration(milliseconds: 600),
+                      duration: const Duration(milliseconds: 800),
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      curve: Curves.elasticOut,
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: Container(
+                            width: 100.w,
+                            height: 100.w,
+                            decoration: BoxDecoration(
+                              gradient: RadialGradient(
+                                colors: [
+                                  AppColors.primary.withValues(alpha: 0.15),
+                                  AppColors.primary.withValues(alpha: 0.05),
+                                  Colors.transparent,
+                                ],
+                                stops: const [0.3, 0.7, 1.0],
+                              ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(
+                                    alpha: 0.25,
+                                  ),
+                                  blurRadius: 30.r,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Pulsing ring animation
+                                TweenAnimationBuilder<double>(
+                                  duration: const Duration(seconds: 2),
+                                  tween: Tween(begin: 0.8, end: 1.2),
+                                  curve: Curves.easeInOut,
+                                  builder: (context, scale, child) {
+                                    return Transform.scale(
+                                      scale: scale,
+                                      child: Container(
+                                        width: 60.w,
+                                        height: 60.w,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: AppColors.primary.withValues(
+                                              alpha: 0.3,
+                                            ),
+                                            width: 2.w,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                // Main icon
+                                Container(
+                                  width: 50.w,
+                                  height: 50.w,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primary.withValues(
+                                          alpha: 0.4,
+                                        ),
+                                        blurRadius: 15.r,
+                                        spreadRadius: 2.r,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.my_location_rounded,
+                                    size: 28.sp,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    SizedBox(height: 28.h),
+
+                    // Enhanced title with gradient text effect
+                    TweenAnimationBuilder<double>(
+                      duration: const Duration(milliseconds: 1000),
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      curve: Curves.easeOut,
+                      builder: (context, opacity, child) {
+                        return Opacity(
+                          opacity: opacity,
+                          child: ShaderMask(
+                            shaderCallback:
+                                (bounds) => LinearGradient(
+                                  colors: [
+                                    AppColors.primary,
+                                    AppColors.primary.withValues(alpha: 0.8),
+                                  ],
+                                ).createShader(bounds),
+                            child: Text(
+                              'Enable Location Services',
+                              style: TextStyle(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                letterSpacing: 0.3,
+                                height: 1.2,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    SizedBox(height: 12.h),
+
+                    // Enhanced subtitle
+                    TweenAnimationBuilder<Offset>(
+                      duration: const Duration(milliseconds: 1200),
+                      tween: Tween(
+                        begin: const Offset(0, 0.5),
+                        end: Offset.zero,
+                      ),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, offset, child) {
+                        return Transform.translate(
+                          offset: Offset(0, offset.dy * 30.h),
+                          child: Opacity(
+                            opacity: 1 - offset.dy,
+                            child: Text(
+                              'Help us protect children by enabling location services',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                                height: 1.3,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    // Feature highlights with icons
+                    TweenAnimationBuilder<double>(
+                      duration: const Duration(milliseconds: 1400),
                       tween: Tween(begin: 0.0, end: 1.0),
                       curve: Curves.easeOut,
                       builder: (context, opacity, child) {
                         return Opacity(
                           opacity: opacity,
                           child: Container(
-                            width: 80.w,
-                            height: 80.w,
+                            padding: EdgeInsets.all(20.w),
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  AppColors.primary.withValues(alpha: 0.1),
-                                  AppColors.primary.withValues(alpha: 0.05),
-                                ],
+                              color: AppColors.primary.withValues(alpha: 0.05),
+                              borderRadius: BorderRadius.circular(16.r),
+                              border: Border.all(
+                                color: AppColors.primary.withValues(alpha: 0.1),
+                                width: 1.w,
                               ),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withValues(
-                                    alpha: 0.3,
-                                  ),
-                                  blurRadius: 20.r,
-                                  spreadRadius: 2.r,
+                            ),
+                            child: Column(
+                              children: [
+                                _buildFeatureItem(
+                                  Icons.search_rounded,
+                                  'Match missing children in your area',
+                                ),
+                                SizedBox(height: 12.h),
+                                _buildFeatureItem(
+                                  Icons.notifications_active_rounded,
+                                  'Get instant alerts for nearby cases',
+                                ),
+                                SizedBox(height: 12.h),
+                                _buildFeatureItem(
+                                  Icons.security_rounded,
+                                  'Help authorities respond faster',
                                 ),
                               ],
                             ),
-                            child: Icon(
-                              Icons.location_on_rounded,
-                              size: 40.sp,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 24.h),
-
-                    // Title with fade-in animation
-                    TweenAnimationBuilder<double>(
-                      duration: const Duration(milliseconds: 800),
-                      tween: Tween(begin: 0.0, end: 1.0),
-                      curve: Curves.easeOut,
-                      builder: (context, opacity, child) {
-                        return Opacity(
-                          opacity: opacity,
-                          child: Text(
-                            'Enable Location Services',
-                            style: TextStyle(
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                              letterSpacing: 0.5,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    // Description with slide-in animation
-                    TweenAnimationBuilder<Offset>(
-                      duration: const Duration(milliseconds: 1000),
-                      tween: Tween(
-                        begin: const Offset(0, 0.3),
-                        end: Offset.zero,
-                      ),
-                      curve: Curves.easeOut,
-                      builder: (context, offset, child) {
-                        return Transform.translate(
-                          offset: Offset(0, offset.dy * 20.h),
-                          child: Text(
-                            'Enable location to help match missing children in your area and notify nearby authorities quickly.',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.grey[700],
-                              fontWeight: FontWeight.w400,
-                              height: 1.4,
-                            ),
-                            textAlign: TextAlign.center,
                           ),
                         );
                       },
@@ -511,26 +616,72 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     SizedBox(height: 32.h),
 
-                    // Animated buttons
+                    // Enhanced animated buttons with hover effects
                     TweenAnimationBuilder<double>(
-                      duration: const Duration(milliseconds: 1200),
+                      duration: const Duration(milliseconds: 1600),
                       tween: Tween(begin: 0.0, end: 1.0),
                       curve: Curves.elasticOut,
                       builder: (context, scale, child) {
                         return Transform.scale(
                           scale: scale,
-                          child: Row(
+                          child: Column(
                             children: [
-                              Expanded(
+                              // Primary button
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Get.back();
+                                    _enableLocationAndContinue();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primary,
+                                    foregroundColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 18.h,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                    ),
+                                    elevation: 12,
+                                    shadowColor: AppColors.primary.withValues(
+                                      alpha: 0.4,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.location_on_rounded,
+                                        size: 20.sp,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        'Enable Location',
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.3,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(height: 16.h),
+
+                              // Secondary button
+                              SizedBox(
+                                width: double.infinity,
                                 child: TextButton(
                                   onPressed: () {
                                     Get.back();
-                                    // Skip location and go to home
                                     _navigateToHome();
                                   },
                                   style: TextButton.styleFrom(
                                     padding: EdgeInsets.symmetric(
-                                      vertical: 16.h,
+                                      vertical: 18.h,
                                     ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16.r),
@@ -541,45 +692,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Skip for Now',
+                                    'Maybe Later',
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       color: Colors.grey[600],
                                       fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(width: 16.w),
-
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Get.back();
-                                    // Enable location and go to home
-                                    _enableLocationAndContinue();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.primary,
-                                    foregroundColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 16.h,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                    ),
-                                    elevation: 8,
-                                    shadowColor: AppColors.primary.withValues(
-                                      alpha: 0.4,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Enable Location',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5,
+                                      letterSpacing: 0.2,
                                     ),
                                   ),
                                 ),
@@ -597,7 +715,35 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       barrierDismissible: false,
-      barrierColor: Colors.black.withValues(alpha: 0.6),
+      barrierColor: Colors.black.withValues(alpha: 0.65),
+    );
+  }
+
+  // Helper method for feature items
+  Widget _buildFeatureItem(IconData icon, String text) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.all(8.w),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Icon(icon, size: 16.sp, color: AppColors.primary),
+        ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+              height: 1.2,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

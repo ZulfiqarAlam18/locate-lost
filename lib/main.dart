@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'routes/app_pages.dart';
-import 'routes/app_routes.dart';
-import 'services/location_permission_service.dart';
+import 'navigation/app_pages.dart';
+import 'navigation/app_routes.dart';
+import 'data/services/location_permission_service.dart';
 
 void main() {
   // Reset location permission check on app start
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      //  designSize: Size(375, 812), more generic 
+      //  designSize: Size(375, 812), more generic
       designSize: Size(430, 932),
 
       minTextAdapt: true,
@@ -56,4 +56,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

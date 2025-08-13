@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/animated_loading_dialog.dart';
-import '../widgets/multi_step_progress_dialog.dart';
-import '../widgets/skeleton_shimmer.dart';
+import 'package:locat_lost/presentation/dialogs/animated_loading_dialog.dart';
+import 'package:locat_lost/presentation/dialogs/multi_step_progress_dialog.dart';
+import '../presentation/widgets/skeleton_shimmer.dart';
 
 class LoadingExampleScreen extends StatefulWidget {
   const LoadingExampleScreen({super.key});

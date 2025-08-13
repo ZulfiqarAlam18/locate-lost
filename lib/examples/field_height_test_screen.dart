@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/custom_text_field.dart';
-import '../utils/app_colors.dart';
+import '../presentation/widgets/custom_text_field.dart';
+import '../core/constants/app_colors.dart';
 
 class FieldHeightTestScreen extends StatefulWidget {
   const FieldHeightTestScreen({super.key});

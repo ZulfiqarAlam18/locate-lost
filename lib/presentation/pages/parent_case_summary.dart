@@ -7,74 +7,70 @@ import 'package:locat_lost/core/utils/dialog_utils.dart';
 import 'package:locat_lost/navigation/app_routes.dart';
 import 'package:locat_lost/presentation/widgets/custom_app_bar.dart';
 
-// Finder Case data model
-class FinderCaseData {
+// Parent Case data model
+class ParentCaseData {
   final String caseId;
   final String caseType;
   final String status;
   final DateTime reportedDate;
-  final String foundPersonDescription;
-  final String estimatedAge;
+  final String missingPersonName;
+  final int age;
   final String gender;
-  final String foundLocation;
-  final String finderName;
-  final String finderPhone;
-  final String finderEmail;
-  final String circumstances;
-  final List<String> capturedImages;
-  final String physicalDescription;
+  final String lastSeenLocation;
+  final String reporterName;
+  final String relationship;
+  final String phone;
+  final String email;
+  final String description;
+  final List<String> uploadedImages;
+  final String physicalCharacteristics;
   final String clothingDescription;
-  final DateTime foundTime;
-  final String currentLocation;
-  final FinderCaseStatus currentStatus;
-  final FinderCasePriority priority;
-  final String additionalNotes;
-  final bool isPersonSafe;
-  final bool needsMedicalAttention;
+  final DateTime lastSeenTime;
+  final CaseStatus currentStatus;
+  final CasePriority priority;
+  final String additionalDetails;
 
-  FinderCaseData({
+  ParentCaseData({
     required this.caseId,
     required this.caseType,
     required this.status,
     required this.reportedDate,
-    required this.foundPersonDescription,
-    required this.estimatedAge,
+    required this.missingPersonName,
+    required this.age,
     required this.gender,
-    required this.foundLocation,
-    required this.finderName,
-    required this.finderPhone,
-    required this.finderEmail,
-    required this.circumstances,
-    required this.capturedImages,
-    required this.physicalDescription,
+    required this.lastSeenLocation,
+    required this.reporterName,
+    required this.relationship,
+    required this.phone,
+    required this.email,
+    required this.description,
+    required this.uploadedImages,
+    required this.physicalCharacteristics,
     required this.clothingDescription,
-    required this.foundTime,
-    required this.currentLocation,
+    required this.lastSeenTime,
     required this.currentStatus,
     required this.priority,
-    required this.additionalNotes,
-    required this.isPersonSafe,
-    required this.needsMedicalAttention,
+    required this.additionalDetails,
   });
 }
 
-enum FinderCaseStatus { reported, investigating, matched, reunited, closed }
+enum CaseStatus { active, investigating, resolved, cold, closed }
 
-enum FinderCasePriority { low, medium, high, urgent }
+enum CasePriority { low, medium, high, critical }
 
-class FinderCaseSummaryScreen extends StatefulWidget {
-  final FinderCaseData? caseData;
+class ParentCaseSummaryScreen extends StatefulWidget {
+  final ParentCaseData? caseData;
 
-  const FinderCaseSummaryScreen({super.key, this.caseData});
+  const ParentCaseSummaryScreen({super.key, this.caseData});
 
   @override
-  State<FinderCaseSummaryScreen> createState() =>
-      _FinderCaseSummaryScreenState();
+  State<ParentCaseSummaryScreen> createState() =>
+      _ParentCaseSummaryScreenState();
 }
 
-class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
+class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
     with TickerProviderStateMixin {
-  late FinderCaseData caseData;
+  late ParentCaseData caseData;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -87,7 +83,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
 
   void _initializeData() {
     // Use provided data or create sample data
-    caseData = widget.caseData ?? _getSampleFinderCaseData();
+    caseData = widget.caseData ?? _getSampleParentCaseData();
   }
 
   void _setupAnimations() {
@@ -101,40 +97,37 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     _animationController.forward();
   }
 
-  FinderCaseData _getSampleFinderCaseData() {
-    return FinderCaseData(
+  ParentCaseData _getSampleParentCaseData() {
+    return ParentCaseData(
       caseId:
-          'FP-2024-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
-      caseType: 'Found Person Report',
-      status: 'Reported - Awaiting Match',
-      reportedDate: DateTime.now().subtract(Duration(hours: 3)),
-      foundPersonDescription:
-          'Young girl found wandering alone, appears lost and confused',
-      estimatedAge: '7-9 years old',
+          'MP-2024-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
+      caseType: 'Missing Person Report',
+      status: 'Active - Under Investigation',
+      reportedDate: DateTime.now().subtract(Duration(days: 2)),
+      missingPersonName: 'Emma Johnson',
+      age: 8,
       gender: 'Female',
-      foundLocation: 'Shopping Mall, Food Court Area, Main Street',
-      finderName: 'Michael Rodriguez',
-      finderPhone: '+1 (555) 456-7890',
-      finderEmail: 'michael.rodriguez@email.com',
-      circumstances:
-          'Found the child crying near the food court. She seemed lost and was looking for her mother. Currently staying with security.',
-      capturedImages: [
-        'assets/images/Map1.png', // Photos taken by finder
-        'assets/images/Map2.png',
-        'assets/images/Map3.png',
+      lastSeenLocation: 'Riverside Park, Main Street, Downtown',
+      reporterName: 'Sarah Johnson',
+      relationship: 'Mother',
+      phone: '+1 (555) 987-6543',
+      email: 'sarah.johnson@email.com',
+      description:
+          'Emma was playing in the park with friends when she disappeared. She was wearing her favorite pink dress and carrying a small teddy bear.',
+      uploadedImages: [
+        'assets/images/zulfiqar.png', // Recent photos of missing person
+        'assets/images/ali.png',
+        'assets/images/bg.png',
       ],
-      physicalDescription:
-          'Approx. 4\'0" tall, Brown hair in pigtails, Brown eyes, Small build',
+      physicalCharacteristics:
+          'Height: 4\'2", Blonde hair, Green eyes, Small birthmark on left cheek',
       clothingDescription:
-          'Pink dress with white flowers, white sneakers, small purple backpack',
-      foundTime: DateTime.now().subtract(Duration(hours: 3, minutes: 30)),
-      currentLocation: 'Mall Security Office - Safe and supervised',
-      currentStatus: FinderCaseStatus.reported,
-      priority: FinderCasePriority.high,
-      additionalNotes:
-          'Child appears healthy and unharmed. Speaking clearly and knows her first name. Security has provided snacks and comfort.',
-      isPersonSafe: true,
-      needsMedicalAttention: false,
+          'Pink floral dress, white sandals, small backpack with cartoon characters',
+      lastSeenTime: DateTime.now().subtract(Duration(days: 2, hours: 3)),
+      currentStatus: CaseStatus.active,
+      priority: CasePriority.critical,
+      additionalDetails:
+          'Emma has never wandered off before. She knows her address and phone number. Very friendly with strangers.',
     );
   }
 
@@ -144,30 +137,30 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     super.dispose();
   }
 
-  Color _getStatusColor(FinderCaseStatus status) {
+  Color _getStatusColor(CaseStatus status) {
     switch (status) {
-      case FinderCaseStatus.reported:
-        return Colors.blue;
-      case FinderCaseStatus.investigating:
+      case CaseStatus.active:
         return Colors.orange;
-      case FinderCaseStatus.matched:
-        return Colors.purple;
-      case FinderCaseStatus.reunited:
+      case CaseStatus.investigating:
+        return Colors.blue;
+      case CaseStatus.resolved:
         return Colors.green;
-      case FinderCaseStatus.closed:
+      case CaseStatus.cold:
         return Colors.grey;
+      case CaseStatus.closed:
+        return Colors.red;
     }
   }
 
-  Color _getPriorityColor(FinderCasePriority priority) {
+  Color _getPriorityColor(CasePriority priority) {
     switch (priority) {
-      case FinderCasePriority.low:
+      case CasePriority.low:
         return Colors.green;
-      case FinderCasePriority.medium:
+      case CasePriority.medium:
         return Colors.orange;
-      case FinderCasePriority.high:
+      case CasePriority.high:
         return Colors.red;
-      case FinderCasePriority.urgent:
+      case CasePriority.critical:
         return Colors.purple;
     }
   }
@@ -180,7 +173,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Found Person Report',
+        text: 'Missing Person Report',
         onPressed: () => Navigator.pop(context),
       ),
       backgroundColor: Color(0xFFF8FAFC),
@@ -190,12 +183,12 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
           child: Column(
             children: [
               _buildHeaderSection(),
-              _buildSafetyStatusCard(),
-              _buildFoundPersonDetailsCard(),
-              _buildCapturedImagesSection(),
-              _buildFinderInfoCard(),
+              _buildCaseStatusCard(),
+              _buildMissingPersonDetailsCard(),
+              _buildUploadedImagesSection(),
+              _buildReporterInfoCard(),
               _buildLocationAndTimeCard(),
-              _buildCircumstancesCard(),
+              _buildDescriptionCard(),
               _buildActionButtons(),
               SizedBox(height: 30.h),
             ],
@@ -213,12 +206,12 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.green.shade400, Colors.green.shade600],
+          colors: [Colors.red.shade400, Colors.red.shade600],
         ),
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.green.withOpacity(0.3),
+            color: Colors.red.withOpacity(0.3),
             blurRadius: 15.r,
             offset: Offset(0, 8.h),
           ),
@@ -234,7 +227,11 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Icons.person_add, color: Colors.white, size: 24.w),
+                child: Icon(
+                  Icons.person_search,
+                  color: Colors.white,
+                  size: 24.w,
+                ),
               ),
               SizedBox(width: 16.w),
               Expanded(
@@ -282,110 +279,14 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  Widget _buildSafetyStatusCard() {
+  Widget _buildCaseStatusCard() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Safety Status',
-        icon: Icons.security,
+        title: 'Report Status',
+        icon: Icons.info_outline,
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color:
-                          caseData.isPersonSafe
-                              ? Colors.green.shade50
-                              : Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color:
-                            caseData.isPersonSafe
-                                ? Colors.green.shade200
-                                : Colors.red.shade200,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          caseData.isPersonSafe
-                              ? Icons.check_circle
-                              : Icons.warning,
-                          color:
-                              caseData.isPersonSafe ? Colors.green : Colors.red,
-                          size: 32.w,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          caseData.isPersonSafe
-                              ? 'Person is Safe'
-                              : 'Safety Concern',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color:
-                                caseData.isPersonSafe
-                                    ? Colors.green.shade700
-                                    : Colors.red.shade700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color:
-                          !caseData.needsMedicalAttention
-                              ? Colors.green.shade50
-                              : Colors.orange.shade50,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color:
-                            !caseData.needsMedicalAttention
-                                ? Colors.green.shade200
-                                : Colors.orange.shade200,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          !caseData.needsMedicalAttention
-                              ? Icons.favorite
-                              : Icons.medical_services,
-                          color:
-                              !caseData.needsMedicalAttention
-                                  ? Colors.green
-                                  : Colors.orange,
-                          size: 32.w,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          !caseData.needsMedicalAttention
-                              ? 'No Medical Need'
-                              : 'Needs Medical Care',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color:
-                                !caseData.needsMedicalAttention
-                                    ? Colors.green.shade700
-                                    : Colors.orange.shade700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -427,7 +328,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Current Location',
+                      'Report Type',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey[600],
@@ -435,13 +336,12 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      caseData.currentLocation,
+                      caseData.caseType,
                       style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[800],
                       ),
-                      textAlign: TextAlign.right,
                     ),
                   ],
                 ),
@@ -453,62 +353,62 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  Widget _buildFoundPersonDetailsCard() {
+  Widget _buildMissingPersonDetailsCard() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Found Person Description',
+        title: 'Missing Person Information',
         icon: Icons.person,
         child: Column(
           children: [
-            _buildDetailRow('Description', caseData.foundPersonDescription),
-            _buildDetailRow('Estimated Age', caseData.estimatedAge),
+            _buildDetailRow('Name', caseData.missingPersonName),
+            _buildDetailRow('Age', '${caseData.age} years old'),
             _buildDetailRow('Gender', caseData.gender),
             _buildDetailRow(
-              'Physical Description',
-              caseData.physicalDescription,
+              'Physical Characteristics',
+              caseData.physicalCharacteristics,
             ),
-            _buildDetailRow('Clothing', caseData.clothingDescription),
+            _buildDetailRow('Last Seen Wearing', caseData.clothingDescription),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCapturedImagesSection() {
+  Widget _buildUploadedImagesSection() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Captured Photos',
-        icon: Icons.camera_alt,
+        title: 'Uploaded Photos',
+        icon: Icons.photo_library,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (caseData.capturedImages.isNotEmpty) ...[
+            if (caseData.uploadedImages.isNotEmpty) ...[
               _buildImageGalleryHeader(
-                'Photos You Captured',
-                caseData.capturedImages.length,
+                'Recent Photos of Missing Person',
+                caseData.uploadedImages.length,
               ),
               SizedBox(height: 12.h),
-              _buildImageCarousel(caseData.capturedImages),
+              _buildImageCarousel(caseData.uploadedImages),
               SizedBox(height: 12.h),
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade50,
+                  color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: Colors.green.shade200),
+                  border: Border.all(color: Colors.blue.shade200),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info, color: Colors.green.shade600, size: 16.w),
+                    Icon(Icons.info, color: Colors.blue.shade600, size: 16.w),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
-                        'These photos will help law enforcement and families identify the found person.',
+                        'These photos will be shared with law enforcement and volunteers to help locate your missing person.',
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: Colors.green.shade700,
+                          color: Colors.blue.shade700,
                         ),
                       ),
                     ),
@@ -529,13 +429,13 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                 child: Column(
                   children: [
                     Icon(
-                      Icons.add_a_photo,
+                      Icons.add_photo_alternate,
                       size: 48.w,
                       color: Colors.grey[400],
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      'No photos captured yet',
+                      'No photos uploaded yet',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey[600],
@@ -544,10 +444,10 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                     SizedBox(height: 8.h),
                     ElevatedButton.icon(
                       onPressed: () {
-                        // Navigate to camera screen
+                        // Navigate to upload screen
                       },
                       icon: Icon(Icons.camera_alt, size: 16.w),
-                      label: Text('Capture Photos'),
+                      label: Text('Add Photos'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
@@ -569,7 +469,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
   Widget _buildImageGalleryHeader(String title, int count) {
     return Row(
       children: [
-        Icon(Icons.photo_camera, size: 18.w, color: AppColors.primary),
+        Icon(Icons.photo, size: 18.w, color: AppColors.primary),
         SizedBox(width: 8.w),
         Text(
           title,
@@ -710,7 +610,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Captured Photos',
+                          'Uploaded Photos',
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
@@ -801,26 +701,27 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  Widget _buildFinderInfoCard() {
+  Widget _buildReporterInfoCard() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Your Information (Finder)',
-        icon: Icons.person_pin,
+        title: 'Your Contact Information',
+        icon: Icons.contact_phone,
         child: Column(
           children: [
-            _buildDetailRow('Your Name', caseData.finderName),
+            _buildDetailRow('Your Name', caseData.reporterName),
+            _buildDetailRow('Relationship', caseData.relationship),
             _buildContactRow(
               'Phone',
-              caseData.finderPhone,
+              caseData.phone,
               Icons.phone,
-              () => _makePhoneCall(caseData.finderPhone),
+              () => _makePhoneCall(caseData.phone),
             ),
             _buildContactRow(
               'Email',
-              caseData.finderEmail,
+              caseData.email,
               Icons.email,
-              () => _sendEmail(caseData.finderEmail),
+              () => _sendEmail(caseData.email),
             ),
           ],
         ),
@@ -832,16 +733,18 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Location & Time Found',
+        title: 'Last Known Location & Time',
         icon: Icons.location_on,
         child: Column(
           children: [
-            _buildDetailRow('Found Location', caseData.foundLocation),
-            _buildDetailRow('Found Time', _formatDateTime(caseData.foundTime)),
-            _buildDetailRow('Current Location', caseData.currentLocation),
+            _buildDetailRow('Last Seen Location', caseData.lastSeenLocation),
+            _buildDetailRow(
+              'Last Seen Time',
+              _formatDateTime(caseData.lastSeenTime),
+            ),
             SizedBox(height: 12.h),
             ElevatedButton.icon(
-              onPressed: () => _openMap(caseData.foundLocation),
+              onPressed: () => _openMap(caseData.lastSeenLocation),
               icon: Icon(Icons.map, size: 18.w),
               label: Text('View on Map'),
               style: ElevatedButton.styleFrom(
@@ -860,17 +763,17 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  Widget _buildCircumstancesCard() {
+  Widget _buildDescriptionCard() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Circumstances & Notes',
+        title: 'Additional Details',
         icon: Icons.description,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'How You Found This Person',
+              'Description of Circumstances',
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
@@ -879,7 +782,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             ),
             SizedBox(height: 8.h),
             Text(
-              caseData.circumstances,
+              caseData.description,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[700],
@@ -888,7 +791,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             ),
             SizedBox(height: 16.h),
             Text(
-              'Additional Notes',
+              'Additional Information',
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
@@ -897,7 +800,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             ),
             SizedBox(height: 8.h),
             Text(
-              caseData.additionalNotes,
+              caseData.additionalDetails,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[700],
@@ -1086,12 +989,12 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => _contactAuthorities(),
-                  icon: Icon(Icons.local_police, size: 18.w),
-                  label: Text('Contact Police'),
+                  onPressed: () => _shareReport(),
+                  icon: Icon(Icons.share, size: 18.w),
+                  label: Text('Share Missing Person'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.blue[700],
-                    side: BorderSide(color: Colors.blue[700]!),
+                    foregroundColor: AppColors.primary,
+                    side: BorderSide(color: AppColors.primary),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
@@ -1102,9 +1005,9 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
               SizedBox(width: 12.w),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => _shareReport(),
-                  icon: Icon(Icons.share, size: 18.w),
-                  label: Text('Share Report'),
+                  onPressed: () => _exportReport(),
+                  icon: Icon(Icons.print, size: 18.w),
+                  label: Text('Print Flyer'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.grey[700],
                     side: BorderSide(color: Colors.grey[400]!),
@@ -1124,42 +1027,41 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
 
   // Action methods
   void _editReport() {
-    Get.toNamed(AppRoutes.foundPersonDetails);
+    Get.toNamed(AppRoutes.missingPersonDetails);
   }
 
   void _submitReport() {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            title: Text('Submit Found Person Report'),
-            content: Text(
-              'Are you sure you want to submit this report? It will be shared with law enforcement and families searching for missing persons.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  _performSubmission();
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(
-                  'Submit Report',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Text('Submit Missing Person Report'),
+        content: Text(
+          'Are you sure you want to submit this report? Once submitted, it will be shared with law enforcement and volunteers.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _performSubmission();
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: Text(
+              'Submit Report',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
     );
   }
-
+  
   void _performSubmission() async {
     // Show loading indicator
     Get.dialog(
@@ -1182,32 +1084,24 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
       ),
       barrierDismissible: false,
     );
-
+    
     // Simulate API call
     await Future.delayed(Duration(seconds: 2));
-
+    
     // Close loading dialog
     Get.back();
-
+    
     // Simulate success/failure (replace with actual API logic)
-    bool isSuccess =
-        DateTime.now().millisecondsSinceEpoch % 2 ==
-        0; // Random success/failure for demo
-
+    bool isSuccess = DateTime.now().millisecondsSinceEpoch % 2 == 0; // Random success/failure for demo
+    
     if (isSuccess) {
       DialogUtils.showCaseSubmissionSuccess(
-        title: 'Found Person Report Submitted!',
-        message:
-            'Your report has been submitted successfully. We\'ll help match this person with missing person reports.',
         onViewCases: () {
           Get.toNamed(AppRoutes.myCases);
         },
       );
     } else {
       DialogUtils.showCaseSubmissionError(
-        title: 'Found Person Report Failed',
-        message:
-            'Unable to submit your found person report. Please check your connection and try again.',
         onRetry: () {
           _performSubmission(); // Retry submission
         },
@@ -1215,11 +1109,11 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     }
   }
 
-  void _contactAuthorities() {
+  void _shareReport() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Contacting local authorities...'),
-        backgroundColor: Colors.blue[700],
+        content: Text('Sharing missing person information...'),
+        backgroundColor: AppColors.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -1228,10 +1122,10 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  void _shareReport() {
+  void _exportReport() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Sharing found person report...'),
+        content: Text('Generating missing person flyer...'),
         backgroundColor: AppColors.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(

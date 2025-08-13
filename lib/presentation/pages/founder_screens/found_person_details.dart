@@ -7,34 +7,38 @@ import 'package:locat_lost/presentation/widgets/custom_elevated_button.dart';
 import 'package:locat_lost/presentation/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-
-class FinderDetailsScreen extends StatefulWidget {
-  const FinderDetailsScreen({super.key});
+class FoundPersonDetailsScreen extends StatefulWidget {
+  const FoundPersonDetailsScreen({super.key});
 
   @override
-  State<FinderDetailsScreen> createState() => _FinderDetailsScreenState();
+  State<FoundPersonDetailsScreen> createState() =>
+      _FoundPersonDetailsScreenState();
 }
 
-class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
+class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-
   final TextEditingController cName = TextEditingController();
-  final TextEditingController cNum = TextEditingController();
-  final TextEditingController cEmergencyNum = TextEditingController();
-  final TextEditingController cCNIC = TextEditingController();
+  final TextEditingController cGender = TextEditingController();
+  final TextEditingController cFName = TextEditingController();
+  final TextEditingController cLocation = TextEditingController();
+  final TextEditingController cTime = TextEditingController();
+  final TextEditingController cAge = TextEditingController();
+  final TextEditingController cHairColor = TextEditingController();
+  final TextEditingController cCloths = TextEditingController();
+  final TextEditingController cExtraDetails = TextEditingController();
 
-  double progressPercent = 1.0; // Final step in the process
+  double progressPercent = .33; // First step in the 3-step process
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: EdgeInsets.all(16.0.w), // Padding adjusted for consistency
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50.h),
+            SizedBox(height: 50),
             Center(
               child: Text(
                 'Found Person',
@@ -47,12 +51,11 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
             ),
             Divider(
               color: AppColors.primary,
-              indent: 100.w,
-              endIndent: 100.w,
-              thickness: 2.h,
+              indent: 100,
+              endIndent: 100,
+              thickness: 2,
             ),
             SizedBox(height: 20.h),
-
             Container(
               width: 390.w,
               height: 140.h,
@@ -88,9 +91,9 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 6.h),
+                            SizedBox(height: 6),
                             Text(
-                              'Enter your details\nto continue',
+                              'Enter found person\'s details\nNext: Photos & Contact Info',
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: AppColors.myRedColor,
@@ -103,8 +106,8 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                       Expanded(
                         flex: 1,
                         child: CircularPercentIndicator(
-                          radius: 40.r,
-                          lineWidth: 8.0.w,
+                          radius: 40,
+                          lineWidth: 8.0,
                           percent: progressPercent,
                           animation: true,
                           animationDuration: 1000,
@@ -126,25 +129,25 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 20),
             Divider(
               color: AppColors.primary,
-              indent: 100.w,
-              endIndent: 100.w,
-              thickness: 2.h,
+              indent: 100,
+              endIndent: 100,
+              thickness: 2,
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 10),
             Text(
-              'Please complete the form with your accurate details',
+              'Please complete the form with the accurate details of the found person. After submitting, you\'ll take photos and provide your contact information.',
               style: TextStyle(
                 fontSize: 16.sp,
                 color: AppColors.myBlackColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 10),
             Text(
-              'Finder Details:',
+              'Found Person Details:',
               style: TextStyle(
                 fontSize: 20.sp,
                 color: AppColors.primary,
@@ -152,7 +155,6 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
               ),
             ),
             SizedBox(height: 10),
-
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
@@ -161,26 +163,38 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                     children: [
                       _buildTextField(
                         'Name',
-                        'Enter your full name please',
+                        'Enter person\'s name',
                         cName,
                         true,
                       ),
                       _buildTextField(
-                        'Mobile Number',
-                        'Enter your active mobile number',
-                        cNum,
+                        'Father\'s Name',
+                        'Enter person\'s father\'s name',
+                        cFName,
                         true,
                       ),
                       _buildTextField(
-                        'Emergency Contact',
-                        'Enter emergency contact in case first one is off.',
-                        cEmergencyNum,
+                        'Gender',
+                        'Enter person\'s gender',
+                        cGender,
                         true,
                       ),
                       _buildTextField(
-                        'CNIC Number',
-                        'If you want to provide any other details related to you or the missing person.',
-                        cCNIC,
+                        'Hair Color',
+                        'Enter person\'s hair color',
+                        cHairColor,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Place',
+                        'Enter place where person was found',
+                        cLocation,
+                        true,
+                      ),
+                      _buildTextField(
+                        'Time',
+                        'Enter the time when person was found',
+                        cTime,
                         true,
                       ),
                       Row(
@@ -201,7 +215,22 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                           ),
                           CustomElevatedButton(
                             onPressed: () {
-                              Get.toNamed(AppRoutes.finderCaseSummary);
+                              // Validate form before proceeding to camera
+                              if (_key.currentState!.validate()) {
+                                Get.toNamed(AppRoutes.cameraCapture);
+                              } else {
+                                // Show validation error
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Please fill in all required fields'),
+                                    backgroundColor: Colors.red,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                  ),
+                                );
+                              }
                             },
                             height: 45.h,
                             width: 130.w,

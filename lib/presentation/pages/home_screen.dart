@@ -116,39 +116,81 @@ class _HomeScreenState extends State<HomeScreen>
     Get.toNamed(routeName);
   }
 
+  // void _showReportOptions() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Create Report'),
+  //         content: Text('What type of report would you like to create?'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: Text('Cancel'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: Text('Missing Person'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               Get.toNamed(AppRoutes.reportCase);
+  //             },
+  //           ),
+  //           ElevatedButton(
+  //             child: Text('Found Person'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               Get.toNamed(AppRoutes.foundPersonDetails);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+
   void _showReportOptions() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Create Report'),
-          content: Text('What type of report would you like to create?'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+      builder:
+          (context) => Container(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Add New Report',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                ListTile(
+                  leading: Icon(Icons.person_search, color: AppColors.error),
+                  title: Text('Report Missing Person'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.toNamed(AppRoutes.reportCase);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.camera_alt, color: AppColors.success),
+                  title: Text('Report Found Person'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.toNamed(AppRoutes.cameraCapture);
+                  },
+                ),
+              ],
             ),
-            TextButton(
-              child: Text('Missing Person'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Get.toNamed(AppRoutes.reportCase);
-              },
-            ),
-            ElevatedButton(
-              child: Text('Found Person'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Get.toNamed(AppRoutes.foundPersonDetails);
-              },
-            ),
-          ],
-        );
-      },
+          ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -858,4 +900,7 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
+
+
+
 }

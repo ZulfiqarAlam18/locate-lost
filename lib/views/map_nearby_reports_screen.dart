@@ -448,6 +448,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                                 color: AppColors.info,
                               ),
                             ),
+
                           ),
                         ],
                       ),
@@ -487,6 +488,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                       color: AppColors.primary,
                       size: 20.w,
                     ),
+
                     SizedBox(height: 8.h),
                     Icon(
                       Icons.arrow_forward_ios,
@@ -674,4 +676,6 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
           ),
     );
   }
+
+
 }

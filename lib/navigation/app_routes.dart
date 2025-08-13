@@ -19,6 +19,9 @@ class AppRoutes {
   static const String caseDetails = '/case-details';
   static const String mapNearbyReports = '/map-nearby-reports';
 
+  // Notification Routes
+  static const String notifications = '/notifications';
+
   // Parent Routes
   static const String missingPersonDetails = '/missing-person-details';
   static const String reporterDetails = '/reporter-details';
@@ -39,20 +42,23 @@ class AppRoutes {
   static const String stats = '/stats';
   static const String termsAndConditions = '/terms-conditions';
 
-    // Settings routes
+  // Settings routes
   static const String settings = '/settings';
   static const String accountSettings = '/settings/account';
-  static const String settingsAccount = '/settings/account'; // Alias for accountSettings
+  static const String settingsAccount =
+      '/settings/account'; // Alias for accountSettings
   static const String notificationSettings = '/settings/notifications';
-  static const String settingsNotifications = '/settings/notifications'; // Alias for notificationSettings
+  static const String settingsNotifications =
+      '/settings/notifications'; // Alias for notificationSettings
   static const String appearanceSettings = '/settings/appearance';
-  static const String settingsAppearance = '/settings/appearance'; // Alias for appearanceSettings
+  static const String settingsAppearance =
+      '/settings/appearance'; // Alias for appearanceSettings
   static const String privacySettings = '/settings/privacy';
   static const String languageSettings = '/settings/language';
   static const String supportSettings = '/settings/support';
   static const String aboutSettings = '/settings/about';
   static const String dangerZoneSettings = '/settings/danger-zone';
-  
+
   // Demo Routes
   static const String dialogDemo = '/dialog-demo';
   static const String locationPermissionTest = '/location-permission-test';

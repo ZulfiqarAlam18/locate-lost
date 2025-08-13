@@ -448,7 +448,6 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                                 color: AppColors.info,
                               ),
                             ),
-
                           ),
                         ],
                       ),
@@ -660,7 +659,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                   title: Text('Report Missing Person'),
                   onTap: () {
                     Navigator.pop(context);
-                    Get.toNamed(AppRoutes.reportCase);
+                    Get.toNamed(AppRoutes.missingPersonDetails);
                   },
                 ),
                 ListTile(
@@ -668,7 +667,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
                   title: Text('Report Found Person'),
                   onTap: () {
                     Navigator.pop(context);
-                    Get.toNamed(AppRoutes.cameraCapture);
+                    Get.toNamed(AppRoutes.foundPersonDetails);
                   },
                 ),
               ],
@@ -676,6 +675,4 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
           ),
     );
   }
-
-
 }

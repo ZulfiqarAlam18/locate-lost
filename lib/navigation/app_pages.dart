@@ -13,6 +13,7 @@ import '../presentation/pages/display_info_screen.dart';
 import '../presentation/pages/my_cases_screen.dart';
 import '../presentation/pages/case_details_screen.dart';
 import '../presentation/pages/map_nearby_reports_screen.dart';
+import '../presentation/pages/notification_screen.dart';
 import '../presentation/pages/parent_screens/missing_person_details.dart';
 import '../presentation/pages/parent_screens/reporter_details.dart';
 import '../presentation/pages/parent_screens/upload_images.dart';
@@ -104,7 +105,9 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.home,
-      page: () => const MainNavigationScreen(), // Route home to MainNavigationScreen
+      page:
+          () =>
+              const MainNavigationScreen(), // Route home to MainNavigationScreen
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -141,6 +144,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.mapNearbyReports,
       page: () => const MapNearbyReportsScreen(),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+
+    // Notification Routes
+    GetPage(
+      name: AppRoutes.notifications,
+      page: () => const NotificationScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -316,7 +327,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
     ),
-    
+
     // Demo Routes
     GetPage(
       name: AppRoutes.dialogDemo,

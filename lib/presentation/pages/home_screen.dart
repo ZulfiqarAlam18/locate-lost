@@ -7,15 +7,14 @@ import 'package:locat_lost/presentation/widgets/main_bottom_navigation.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isInNavigation;
-  
+
   const HomeScreen({super.key, this.isInNavigation = false});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String username = 'Zohaib Khoso';
   late MainNavigationController navController;
   late AnimationController _animationController;
@@ -23,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen>
   late Animation<Offset> _slideAnimation;
 
   final TextEditingController _searchController = TextEditingController();
-  
+
   // Recent cases data
   final List<Map<String, dynamic>> recentCases = [
     {
@@ -64,41 +63,36 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize animation controller
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    
+
     // Initialize animations
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-    
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
-    
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
+
     // Initialize or get the navigation controller
     try {
       navController = Get.find<MainNavigationController>();
     } catch (e) {
       navController = Get.put(MainNavigationController());
     }
-    
+
     if (!widget.isInNavigation) {
       navController.setIndex(0);
     }
-    
+
     // Start animations
     _animationController.forward();
   }
@@ -115,41 +109,6 @@ class _HomeScreenState extends State<HomeScreen>
     Navigator.pop(context); // Close the drawer
     Get.toNamed(routeName);
   }
-
-  // void _showReportOptions() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Create Report'),
-  //         content: Text('What type of report would you like to create?'),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: Text('Missing Person'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               Get.toNamed(AppRoutes.reportCase);
-  //             },
-  //           ),
-  //           ElevatedButton(
-  //             child: Text('Found Person'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               Get.toNamed(AppRoutes.foundPersonDetails);
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
 
   void _showReportOptions() {
     showModalBottomSheet(
@@ -173,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen>
                   title: Text('Report Missing Person'),
                   onTap: () {
                     Navigator.pop(context);
-                    Get.toNamed(AppRoutes.reportCase);
+                    Get.toNamed(AppRoutes.missingPersonDetails);
                   },
                 ),
                 ListTile(
@@ -181,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen>
                   title: Text('Report Found Person'),
                   onTap: () {
                     Navigator.pop(context);
-                    Get.toNamed(AppRoutes.cameraCapture);
+                    Get.toNamed(AppRoutes.foundPersonDetails);
                   },
                 ),
               ],
@@ -189,8 +148,6 @@ class _HomeScreenState extends State<HomeScreen>
           ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -200,15 +157,24 @@ class _HomeScreenState extends State<HomeScreen>
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu_rounded, color: AppColors.primary, size: 28.w),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
+          builder:
+              (context) => IconButton(
+                icon: Icon(
+                  Icons.menu_rounded,
+                  color: AppColors.primary,
+                  size: 28.w,
+                ),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_outlined, color: AppColors.primary, size: 24.w),
-            onPressed: () {},
+            icon: Icon(
+              Icons.notifications_outlined,
+              color: AppColors.primary,
+              size: 24.w,
+            ),
+            onPressed: () => Get.toNamed(AppRoutes.notifications),
           ),
           SizedBox(width: 8.w),
         ],
@@ -247,13 +213,16 @@ class _HomeScreenState extends State<HomeScreen>
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) => _buildRecentCaseCard(recentCases[index], index),
+                      (context, index) =>
+                          _buildRecentCaseCard(recentCases[index], index),
                       childCount: recentCases.length,
                     ),
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: SizedBox(height: 100.h), // Bottom padding for navigation
+                  child: SizedBox(
+                    height: 100.h,
+                  ), // Bottom padding for navigation
                 ),
               ],
             ),
@@ -274,10 +243,15 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       extendBody: !widget.isInNavigation,
-      bottomNavigationBar: widget.isInNavigation ? null : Obx(() => MainBottomNavigation(
-        currentIndex: navController.selectedIndex.value,
-        onTap: navController.changeIndex,
-      )),
+      bottomNavigationBar:
+          widget.isInNavigation
+              ? null
+              : Obx(
+                () => MainBottomNavigation(
+                  currentIndex: navController.selectedIndex.value,
+                  onTap: navController.changeIndex,
+                ),
+              ),
     );
   }
 
@@ -301,10 +275,7 @@ class _HomeScreenState extends State<HomeScreen>
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    AppColors.primary,
-                    AppColors.primaryDark,
-                  ],
+                  colors: [AppColors.primary, AppColors.primaryDark],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -337,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen>
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                              color:  AppColors.textPrimary,
+                              color: AppColors.textPrimary,
                             ),
                           ),
                         ),
@@ -369,9 +340,9 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ],
                   ),
-                  
+
                   SizedBox(height: 24.h),
-                  
+
                   // Welcome Message
                   Text(
                     'Good Morning,',
@@ -391,9 +362,9 @@ class _HomeScreenState extends State<HomeScreen>
                       height: 1.2,
                     ),
                   ),
-                  
+
                   SizedBox(height: 24.h),
-                  
+
                   // Stats Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -474,10 +445,7 @@ class _HomeScreenState extends State<HomeScreen>
         controller: _searchController,
         decoration: InputDecoration(
           hintText: 'Search by name, ID, or location...',
-          hintStyle: TextStyle(
-            color: AppColors.textMuted,
-            fontSize: 14.sp,
-          ),
+          hintStyle: TextStyle(color: AppColors.textMuted, fontSize: 14.sp),
           prefixIcon: Icon(
             Icons.search_rounded,
             color: AppColors.textMuted,
@@ -516,8 +484,7 @@ class _HomeScreenState extends State<HomeScreen>
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-              //  onTap: () => Get.toNamed(AppRoutes.reportCase),
-               onTap: () => Get.toNamed(AppRoutes.missingPersonDetails),
+                onTap: () => Get.toNamed(AppRoutes.missingPersonDetails),
               ),
             ),
             SizedBox(width: 16.w),
@@ -527,7 +494,10 @@ class _HomeScreenState extends State<HomeScreen>
                 subtitle: 'Child',
                 icon: Icons.person_pin_rounded,
                 gradient: LinearGradient(
-                  colors: [AppColors.success, AppColors.success.withOpacity(0.8)],
+                  colors: [
+                    AppColors.success,
+                    AppColors.success.withOpacity(0.8),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -574,11 +544,7 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 24.w,
-                ),
+                child: Icon(icon, color: Colors.white, size: 24.w),
               ),
             ),
             SizedBox(height: 16.h),
@@ -738,7 +704,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildStatusChip(String status) {
     Color color;
     Color backgroundColor;
-    
+
     switch (status.toLowerCase()) {
       case 'active':
         color = AppColors.error;
@@ -782,100 +748,103 @@ class _HomeScreenState extends State<HomeScreen>
         child: ListView(
           padding: EdgeInsets.only(bottom: 20.h),
           children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+            DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primary,
+                    AppColors.primary.withOpacity(0.8),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundColor: AppColors.primary,
-                  child: Text(
-                    username.split(' ').map((e) => e[0]).join(''),
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30.r,
+                    backgroundColor: AppColors.primary,
+                    child: Text(
+                      username.split(' ').map((e) => e[0]).join(''),
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 12.h),
-                Text(
-                  username,
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                  SizedBox(height: 12.h),
+                  Text(
+                    username,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text(
-                  'Community Helper',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.white.withOpacity(0.9),
+                  Text(
+                    'Community Helper',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.white.withOpacity(0.9),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          _buildDrawerItem(
-            icon: Icons.home_rounded,
-            title: 'Home',
-            onTap: () => navigateToScreen(AppRoutes.home),
-          ),
-          _buildDrawerItem(
-            icon: Icons.person_rounded,
-            title: 'Profile',
-            onTap: () => navigateToScreen(AppRoutes.profile),
-          ),
-          _buildDrawerItem(
-            icon: Icons.settings_rounded,
-            title: 'Settings',
-            onTap: () => navigateToScreen(AppRoutes.settings),
-          ),
-          _buildDrawerItem(
-            icon: Icons.bar_chart_rounded,
-            title: 'Statistics',
-            onTap: () => navigateToScreen(AppRoutes.stats),
-          ),
-          const Divider(),
-          _buildDrawerItem(
-            icon: Icons.help_outline_rounded,
-            title: 'FAQs',
-            onTap: () => navigateToScreen(AppRoutes.faqs),
-          ),
-          _buildDrawerItem(
-            icon: Icons.info_outline_rounded,
-            title: 'About Us',
-            onTap: () => navigateToScreen(AppRoutes.aboutUs),
-          ),
-          _buildDrawerItem(
-             icon: Icons.phone_rounded,
-            title: 'Contact Us',
-            onTap: () => navigateToScreen(AppRoutes.contactUs),
-          ),
-          const Divider(),
-          _buildDrawerItem(
-            icon: Icons.privacy_tip_outlined,
-            title: 'Terms & Conditions',
-            onTap: () => navigateToScreen(AppRoutes.termsAndConditions),
-          ),
-          _buildDrawerItem(
-            icon: Icons.logout_rounded,
-            title: 'Log Out',
-            onTap: () {
-              Navigator.pop(context);
-              Get.toNamed(AppRoutes.login);
-            },
-          ),
-        ],
-      ),
+            _buildDrawerItem(
+              icon: Icons.home_rounded,
+              title: 'Home',
+              onTap: () => navigateToScreen(AppRoutes.home),
+            ),
+            _buildDrawerItem(
+              icon: Icons.person_rounded,
+              title: 'Profile',
+              onTap: () => navigateToScreen(AppRoutes.profile),
+            ),
+            _buildDrawerItem(
+              icon: Icons.settings_rounded,
+              title: 'Settings',
+              onTap: () => navigateToScreen(AppRoutes.settings),
+            ),
+            _buildDrawerItem(
+              icon: Icons.bar_chart_rounded,
+              title: 'Statistics',
+              onTap: () => navigateToScreen(AppRoutes.stats),
+            ),
+            const Divider(),
+            _buildDrawerItem(
+              icon: Icons.help_outline_rounded,
+              title: 'FAQs',
+              onTap: () => navigateToScreen(AppRoutes.faqs),
+            ),
+            _buildDrawerItem(
+              icon: Icons.info_outline_rounded,
+              title: 'About Us',
+              onTap: () => navigateToScreen(AppRoutes.aboutUs),
+            ),
+            _buildDrawerItem(
+              icon: Icons.phone_rounded,
+              title: 'Contact Us',
+              onTap: () => navigateToScreen(AppRoutes.contactUs),
+            ),
+            const Divider(),
+            _buildDrawerItem(
+              icon: Icons.privacy_tip_outlined,
+              title: 'Terms & Conditions',
+              onTap: () => navigateToScreen(AppRoutes.termsAndConditions),
+            ),
+            _buildDrawerItem(
+              icon: Icons.logout_rounded,
+              title: 'Log Out',
+              onTap: () {
+                Navigator.pop(context);
+                Get.toNamed(AppRoutes.login);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -895,12 +864,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
       ),
       onTap: onTap,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
     );
   }
-
-
-
 }

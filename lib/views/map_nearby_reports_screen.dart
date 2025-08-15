@@ -115,7 +115,7 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
           child: Icon(Icons.add, color: Colors.white),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       extendBody: !widget.isInNavigation,
       bottomNavigationBar:
           widget.isInNavigation
@@ -637,7 +637,47 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
     );
   }
 
-  void _showReportOptions() {
+  // void _showReportOptions() {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder:
+  //         (context) => Container(
+  //           padding: EdgeInsets.all(20.w),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Text(
+  //                 'Add New Report',
+  //                 style: TextStyle(
+  //                   fontSize: 18.sp,
+  //                   fontWeight: FontWeight.bold,
+  //                 ),
+  //               ),
+  //               SizedBox(height: 20.h),
+  //               ListTile(
+  //                 leading: Icon(Icons.person_search, color: AppColors.error),
+  //                 title: Text('Report Missing Person'),
+  //                 onTap: () {
+  //                   Navigator.pop(context);
+  //                   Get.toNamed(AppRoutes.missingPersonDetails);
+  //                 },
+  //               ),
+  //               ListTile(
+  //                 leading: Icon(Icons.camera_alt, color: AppColors.success),
+  //                 title: Text('Report Found Person'),
+  //                 onTap: () {
+  //                   Navigator.pop(context);
+  //                   Get.toNamed(AppRoutes.foundPersonDetails);
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //   );
+  // }
+
+
+void _showReportOptions() {
     showModalBottomSheet(
       context: context,
       builder:
@@ -675,4 +715,6 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
           ),
     );
   }
+
+
 }

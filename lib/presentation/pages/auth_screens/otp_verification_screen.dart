@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:locat_lost/core/constants/app_colors.dart';
-import 'package:locat_lost/navigation/app_routes.dart';
-import 'package:locat_lost/presentation/widgets/custom_elevated_button.dart';
+import 'package:locate_lost/core/constants/app_colors.dart';
 import 'dart:async';
+
+import 'package:locate_lost/navigation/app_routes.dart';
+import 'package:locate_lost/presentation/widgets/custom_elevated_button.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({super.key});

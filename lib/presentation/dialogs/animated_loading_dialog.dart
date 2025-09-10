@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locat_lost/core/constants/app_colors.dart';
+import 'package:locate_lost/core/constants/app_colors.dart';
 
 class AnimatedLoadingDialog extends StatefulWidget {
   final String message;

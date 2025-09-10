@@ -1,10 +1,12 @@
+import 'dart:ui' as BorderType;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:locat_lost/core/constants/app_colors.dart';
-import 'package:locat_lost/navigation/app_routes.dart';
-import 'package:locat_lost/presentation/widgets/main_bottom_navigation.dart';
+import 'package:locate_lost/core/constants/app_colors.dart';
+import 'package:locate_lost/navigation/app_routes.dart';
+import 'package:locate_lost/presentation/widgets/main_bottom_navigation.dart';
 
 class ProfileScreen extends StatefulWidget {
   final bool isInNavigation;
@@ -1209,25 +1211,25 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
 
           // 🔷 Profile Picture
-          Positioned(
-            top: 110.h,
-            left: MediaQuery.of(context).size.width / 2 - 70.w,
-            child: DottedBorder(
-              borderType: BorderType.RRect,
-              radius: Radius.circular(70.r),
-              dashPattern: [8, 4],
-              color: Colors.teal,
-              strokeWidth: 2.w,
-              child: Card(
-                shape: CircleBorder(side: BorderSide(color: AppColors.primary)),
-                elevation: 16,
-                child: CircleAvatar(
-                  radius: 70.r,
-                  backgroundImage: AssetImage('assets/images/zulfi.png'),
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 110.h,
+          //   left: MediaQuery.of(context).size.width / 2 - 70.w,
+          //   child: DottedBorder(
+          //     borderType: BorderType.RRect,
+          //     radius: Radius.circular(70.r),
+          //     dashPattern: [8, 4],
+          //     color: Colors.teal,
+          //     strokeWidth: 2.w,
+          //     child: Card(
+          //       shape: CircleBorder(side: BorderSide(color: AppColors.primary)),
+          //       elevation: 16,
+          //       child: CircleAvatar(
+          //         radius: 70.r,
+          //         backgroundImage: AssetImage('assets/images/zulfi.png'),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           // 🔷 Profile Name
           Positioned(

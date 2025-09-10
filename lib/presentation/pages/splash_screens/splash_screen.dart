@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/constants/app_colors.dart';
 import 'splash_screen_1.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../navigation/app_routes.dart';
 import 'splash_screen_2.dart';
 import 'splash_screen_3.dart';

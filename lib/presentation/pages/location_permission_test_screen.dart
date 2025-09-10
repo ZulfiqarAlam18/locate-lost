@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locat_lost/core/constants/app_colors.dart';
-import 'package:locat_lost/data/services/location_permission_service.dart';
+import 'package:locate_lost/core/constants/app_colors.dart';
+import 'package:locate_lost/data/services/location_permission_service.dart';
+
+import '../../data/services/location_permission_service.dart' show LocationPermissionService;
 
 class LocationPermissionTestScreen extends StatefulWidget {
   const LocationPermissionTestScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locat_lost/presentation/widgets/custom_app_bar.dart';
+import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});

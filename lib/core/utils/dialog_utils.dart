@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:locat_lost/presentation/dialogs/case_submission_dialog.dart';
+import 'package:locate_lost/presentation/dialogs/case_submission_dialog.dart';
 
 class DialogUtils {
   /// Show success dialog after case submission

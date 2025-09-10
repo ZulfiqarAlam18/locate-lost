@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:locat_lost/presentation/pages/home_screen.dart';
-import 'package:locat_lost/presentation/widgets/main_bottom_navigation.dart';
+import 'package:locate_lost/presentation/pages/home_screen.dart';
+import 'package:locate_lost/presentation/widgets/main_bottom_navigation.dart';
 import 'my_cases_screen.dart';
 import 'case_details_screen.dart';
 import 'map_nearby_reports_screen.dart';

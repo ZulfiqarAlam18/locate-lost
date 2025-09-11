@@ -38,7 +38,6 @@ import '../presentation/pages/settings_screens/language_settings_screen.dart';
 import '../presentation/pages/settings_screens/support_settings_screen.dart';
 import '../presentation/pages/settings_screens/about_settings_screen.dart';
 import '../presentation/pages/settings_screens/danger_zone_settings_screen.dart';
-import '../presentation/pages/dialog_demo_screen.dart';
 import '../presentation/pages/location_permission_test_screen.dart';
 import 'app_routes.dart';
 
@@ -329,12 +328,12 @@ class AppPages {
     ),
 
     // Demo Routes
-    GetPage(
-      name: AppRoutes.dialogDemo,
-      page: () => const DialogDemoScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+    // GetPage(
+    //   name: AppRoutes.dialogDemo,
+    //   page: () => const DialogDemoScreen(),
+    //   transition: Transition.fadeIn,
+    //   transitionDuration: const Duration(milliseconds: 300),
+    // ),
     GetPage(
       name: AppRoutes.locationPermissionTest,
       page: () => const LocationPermissionTestScreen(),

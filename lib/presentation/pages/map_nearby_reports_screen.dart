@@ -104,18 +104,21 @@ class _MapNearbyReportsScreenState extends State<MapNearbyReportsScreen> {
           Expanded(child: _showList ? _buildListView() : _buildMapView()),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: widget.isInNavigation ? 80.h : 0),
-        child: FloatingActionButton(
-          onPressed: () {
-            // Add new report functionality
-            _showReportOptions();
-          },
-          backgroundColor: AppColors.primary,
-          child: Icon(Icons.add, color: Colors.white),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+      // floatingActionButton: Padding(
+      //   padding: EdgeInsets.only(bottom: widget.isInNavigation ? 80.h : 0),
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       // Add new report functionality
+      //       _showReportOptions();
+      //     },
+      //     backgroundColor: AppColors.primary,
+      //     child: Icon(Icons.add, color: Colors.white),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+
       extendBody: !widget.isInNavigation,
       bottomNavigationBar:
           widget.isInNavigation

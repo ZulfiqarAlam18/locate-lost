@@ -29,26 +29,7 @@ class MyApp extends StatelessWidget {
 
           title: 'LocateLost',
 
-          // theme: ThemeData(
-          //   scaffoldBackgroundColor: AppColors.background,
-          //   primaryColor: AppColors.primary,
-          //   useMaterial3: true,
-          //   appBarTheme: const AppBarTheme(
-          //     backgroundColor: AppColors.background,
-          //     foregroundColor: AppColors.secondary,
-          //     elevation: 0,
-          //   ),
-          //   textTheme: const TextTheme(
-          //     bodyLarge: TextStyle(color: AppColors.textPrimary),
-          //     bodyMedium: TextStyle(color: AppColors.textSecondary),
-          //   ),
-          //   iconTheme: const IconThemeData(color: AppColors.secondary),
-          //   colorScheme: ColorScheme.fromSwatch().copyWith(
-          //     primary: AppColors.primary,
-          //     secondary: AppColors.secondary,
-          //   ),
-          // ),
-          //
+         
           initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
         );

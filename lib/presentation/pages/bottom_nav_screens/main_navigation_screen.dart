@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:locate_lost/presentation/pages/bottom_nav_screens/case_details_screen.dart';
 import 'package:locate_lost/presentation/pages/bottom_nav_screens/home_screen.dart';
 import 'package:locate_lost/presentation/pages/bottom_nav_screens/map_nearby_reports_screen.dart';
 import 'package:locate_lost/presentation/pages/bottom_nav_screens/my_cases_screen.dart';
 import 'package:locate_lost/presentation/widgets/main_bottom_navigation.dart';
+import 'case_details_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});

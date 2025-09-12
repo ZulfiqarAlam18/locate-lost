@@ -40,7 +40,7 @@ class _MissingPersonDetailsScreenState
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: EdgeInsets.all(8.0.w),
+        padding: EdgeInsets.all(16.0.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -60,40 +60,51 @@ class _MissingPersonDetailsScreenState
         SizedBox(height: 50.h),
         Center(
           child: Text(
-            'Missing Person',
+            'Missing Person Details',
             style: TextStyle(
-              fontSize: 25.sp,
+              fontSize: 26.sp,
               color: AppColors.primary,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
+        SizedBox(height: 10.h),
         Divider(
           color: AppColors.primary,
-          indent: 100.w,
-          endIndent: 100.w,
+          indent: 80.w,
+          endIndent: 80.w,
           thickness: 2.h,
         ),
+        SizedBox(height: 20.h),
       ],
     );
   }
 
   Widget _buildProgressCard() {
     return Container(
-      width: 390.w,
+      width: double.infinity,
       height: 140.h,
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(color: AppColors.primary, width: 1.5.w),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Card(
-        elevation: 6,
+        elevation: 0,
         color: AppColors.secondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 12.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 16.h),
           child: Row(
             children: [_buildProgressText(), _buildProgressIndicator()],
           ),
@@ -106,6 +117,7 @@ class _MissingPersonDetailsScreenState
     return Expanded(
       flex: 3,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -116,7 +128,7 @@ class _MissingPersonDetailsScreenState
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 6.h),
+          SizedBox(height: 8.h),
           Text(
             'Enter missing person\'s details\nto continue',
             style: TextStyle(
@@ -134,20 +146,20 @@ class _MissingPersonDetailsScreenState
     return Expanded(
       flex: 1,
       child: CircularPercentIndicator(
-        radius: 40.r,
+        radius: 45.r,
         lineWidth: 8.0.w,
         percent: progressPercent,
         animation: true,
-        animationDuration: 1000,
+        animationDuration: 1200,
         progressColor: AppColors.primary,
-        backgroundColor: Colors.teal.shade100,
+        backgroundColor: Colors.grey.shade300,
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
           "${(progressPercent * 100).toInt()}%",
           style: TextStyle(
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: Colors.teal[800],
+            color: AppColors.primary,
           ),
         ),
       ),
@@ -156,17 +168,22 @@ class _MissingPersonDetailsScreenState
 
   Widget _buildForm() {
     return Expanded(
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _buildSectionTitle(
-                'Please complete the form with the accurate details of the missing person',
-              ),
-              _buildSectionTitle('Missing Person Details:', size: 20),
-              ..._buildFormFields(),
-            ],
+      child: Container(
+        margin: EdgeInsets.only(top: 10.h),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _buildSectionTitle(
+                  'Please complete the form with the accurate details of the missing person',
+                ),
+                SizedBox(height: 15.h),
+                _buildSectionTitle('Missing Person Details:', size: 18),
+                SizedBox(height: 10.h),
+                ..._buildFormFields(),
+              ],
+            ),
           ),
         ),
       ),
@@ -254,9 +271,9 @@ class _MissingPersonDetailsScreenState
             text: TextSpan(
               text: label,
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.black87,
                 fontSize: 15.sp,
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w500,
               ),
               children: [
                 TextSpan(
@@ -270,7 +287,7 @@ class _MissingPersonDetailsScreenState
               ],
             ),
           ),
-          SizedBox(height: 5.h),
+          SizedBox(height: 6.h),
           CustomTextFormField(
             labelText: label,
             hintText: hint,
@@ -289,46 +306,59 @@ class _MissingPersonDetailsScreenState
 
   Widget _buildSectionTitle(String title, {double size = 16}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
       child: Text(
         title,
         style: TextStyle(
           fontSize: size.sp,
-          color: AppColors.myBlackColor,
-          fontWeight: FontWeight.w600,
+          color: size > 16 ? AppColors.primary : AppColors.myBlackColor,
+          fontWeight: size > 16 ? FontWeight.w600 : FontWeight.w500,
         ),
       ),
     );
   }
 
   Widget _buildNavigationButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        CustomElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          height: 45.h,
-          width: 130.w,
-          fontSize: 15.sp,
-          borderRadius: 10.r,
-          label: 'Back',
-          backgroundColor: AppColors.secondary,
-          foregroundColor: AppColors.primary,
-          showBorder: true,
-        ),
-        CustomElevatedButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.uploadImages);
-          },
-          height: 45.h,
-          width: 130.w,
-          fontSize: 15.sp,
-          borderRadius: 10.r,
-          label: 'Next',
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CustomElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            height: 45.h,
+            width: 130.w,
+            fontSize: 15.sp,
+            borderRadius: 10.r,
+            label: 'Back',
+            backgroundColor: AppColors.secondary,
+            foregroundColor: AppColors.primary,
+            showBorder: true,
+          ),
+          CustomElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState?.validate() ?? false) {
+                Get.toNamed(AppRoutes.uploadImages);
+              } else {
+                Get.snackbar(
+                  'Form Incomplete',
+                  'Please fill all required fields',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+              }
+            },
+            height: 45.h,
+            width: 130.w,
+            fontSize: 15.sp,
+            borderRadius: 10.r,
+            label: 'Next',
+          ),
+        ],
+      ),
     );
   }
 }

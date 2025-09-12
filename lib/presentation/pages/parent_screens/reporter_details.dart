@@ -33,10 +33,14 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
     return Scaffold(
       backgroundColor: AppColors.secondary,
       body: Padding(
-        padding: EdgeInsets.all(8.0.w),
+        padding: EdgeInsets.all(16.0.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_buildHeader(), _buildProgressCard(), _buildForm()],
+          children: [
+            _buildHeader(), 
+            _buildProgressCard(), 
+            _buildForm()
+          ],
         ),
       ),
     );
@@ -48,18 +52,19 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
         SizedBox(height: 50.h),
         Center(
           child: Text(
-            'Missing Person',
+            'Reporter Details',
             style: TextStyle(
-              fontSize: 25.sp,
+              fontSize: 26.sp,
               color: AppColors.primary,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
+        SizedBox(height: 10.h),
         Divider(
           color: AppColors.primary,
-          indent: 100.w,
-          endIndent: 100.w,
+          indent: 80.w,
+          endIndent: 80.w,
           thickness: 2.h,
         ),
         SizedBox(height: 20.h),
@@ -69,20 +74,29 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
 
   Widget _buildProgressCard() {
     return Container(
-      width: 390.w,
+      width: double.infinity,
       height: 140.h,
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(color: AppColors.primary, width: 1.5.w),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Card(
-        elevation: 6,
+        elevation: 0,
         color: AppColors.secondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 12.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 16.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -100,7 +114,7 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 8.h),
                     Text(
                       'Enter your details\nto continue',
                       style: TextStyle(
@@ -115,20 +129,20 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
               Expanded(
                 flex: 1,
                 child: CircularPercentIndicator(
-                  radius: 40.r,
+                  radius: 45.r,
                   lineWidth: 8.0.w,
                   percent: progressPercent,
                   animation: true,
-                  animationDuration: 1000,
+                  animationDuration: 1200,
                   progressColor: AppColors.primary,
-                  backgroundColor: Colors.teal.shade100,
+                  backgroundColor: Colors.grey.shade300,
                   circularStrokeCap: CircularStrokeCap.round,
                   center: Text(
                     "${(progressPercent * 100).toInt()}%",
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.teal[800],
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -142,16 +156,22 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
 
   Widget _buildForm() {
     return Expanded(
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _buildInstructionText(),
-              _buildSectionTitle('Reporter Details:'),
-              ..._buildFormFields(),
-              _buildNavigationButtons(),
-            ],
+      child: Container(
+        margin: EdgeInsets.only(top: 10.h),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _buildInstructionText(),
+                SizedBox(height: 15.h),
+                _buildSectionTitle('Reporter Details:'),
+                SizedBox(height: 10.h),
+                ..._buildFormFields(),
+                SizedBox(height: 20.h),
+                _buildNavigationButtons(),
+              ],
+            ),
           ),
         ),
       ),
@@ -159,30 +179,28 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
   }
 
   Widget _buildInstructionText() {
-    return Column(
-      children: [
-        Text(
-          'Please complete the form with your accurate details',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: AppColors.myBlackColor,
-            fontWeight: FontWeight.w600,
-          ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Text(
+        'Please complete the form with your accurate details',
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.myBlackColor,
+          fontWeight: FontWeight.w500,
         ),
-        SizedBox(height: 10.h),
-      ],
+      ),
     );
   }
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Text(
         title,
         style: TextStyle(
-          fontSize: 20.sp,
+          fontSize: 18.sp,
           color: AppColors.primary,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -191,32 +209,32 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
   List<Widget> _buildFormFields() {
     return [
       _buildTextField(
-        'Your name',
-        'Enter your full name',
+        'Your Full Name',
+        'Enter your complete name',
         'reporterName',
         true,
       ),
       _buildTextField(
-        'Relationship with missing person',
-        'What is your relationship with missing person',
+        'Relationship with Missing Person',
+        'e.g., Father, Mother, Brother, Friend',
         'relationship',
         true,
       ),
       _buildTextField(
         'Phone Number',
-        'Enter your phone number',
+        'Enter your active phone number',
         'phoneNumber',
         true,
       ),
       _buildTextField(
         'Emergency Contact',
-        'Enter emergency contact if phone is off',
+        'Alternative contact number',
         'emergencyContact',
         true,
       ),
       _buildTextField(
         'Additional Details',
-        'Provide any other details',
+        'Any other relevant information (optional)',
         'additionalDetails',
         false,
       ),
@@ -238,9 +256,9 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
             text: TextSpan(
               text: label,
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.black87,
                 fontSize: 15.sp,
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w500,
               ),
               children: [
                 TextSpan(
@@ -254,7 +272,7 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
               ],
             ),
           ),
-          SizedBox(height: 5.h),
+          SizedBox(height: 6.h),
           CustomTextFormField(
             labelText: label,
             hintText: hint,
@@ -262,6 +280,12 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
             validator: (value) {
               if (isRequired && (value?.isEmpty ?? true)) {
                 return 'This field is required';
+              }
+              // Add phone number validation
+              if (controllerKey == 'phoneNumber' && value != null && value.isNotEmpty) {
+                if (value.length < 10 || value.length > 15) {
+                  return 'Please enter a valid phone number';
+                }
               }
               return null;
             },
@@ -272,33 +296,46 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
   }
 
   Widget _buildNavigationButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        CustomElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          height: 45.h,
-          width: 130.w,
-          fontSize: 15.sp,
-          borderRadius: 10.r,
-          label: 'Back',
-          backgroundColor: AppColors.secondary,
-          foregroundColor: AppColors.primary,
-          showBorder: true,
-        ),
-        CustomElevatedButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.parentCaseSummary);
-          },
-          height: 45.h,
-          width: 130.w,
-          fontSize: 15.sp,
-          borderRadius: 10.r,
-          label: 'Next',
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CustomElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            height: 45.h,
+            width: 130.w,
+            fontSize: 15.sp,
+            borderRadius: 10.r,
+            label: 'Back',
+            backgroundColor: AppColors.secondary,
+            foregroundColor: AppColors.primary,
+            showBorder: true,
+          ),
+          CustomElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState?.validate() ?? false) {
+                Get.toNamed(AppRoutes.parentCaseSummary);
+              } else {
+                Get.snackbar(
+                  'Form Incomplete',
+                  'Please fill all required fields correctly',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+              }
+            },
+            height: 45.h,
+            width: 130.w,
+            fontSize: 15.sp,
+            borderRadius: 10.r,
+            label: 'Next',
+          ),
+        ],
+      ),
     );
   }
 }

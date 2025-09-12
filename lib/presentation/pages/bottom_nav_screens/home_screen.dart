@@ -232,19 +232,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       drawer: _buildDrawer(),
 
 
-      // floatingActionButton: Padding(
-      //   padding: EdgeInsets.only(bottom: widget.isInNavigation ? 80.h : 0),
-      //   child: FloatingActionButton(
-      //     onPressed: () {
-      //       // Add new report functionality - could show report options dialog
-      //       _showReportOptions();
-      //     },
-      //     backgroundColor: AppColors.primary,
-      //     child: Icon(Icons.add, color: Colors.white),
-      //   ),
-      // ),
-
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    
 
       extendBody: !widget.isInNavigation,
 

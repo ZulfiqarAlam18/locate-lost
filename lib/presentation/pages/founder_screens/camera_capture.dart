@@ -433,7 +433,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
   void _proceedToNextScreen() {
     Navigator.of(context).pop();
-    Get.toNamed(AppRoutes.finderDetails);
+    Get.toNamed(AppRoutes.foundPersonDetails);
   }
 
   void _showPermissionDialog() {

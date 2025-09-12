@@ -47,7 +47,7 @@ class _MissingPersonDetailsScreenState
             _buildHeader(),
             _buildProgressCard(),
             _buildForm(),
-            _buildNavigationButtons(),
+           // _buildNavigationButtons(),
           ],
         ),
       ),
@@ -68,14 +68,14 @@ class _MissingPersonDetailsScreenState
             ),
           ),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 4.h),
         Divider(
           color: AppColors.primary,
           indent: 80.w,
           endIndent: 80.w,
           thickness: 2.h,
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 8.h),
       ],
     );
   }
@@ -175,13 +175,17 @@ class _MissingPersonDetailsScreenState
             key: _formKey,
             child: Column(
               children: [
-                _buildSectionTitle(
-                  'Please complete the form with the accurate details of the missing person',
-                ),
-                SizedBox(height: 15.h),
-                _buildSectionTitle('Missing Person Details:', size: 18),
-                SizedBox(height: 10.h),
+                // _buildSectionTitle(
+                //   'Please complete the form with the accurate details of the missing person',
+                // ),
+                // SizedBox(height: 15.h),
+                // _buildSectionTitle('Missing Person Details:', size: 18),
+                // SizedBox(height: 10.h),
+
                 ..._buildFormFields(),
+                 SizedBox(height: 20.h),
+                _buildNavigationButtons(),
+
               ],
             ),
           ),
@@ -289,7 +293,7 @@ class _MissingPersonDetailsScreenState
           ),
           SizedBox(height: 6.h),
           CustomTextFormField(
-            labelText: label,
+           // labelText: label,
             hintText: hint,
             controller: _controllers[controllerKey]!,
             validator: (value) {
@@ -320,7 +324,7 @@ class _MissingPersonDetailsScreenState
 
   Widget _buildNavigationButtons() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

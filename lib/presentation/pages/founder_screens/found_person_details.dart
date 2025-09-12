@@ -56,105 +56,83 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
               thickness: 2,
             ),
             SizedBox(height: 20.h),
-            Container(
-              width: 390.w,
-              height: 140.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.r),
-                border: Border.all(color: AppColors.primary, width: 1.5.w),
-              ),
-              child: Card(
-                elevation: 6,
-                color: AppColors.secondary,
-                shape: RoundedRectangleBorder(
+            Center(
+              child: Container(
+                width: 390.w,
+                height: 140.h,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: AppColors.primary, width: 1.5.w),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.0.w,
-                    vertical: 12.h,
+                child: Card(
+                  elevation: 6,
+                  color: AppColors.secondary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Application Progress',
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0.w,
+                      vertical: 12.h,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Application Progress',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: 6),
+                              Text(
+                                'Enter found person\'s details\nNext: Photos & Contact Info',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.myRedColor,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: CircularPercentIndicator(
+                            radius: 40,
+                            lineWidth: 8.0,
+                            percent: progressPercent,
+                            animation: true,
+                            animationDuration: 1000,
+                            progressColor: AppColors.primary,
+                            backgroundColor: Colors.teal.shade100,
+                            circularStrokeCap: CircularStrokeCap.round,
+                            center: Text(
+                              "${(progressPercent * 100).toInt()}%",
                               style: TextStyle(
                                 fontSize: 18.sp,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal[800],
                               ),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              'Enter found person\'s details\nNext: Photos & Contact Info',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: AppColors.myRedColor,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: CircularPercentIndicator(
-                          radius: 40,
-                          lineWidth: 8.0,
-                          percent: progressPercent,
-                          animation: true,
-                          animationDuration: 1000,
-                          progressColor: AppColors.primary,
-                          backgroundColor: Colors.teal.shade100,
-                          circularStrokeCap: CircularStrokeCap.round,
-                          center: Text(
-                            "${(progressPercent * 100).toInt()}%",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.teal[800],
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
             SizedBox(height: 20),
-            Divider(
-              color: AppColors.primary,
-              indent: 100,
-              endIndent: 100,
-              thickness: 2,
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Please complete the form with the accurate details of the found person. After submitting, you\'ll take photos and provide your contact information.',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.myBlackColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Found Person Details:',
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            SizedBox(height: 10),
+           
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
@@ -217,7 +195,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                             onPressed: () {
                               // Validate form before proceeding to camera
                               if (_key.currentState!.validate()) {
-                                Get.toNamed(AppRoutes.cameraCapture);
+                                Get.toNamed(AppRoutes.finderDetails);
                               } else {
                                 // Show validation error
                                 ScaffoldMessenger.of(context).showSnackBar(

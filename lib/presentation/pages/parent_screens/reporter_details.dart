@@ -60,14 +60,14 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
             ),
           ),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 4.h),
         Divider(
           color: AppColors.primary,
           indent: 80.w,
           endIndent: 80.w,
           thickness: 2.h,
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 8.h),
       ],
     );
   }
@@ -163,9 +163,9 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
             key: _formKey,
             child: Column(
               children: [
-                _buildInstructionText(),
-                SizedBox(height: 15.h),
-                _buildSectionTitle('Reporter Details:'),
+                // _buildInstructionText(),
+                // SizedBox(height: 15.h),
+                // _buildSectionTitle('Reporter Details:'),
                 SizedBox(height: 10.h),
                 ..._buildFormFields(),
                 SizedBox(height: 20.h),
@@ -209,25 +209,25 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
   List<Widget> _buildFormFields() {
     return [
       _buildTextField(
-        'Your Full Name',
+       'Your Full Name',
         'Enter your complete name',
-        'reporterName',
+      'reporterName',
         true,
       ),
       _buildTextField(
         'Relationship with Missing Person',
         'e.g., Father, Mother, Brother, Friend',
-        'relationship',
+       'relationship',
         true,
       ),
       _buildTextField(
         'Phone Number',
         'Enter your active phone number',
-        'phoneNumber',
+       'phoneNumber',
         true,
       ),
       _buildTextField(
-        'Emergency Contact',
+       'Emergency Contact',
         'Alternative contact number',
         'emergencyContact',
         true,
@@ -254,7 +254,7 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
         children: [
           RichText(
             text: TextSpan(
-              text: label,
+             text: label,
               style: TextStyle(
                 color: Colors.black87,
                 fontSize: 15.sp,
@@ -274,7 +274,7 @@ class _ReporterDetailsScreenState extends State<ReporterDetailsScreen> {
           ),
           SizedBox(height: 6.h),
           CustomTextFormField(
-            labelText: label,
+         //  labelText: label,
             hintText: hint,
             controller: _controllers[controllerKey]!,
             validator: (value) {

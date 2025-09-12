@@ -37,7 +37,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
             SizedBox(height: 50.h),
             Center(
               child: Text(
-                'Found Person',
+                'Finder Details',
                 style: TextStyle(
                   fontSize: 25.sp,
                   color: AppColors.primary,
@@ -53,107 +53,84 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
             ),
             SizedBox(height: 20.h),
 
-            Container(
-              width: 390.w,
-              height: 140.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.r),
-                border: Border.all(color: AppColors.primary, width: 1.5.w),
-              ),
-              child: Card(
-                elevation: 6,
-                color: AppColors.secondary,
-                shape: RoundedRectangleBorder(
+            Center(
+              child: Container(
+                width: 390.w,
+                height: 140.h,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: AppColors.primary, width: 1.5.w),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.0.w,
-                    vertical: 12.h,
+                child: Card(
+                  elevation: 6,
+                  color: AppColors.secondary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Application Progress',
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0.w,
+                      vertical: 12.h,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Application Progress',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: 6.h),
+                              Text(
+                                'Enter your details\nto continue',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.myRedColor,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: CircularPercentIndicator(
+                            radius: 40.r,
+                            lineWidth: 8.0.w,
+                            percent: progressPercent,
+                            animation: true,
+                            animationDuration: 1000,
+                            progressColor: AppColors.primary,
+                            backgroundColor: Colors.teal.shade100,
+                            circularStrokeCap: CircularStrokeCap.round,
+                            center: Text(
+                              "${(progressPercent * 100).toInt()}%",
                               style: TextStyle(
                                 fontSize: 18.sp,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal[800],
                               ),
-                            ),
-                            SizedBox(height: 6.h),
-                            Text(
-                              'Enter your details\nto continue',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: AppColors.myRedColor,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: CircularPercentIndicator(
-                          radius: 40.r,
-                          lineWidth: 8.0.w,
-                          percent: progressPercent,
-                          animation: true,
-                          animationDuration: 1000,
-                          progressColor: AppColors.primary,
-                          backgroundColor: Colors.teal.shade100,
-                          circularStrokeCap: CircularStrokeCap.round,
-                          center: Text(
-                            "${(progressPercent * 100).toInt()}%",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.teal[800],
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
             SizedBox(height: 20.h),
-            Divider(
-              color: AppColors.primary,
-              indent: 100.w,
-              endIndent: 100.w,
-              thickness: 2.h,
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              'Please complete the form with your accurate details',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.myBlackColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              'Finder Details:',
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            SizedBox(height: 10),
-
-            Expanded(
+           
+           Expanded(
               child: SingleChildScrollView(
                 child: Form(
                   key: _key,
@@ -216,6 +193,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
                 ),
               ),
             ),
+         
           ],
         ),
       ),
@@ -255,7 +233,7 @@ class _FinderDetailsScreenState extends State<FinderDetailsScreen> {
           ),
           const SizedBox(height: 5),
           CustomTextFormField(
-            labelText: label,
+           // labelText: label,
             hintText: hint,
             controller: controller,
             validator: (value) {

@@ -506,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                onTap: () => Get.toNamed(AppRoutes.foundPersonDetails),
+                onTap: () => Get.toNamed(AppRoutes.cameraCapture),
               ),
             ),
           ],

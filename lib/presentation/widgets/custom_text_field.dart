@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
   final String hintText;
   final TextEditingController controller;
   final bool isPassword;
@@ -17,7 +17,7 @@ class CustomTextFormField extends StatelessWidget {
 
   const CustomTextFormField({
     super.key,
-    required this.labelText,
+    this.labelText,
     required this.hintText,
     required this.controller,
     this.isPassword = false,
@@ -41,7 +41,8 @@ class CustomTextFormField extends StatelessWidget {
           keyboardType: keyboardType,
           validator: validator,
           decoration: InputDecoration(
-            labelText: labelText,
+          //  labelText: labelText,
+            labelText: labelText?.isNotEmpty == true ? labelText : null,
             hintText: hintText,
             filled: fillColor != null,
             fillColor: fillColor,

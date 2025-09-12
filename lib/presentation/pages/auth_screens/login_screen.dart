@@ -329,33 +329,38 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
 
-                      // Forgot password button with minimal spacing
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            Get.toNamed(AppRoutes.forgotPassword);
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            visualDensity: VisualDensity.compact,
-                          ),
-                          child: Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                              decorationColor: AppColors.primary,
+                      // Forgot password button with minimal gap
+                      Transform.translate(
+                        offset: Offset(0, -8.h), // Pull up closer to password field
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Get.toNamed(AppRoutes.forgotPassword);
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 2.h,
+                              ),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              'Forgot password?',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w500,
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.primary,
+                              ),
                             ),
                           ),
                         ),
                       ),
 
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 8.h), // Small space before login button
 
                       // Login Button
                       CustomElevatedButton(

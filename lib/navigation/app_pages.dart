@@ -3,7 +3,6 @@ import 'package:locate_lost/presentation/pages/bottom_nav_screens/case_details_s
 import 'package:locate_lost/presentation/pages/bottom_nav_screens/map_nearby_reports_screen.dart';
 import 'package:locate_lost/presentation/pages/bottom_nav_screens/my_cases_screen.dart';
 import 'package:locate_lost/presentation/pages/case_screens/case_summary.dart';
-import 'package:locate_lost/presentation/pages/case_screens/display_info_screen.dart';
 import 'package:locate_lost/presentation/pages/case_screens/finder_case_summary.dart';
 import 'package:locate_lost/presentation/pages/case_screens/parent_case_summary.dart';
 import 'package:locate_lost/presentation/pages/drawer_screens/profile_screen_old.dart';
@@ -122,12 +121,12 @@ class AppPages {
     //   transition: Transition.cupertino,
     //   transitionDuration: const Duration(milliseconds: 300),
     // ),
-    GetPage(
-      name: AppRoutes.displayInfo,
-      page: () => const DisplayInfoScreen(),
-      transition: Transition.cupertino,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+    // GetPage(
+    //   name: AppRoutes.displayInfo,
+    //   page: () => const DisplayInfoScreen(),
+    //   transition: Transition.cupertino,
+    //   transitionDuration: const Duration(milliseconds: 300),
+    // ),
     GetPage(
       name: AppRoutes.myCases,
       page: () => const MyCasesScreen(),

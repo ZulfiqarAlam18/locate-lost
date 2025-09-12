@@ -29,9 +29,11 @@ class MyApp extends StatelessWidget {
 
           title: 'LocateLost',
 
-         
-          initialRoute: AppRoutes.splash,
+           initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
+
+  
+          //home: DisplayInfoScreen(),
         );
       },
     );

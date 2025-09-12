@@ -180,6 +180,196 @@ class _FAQsScreenState extends State<FAQsScreen> {
                       ),
                     ),
                   ),
+                  Card(
+                    color: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      side: BorderSide(width: 1.w, color: AppColors.primary),
+                    ),
+                    margin: EdgeInsets.all(10.w),
+                    child: ExpansionTile(
+                      title: Text(
+                        'How long does it take to find a match?',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      iconColor: AppColors.secondary,
+                      textColor: AppColors.secondary,
+                      collapsedTextColor: AppColors.secondary,
+                      collapsedIconColor: AppColors.secondary,
+
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          color: Colors.white,
+                          child: Text(
+                            'Our AI system processes images instantly and can find potential matches within minutes. However, verification and confirmation may take longer as we ensure accuracy. We notify you immediately when potential matches are found.',
+                          ),
+                        ),
+                      ],
+                      initiallyExpanded: false,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    color: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      side: BorderSide(width: 1.w, color: AppColors.primary),
+                    ),
+                    margin: EdgeInsets.all(10.w),
+                    child: ExpansionTile(
+                      title: Text(
+                        'What should I do if I find someone who looks like a missing person?',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      iconColor: AppColors.secondary,
+                      textColor: AppColors.secondary,
+                      collapsedTextColor: AppColors.secondary,
+                      collapsedIconColor: AppColors.secondary,
+
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          color: Colors.white,
+                          child: Text(
+                            'If you spot someone who matches a missing person, use our "Report a Sighting" feature to upload their photo and location. Do not approach or confront the person directly. Instead, contact local authorities immediately and share the information through our app.',
+                          ),
+                        ),
+                      ],
+                      initiallyExpanded: false,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    color: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      side: BorderSide(width: 1.w, color: AppColors.primary),
+                    ),
+                    margin: EdgeInsets.all(10.w),
+                    child: ExpansionTile(
+                      title: Text(
+                        'Can I update information about a missing person after reporting?',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      iconColor: AppColors.secondary,
+                      textColor: AppColors.secondary,
+                      collapsedTextColor: AppColors.secondary,
+                      collapsedIconColor: AppColors.secondary,
+
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          color: Colors.white,
+                          child: Text(
+                            'Yes, you can update information about a reported missing person. Go to "My Reports" in the app menu, select the case, and tap "Edit Information." You can add new photos, update last seen locations, or modify any details that might help in the search.',
+                          ),
+                        ),
+                      ],
+                      initiallyExpanded: false,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    color: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      side: BorderSide(width: 1.w, color: AppColors.primary),
+                    ),
+                    margin: EdgeInsets.all(10.w),
+                    child: ExpansionTile(
+                      title: Text(
+                        'Does the app work offline?',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      iconColor: AppColors.secondary,
+                      textColor: AppColors.secondary,
+                      collapsedTextColor: AppColors.secondary,
+                      collapsedIconColor: AppColors.secondary,
+
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          color: Colors.white,
+                          child: Text(
+                            'Some basic features like viewing previously loaded information work offline, but core features like facial recognition, uploading reports, and receiving matches require an internet connection. We recommend using the app with a stable internet connection for best results.',
+                          ),
+                        ),
+                      ],
+                      initiallyExpanded: false,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    color: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      side: BorderSide(width: 1.w, color: AppColors.primary),
+                    ),
+                    margin: EdgeInsets.all(10.w),
+                    child: ExpansionTile(
+                      title: Text(
+                        'What types of photos work best for recognition?',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      iconColor: AppColors.secondary,
+                      textColor: AppColors.secondary,
+                      collapsedTextColor: AppColors.secondary,
+                      collapsedIconColor: AppColors.secondary,
+
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          color: Colors.white,
+                          child: Text(
+                            'For best results, upload clear, high-resolution photos showing the person\'s face directly. Avoid blurry images, photos with shadows, or pictures where the face is partially covered. Multiple photos from different angles help improve recognition accuracy.',
+                          ),
+                        ),
+                      ],
+                      initiallyExpanded: false,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

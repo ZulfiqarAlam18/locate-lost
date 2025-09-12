@@ -24,6 +24,238 @@ class _SignupScreenState extends State<SignupScreen> {
   // Password visibility state
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _termsAccepted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Show terms and conditions dialog when screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showTermsAndConditionsDialog();
+    });
+  }
+
+  void _showTermsAndConditionsDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // User must accept or decline
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header
+                    Container(
+                      padding: EdgeInsets.all(20.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.r),
+                          topRight: Radius.circular(20.r),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.assignment,
+                            color: Colors.white,
+                            size: 24.sp,
+                          ),
+                          SizedBox(width: 10.w),
+                          Expanded(
+                            child: Text(
+                              'Terms & Conditions',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    // Content
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.all(20.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildTermsSection(
+                              'Welcome to LocateLost',
+                              'Our mission is to reunite missing children with their families using advanced facial recognition technology. By creating an account, you agree to use this service responsibly.',
+                            ),
+                            _buildTermsSection(
+                              'Your Responsibility',
+                              'You must provide accurate information. Any misleading, false, or harmful use of this application will result in account suspension and possible legal action.',
+                            ),
+                            _buildTermsSection(
+                              'Our Role',
+                              'We are technology facilitators, not an official rescue or law enforcement body. We do not verify user identities or guarantee successful matches. The developers hold no legal responsibility for misuse.',
+                            ),
+                            _buildTermsSection(
+                              'AI Technology',
+                              'Our facial recognition system is automated and may not always be 100% accurate. All matches should be treated as potential leads, not confirmations.',
+                            ),
+                            _buildTermsSection(
+                              'Privacy & Data',
+                              'Your personal data and photos are processed solely for matching purposes. We never share, sell, or misuse your information. All data is securely stored and encrypted.',
+                            ),
+                            _buildTermsSection(
+                              'Important Notice',
+                              'Always report missing persons to local authorities in addition to using our app. We cannot guarantee successful matches or reunions.',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    
+                    // Agreement Section
+                    Container(
+                      padding: EdgeInsets.all(20.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        border: Border(
+                          top: BorderSide(
+                            color: Colors.grey.shade300,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Checkbox(
+                                value: _termsAccepted,
+                                activeColor: AppColors.primary,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _termsAccepted = value!;
+                                  });
+                                },
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'I have read and agree to the Terms & Conditions. I understand that this app is a technology platform to assist in finding missing persons and that I should also report to local authorities.',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.black87,
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 15.h),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop(); // Go back to splash/previous screen
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      side: BorderSide(color: Colors.red),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Decline',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 15.w),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: _termsAccepted
+                                      ? () {
+                                          Navigator.of(context).pop();
+                                          // User can now proceed with signup
+                                        }
+                                      : null,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: _termsAccepted 
+                                        ? AppColors.primary 
+                                        : Colors.grey,
+                                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Accept',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildTermsSection(String title, String content) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(height: 6.h),
+          Text(
+            content,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.black87,
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,9 +416,42 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(
                         height: 15.h,
                       ), // Only a small gap between button and fields
+
+                      // Terms and conditions reminder
+                      TextButton(
+                        onPressed: () {
+                          _showTermsAndConditionsDialog();
+                        },
+                        child: Text(
+                          'Review Terms & Conditions',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                      
+                      SizedBox(height: 10.h),
+                      
                       // Custom Button
                       CustomElevatedButton(
                         onPressed: () {
+                          if (!_termsAccepted) {
+                            Get.snackbar(
+                              'Terms Required',
+                              'Please accept the Terms & Conditions to create an account',
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              snackPosition: SnackPosition.TOP,
+                              margin: EdgeInsets.all(16.w),
+                              borderRadius: 12.r,
+                              icon: Icon(Icons.error_outline, color: Colors.white),
+                            );
+                            return;
+                          }
+                          
                           if (_key.currentState!.validate()) {
                             // All validation passed
                             Get.toNamed(AppRoutes.otpVerification);

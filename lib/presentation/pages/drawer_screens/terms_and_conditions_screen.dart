@@ -77,39 +77,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 16.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Checkbox(
-                  value: agreed,
-                  activeColor: AppColors.primary,
-                  onChanged: (value) {
-                    setState(() {
-                      agreed = value!;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: Text(
-                    'I have read and agree to the Terms & Conditions.',
-                    style: TextStyle(fontSize: 14.sp),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 8.h),
-            CustomElevatedButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.login);
-              },
-              height: 60.h,
-              width: 241.w,
-              fontSize: 20.sp,
-              borderRadius: 10.r,
-              label: 'Create Account',
-            ),
-            SizedBox(height: 12.h),
+
+           
           ],
         ),
       ),

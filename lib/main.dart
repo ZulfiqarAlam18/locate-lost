@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 
           title: 'LocateLost',
 
-           initialRoute: AppRoutes.home,
+           initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
 
   

@@ -71,10 +71,6 @@ class SplashScreen2 extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(24.r),
-                      border: Border.all(
-                        color: AppColors.primary.withOpacity(0.1),
-                        width: 1,
-                      ),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.shadowLight,

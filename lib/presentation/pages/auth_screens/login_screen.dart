@@ -755,10 +755,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Navigate to home with fade animation
   void _navigateToHome() {
+
     // Add subtle delay for better UX
-    Future.delayed(const Duration(milliseconds: 100), () {
-      Get.offAllNamed(AppRoutes.home);
-    });
+    // Future.delayed(const Duration(milliseconds: 100), () {
+    //   Get.offAllNamed(AppRoutes.home);
+    // });
+
+     Get.offAllNamed(AppRoutes.home);
+
   }
 
   // Enable location and navigate to home

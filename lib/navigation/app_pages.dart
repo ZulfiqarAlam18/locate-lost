@@ -97,7 +97,34 @@ class AppPages {
     // Main Routes
     GetPage(
       name: AppRoutes.mainNavigation,
-      page: () => const MainNavigationScreen(),
+      page: () {
+        // Handle navigation arguments to set initial tab index
+        final arguments = Get.arguments;
+        int initialIndex = 0; // Default to home tab
+        
+        if (arguments != null) {
+          // Handle direct int argument (e.g., arguments: 2)
+          if (arguments is int && arguments >= 0 && arguments <= 3) {
+            initialIndex = arguments;
+          }
+          // Handle map argument (e.g., arguments: {'initialIndex': 2})
+          else if (arguments is Map) {
+            if (arguments.containsKey('initialIndex')) {
+              final index = arguments['initialIndex'];
+              if (index is int && index >= 0 && index <= 3) {
+                initialIndex = index;
+              }
+            } else if (arguments.containsKey('index')) {
+              final index = arguments['index'];
+              if (index is int && index >= 0 && index <= 3) {
+                initialIndex = index;
+              }
+            }
+          }
+        }
+        
+        return MainNavigationScreen(initialIndex: initialIndex);
+      },
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -105,7 +132,7 @@ class AppPages {
       name: AppRoutes.home,
       page:
           () =>
-              const MainNavigationScreen(), // Route home to MainNavigationScreen
+              MainNavigationScreen(), // Route home to MainNavigationScreen
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -129,19 +156,19 @@ class AppPages {
     // ),
     GetPage(
       name: AppRoutes.myCases,
-      page: () => const MyCasesScreen(),
+      page: () =>  MyCasesScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.caseDetails,
-      page: () => const CaseDetailsScreen(),
+      page: () =>  CaseDetailsScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.mapNearbyReports,
-      page: () => const MapNearbyReportsScreen(),
+      page: () =>  MapNearbyReportsScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),

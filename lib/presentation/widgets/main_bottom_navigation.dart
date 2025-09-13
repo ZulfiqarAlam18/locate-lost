@@ -94,16 +94,38 @@ class MainBottomNavigation extends StatelessWidget {
   }
 }
 
+// GetX Controller for navigation state management
 class MainNavigationController extends GetxController {
   var selectedIndex = 0.obs;
 
   void changeIndex(int index) {
-    if (selectedIndex.value != index) {
+    if (selectedIndex.value != index && index >= 0 && index <= 3) {
       selectedIndex.value = index;
     }
   }
 
   void setIndex(int index) {
-    selectedIndex.value = index;
+    if (index >= 0 && index <= 3) {
+      selectedIndex.value = index;
+    }
+  }
+
+  // Method to get current index
+  int get currentIndex => selectedIndex.value;
+  
+  // Method to check if a specific tab is selected
+  bool isTabSelected(int index) => selectedIndex.value == index;
+
+  // Method to navigate to a specific tab from external screens
+  static void navigateToTab(int tabIndex) {
+    if (tabIndex >= 0 && tabIndex <= 3) {
+      // Use Get.offAll to replace the entire navigation stack
+      Get.offAllNamed('/main-navigation', arguments: tabIndex);
+    }
+  }
+
+  // Method to navigate to main screen with specific tab
+  static void goToMainNavigation({int initialIndex = 0}) {
+    Get.offAllNamed('/main-navigation', arguments: initialIndex);
   }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/core/utils/dialog_utils.dart';
+import 'package:locate_lost/core/utils/navigation_helper.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
 
@@ -1097,7 +1098,11 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
     if (isSuccess) {
       DialogUtils.showCaseSubmissionSuccess(
         onViewCases: () {
-          Get.toNamed(AppRoutes.myCases);
+
+           NavigationHelper.goToMyCases();
+
+
+
         },
       );
     } else {

@@ -135,11 +135,15 @@ class _MyCasesScreenState extends State<MyCasesScreen>
           ),
         ],
       ),
-      extendBody: !widget.isInNavigation,
-      bottomNavigationBar: widget.isInNavigation ? null : Obx(() => MainBottomNavigation(
-        currentIndex: navController.selectedIndex.value,
-        onTap: navController.changeIndex,
-      )),
+    
+    
+      // extendBody: !widget.isInNavigation,
+      // bottomNavigationBar: widget.isInNavigation ? null : Obx(() => MainBottomNavigation(
+      //   currentIndex: navController.selectedIndex.value,
+      //   onTap: navController.changeIndex,
+      // )),
+
+
     );
   }
 

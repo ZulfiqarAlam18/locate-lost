@@ -234,17 +234,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     
 
-      extendBody: !widget.isInNavigation,
+      // extendBody: !widget.isInNavigation,
 
-      bottomNavigationBar:
-          widget.isInNavigation
-              ? null
-              : Obx(
-                () => MainBottomNavigation(
-                  currentIndex: navController.selectedIndex.value,
-                  onTap: navController.changeIndex,
-                ),
-              ),
+      // bottomNavigationBar:
+      //     widget.isInNavigation
+      //         ? null
+      //         : Obx(
+      //           () => MainBottomNavigation(
+      //             currentIndex: navController.selectedIndex.value,
+      //             onTap: navController.changeIndex,
+      //           ),
+      //         ),
+
+
     );
   }
 
@@ -478,6 +480,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Get.toNamed(AppRoutes.missingPersonDetails),
+
+               // onTap: () => Get.toNamed(AppRoutes.parentCaseSummary),
+
               ),
             ),
             SizedBox(width: 16.w),

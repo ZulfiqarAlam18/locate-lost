@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:locate_lost/core/constants/app_colors.dart';
+import 'package:locate_lost/core/utils/navigation_helper.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
 import 'package:locate_lost/presentation/widgets/main_bottom_navigation.dart';
@@ -118,16 +119,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           ),
         ),
       ),
-      extendBody: !widget.isInNavigation,
-      bottomNavigationBar:
-          widget.isInNavigation
-              ? null
-              : Obx(
-                () => MainBottomNavigation(
-                  currentIndex: navController.selectedIndex.value,
-                  onTap: navController.changeIndex,
-                ),
-              ),
+      
+     
+  
     );
   }
 
@@ -372,7 +366,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 () {
                   // Navigate to My Cases screen with index 0 (missing cases)
                   Get.back();
-                  Get.toNamed(AppRoutes.myCases);
+                  NavigationHelper.goToMyCases();
                 },
               ),
             ),
@@ -409,6 +403,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 Icons.settings,
                 AppColors.textSecondary,
                 () {
+
+                 Get.toNamed(AppRoutes.settings);
+
                   // Navigate to settings
                 },
               ),

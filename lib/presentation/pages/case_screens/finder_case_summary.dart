@@ -7,6 +7,8 @@ import 'package:locate_lost/core/utils/dialog_utils.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
 
+import '../../../core/utils/navigation_helper.dart' show NavigationHelper;
+
 // Finder Case data model
 class FinderCaseData {
   final String caseId;
@@ -1200,7 +1202,8 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         message:
             'Your report has been submitted successfully. We\'ll help match this person with missing person reports.',
         onViewCases: () {
-          Get.toNamed(AppRoutes.myCases);
+          NavigationHelper.goToMyCases();
+
         },
       );
     } else {

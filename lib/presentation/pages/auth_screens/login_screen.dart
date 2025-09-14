@@ -799,7 +799,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     // Add slight delay for better UX
-    await Future.delayed(const Duration(milliseconds: 500));
+   // await Future.delayed(const Duration(milliseconds: 500));
 
     // Navigate to home
     _navigateToHome();

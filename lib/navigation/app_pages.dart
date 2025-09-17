@@ -38,6 +38,7 @@ import '../presentation/pages/settings_screens/support_settings_screen.dart';
 import '../presentation/pages/settings_screens/about_settings_screen.dart';
 import '../presentation/pages/settings_screens/danger_zone_settings_screen.dart';
 import '../presentation/pages/location_permission_test_screen.dart';
+import '../presentation/pages/test_screens/backend_test_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -363,6 +364,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.locationPermissionTest,
       page: () => const LocationPermissionTestScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.backendTest,
+      page: () => const BackendTestScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),

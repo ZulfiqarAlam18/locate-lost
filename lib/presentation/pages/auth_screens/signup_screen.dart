@@ -5,6 +5,7 @@ import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_elevated_button.dart';
 import 'package:locate_lost/presentation/widgets/custom_text_field.dart';
+import 'package:locate_lost/data/controllers/auth_controller.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -25,14 +26,105 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;
+  bool _isLoading = false;
+  
+  // Get the auth controller
+  late final AuthController authController;
 
   @override
   void initState() {
     super.initState();
+    authController = Get.find<AuthController>();
     // Show terms and conditions dialog when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showTermsAndConditionsDialog();
     });
+  }
+
+  Future<void> _handleSignup() async {
+    if (!_termsAccepted) {
+      Get.snackbar(
+        'Terms Required',
+        'Please accept the Terms & Conditions to create an account',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        margin: EdgeInsets.all(16.w),
+        borderRadius: 12.r,
+        icon: Icon(Icons.error_outline, color: Colors.white),
+      );
+      return;
+    }
+    
+    if (!_key.currentState!.validate()) {
+      Get.snackbar(
+        'Validation Error',
+        'Please fill in all required fields correctly',
+        backgroundColor: Colors.orange[600],
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        margin: EdgeInsets.all(16.w),
+        borderRadius: 12.r,
+        icon: Icon(Icons.warning_rounded, color: Colors.white),
+      );
+      return;
+    }
+    
+    // Check password match
+    if (cPass.text != ccPass.text) {
+      Get.snackbar(
+        'Password Mismatch',
+        'Passwords do not match',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        margin: EdgeInsets.all(16.w),
+        borderRadius: 12.r,
+      );
+      return;
+    }
+    
+    // Perform real registration
+    setState(() => _isLoading = true);
+    
+    final success = await authController.register(
+      name: cName.text.trim(),
+      email: cEmail.text.trim(),
+      phone: cNum.text.trim(),
+      password: cPass.text,
+    );
+    
+    setState(() => _isLoading = false);
+    
+    if (success) {
+      Get.snackbar(
+        'Success',
+        'Account created successfully! You can now login.',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        margin: EdgeInsets.all(16.w),
+        borderRadius: 12.r,
+        icon: Icon(Icons.check_circle, color: Colors.white),
+      );
+      // Navigate to login screen
+      Get.offNamed(AppRoutes.login);
+    } else {
+      String errorMessage = authController.errorMessage.value;
+      if (errorMessage.isEmpty) {
+        errorMessage = 'Registration failed. Please try again.';
+      }
+      Get.snackbar(
+        'Registration Failed',
+        errorMessage,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        margin: EdgeInsets.all(16.w),
+        borderRadius: 12.r,
+        icon: Icon(Icons.error_outline, color: Colors.white),
+      );
+    }
   }
 
   void _showTermsAndConditionsDialog() {
@@ -438,42 +530,15 @@ class _SignupScreenState extends State<SignupScreen> {
                       // Custom Button
                       CustomElevatedButton(
                         onPressed: () {
-                          if (!_termsAccepted) {
-                            Get.snackbar(
-                              'Terms Required',
-                              'Please accept the Terms & Conditions to create an account',
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                              snackPosition: SnackPosition.TOP,
-                              margin: EdgeInsets.all(16.w),
-                              borderRadius: 12.r,
-                              icon: Icon(Icons.error_outline, color: Colors.white),
-                            );
-                            return;
-                          }
-                          
-                          if (_key.currentState!.validate()) {
-                            // All validation passed
-                            Get.toNamed(AppRoutes.otpVerification);
-                          } else {
-                            // Show validation error
-                            Get.snackbar(
-                              'Validation Error',
-                              'Please fill in all required fields correctly',
-                              backgroundColor: Colors.orange[600],
-                              colorText: Colors.white,
-                              snackPosition: SnackPosition.TOP,
-                              margin: EdgeInsets.all(16.w),
-                              borderRadius: 12.r,
-                              icon: Icon(Icons.warning_rounded, color: Colors.white),
-                            );
+                          if (!_isLoading) {
+                            _handleSignup();
                           }
                         },
                         height: 60.h,
                         width: 241.w,
                         fontSize: 20.sp,
                         borderRadius: 10.r,
-                        label: 'Create Account',
+                        label: _isLoading ? 'Creating Account...' : 'Create Account',
                       ),
                     ],
                   ),

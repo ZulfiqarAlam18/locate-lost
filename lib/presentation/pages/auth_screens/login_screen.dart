@@ -5,6 +5,7 @@ import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/dialogs/animated_loading_dialog.dart';
 import 'package:locate_lost/presentation/widgets/custom_text_field.dart';
+import 'package:locate_lost/data/controllers/auth_controller.dart';
 
 import '../../widgets/custom_elevated_button.dart';
 
@@ -22,21 +23,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isLoading = false;
   bool _obscurePassword = true;
+  
+  // Get the auth controller
+  late final AuthController authController;
+  
+  @override
+  void initState() {
+    super.initState();
+    authController = Get.find<AuthController>();
+  }
 
-  // Simulate login with error handling
+  // Real login with backend API
   Future<bool> _performLogin() async {
     try {
-      // Simulate network delay
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Simulate random failure for demo (remove in production)
-      // if (Random().nextBool()) {
-      //   throw Exception('Network error');
-      // }
-
-      return true; // Success
+      // Call actual backend login
+      final success = await authController.login(cEmail.text.trim(), cPass.text);
+      return success;
     } catch (e) {
-      return false; // Failure
+      print('Login error: $e');
+      return false;
     }
   }
 
@@ -214,10 +219,12 @@ class _LoginScreenState extends State<LoginScreen> {
       // Show location permission dialog
       _showLocationPermissionPopup();
     } else {
-      // Show error dialog with retry
-      _showErrorDialog(
-        'Unable to connect to server. Please check your internet connection and try again.',
-      );
+      // Show error from auth controller
+      String errorMessage = authController.errorMessage.value;
+      if (errorMessage.isEmpty) {
+        errorMessage = 'Unable to connect to server. Please check your internet connection and try again.';
+      }
+      _showErrorDialog(errorMessage);
     }
   }
 
@@ -374,6 +381,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 20.sp,
                         borderRadius: 10.r,
                         label: _isLoading ? 'Please Wait...' : 'Log In',
+                      ),
+                      
+                      SizedBox(height: 10.h),
+                      
+                      // Test Backend Connection Button
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.backendTest);
+                        },
+                        child: Text(
+                          'Test Backend Connection',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 14.sp,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
                       ),
                     ],
                   ),

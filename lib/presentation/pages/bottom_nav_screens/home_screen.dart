@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/main_bottom_navigation.dart';
+import '../../../data/controllers/auth_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isInNavigation;
@@ -15,7 +16,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  String username = 'Zohaib Khoso';
+  late AuthController authController;
+  String get username => authController.user.value?.name ?? 'User';
+  
+  // Statistics variables (will be updated with real data later)
+  int activeCases = 12;
+  int resolvedCases = 48;
+  int thisMonthCases = 8;
+  
   late MainNavigationController navController;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -63,6 +71,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    // Initialize AuthController
+    try {
+      authController = Get.find<AuthController>();
+    } catch (e) {
+      authController = Get.put(AuthController());
+    }
 
     // Initialize animation controller
     _animationController = AnimationController(
@@ -364,9 +379,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildCardStat('12', 'Active\nCases'),
-                      _buildCardStat('48', 'Resolved\nCases'),
-                      _buildCardStat('8', 'This\nMonth'),
+                      _buildCardStat(activeCases.toString(), 'Active\nCases'),
+                      _buildCardStat(resolvedCases.toString(), 'Resolved\nCases'),
+                      _buildCardStat(thisMonthCases.toString(), 'This\nMonth'),
                     ],
                   ),
                 ],

@@ -62,6 +62,7 @@ class AppRoutes {
   // Demo Routes
   static const String dialogDemo = '/dialog-demo';
   static const String locationPermissionTest = '/location-permission-test';
+  static const String backendTest = '/backend-test';
   static const String settingsPrivacy = '/settings/privacy';
   static const String settingsLanguage = '/settings/language';
   static const String settingsSupport = '/settings/support';

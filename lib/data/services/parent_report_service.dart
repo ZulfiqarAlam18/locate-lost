@@ -23,20 +23,17 @@ class ParentReportService extends BaseApiService {
     try {
       final form = FormData({
         'childName': childName,
-        'age': age.toString(),
-        'gender': gender,
-        'placeLost': placeLost,
-        'lostTime': lostTime.toIso8601String(),
-        if (clothes != null && clothes.isNotEmpty) 'clothes': clothes,
-        if (additionalDetails != null && additionalDetails.isNotEmpty) 
-          'additionalDetails': additionalDetails,
+        'childAge': age.toString(),
+        'description': '${clothes ?? ''} ${additionalDetails ?? ''}'.trim(),
+        'lastSeenLocation': placeLost,
+        'contactInfo': '${additionalDetails ?? ''}'.trim(),
         if (latitude != null) 'latitude': latitude.toString(),
         if (longitude != null) 'longitude': longitude.toString(),
         if (locationName != null && locationName.isNotEmpty) 
           'locationName': locationName,
       });
       
-      // Add image files
+            // Add image files
       for (File image in images) {
         form.files.add(MapEntry(
           'images', 
@@ -44,19 +41,41 @@ class ParentReportService extends BaseApiService {
         ));
       }
       
-      final response = await post('/api/reports/parent', form);
+      print('--- HTTP REQUEST DEBUG ---');
+      print('Base URL: ${httpClient.baseUrl}');
+      print('Endpoint: /api/reports/parent');  // Updated endpoint
+      print('Full URL: ${httpClient.baseUrl}/api/reports/parent');
+      print('Form data: ${form.fields}');
+      print('Files count: ${form.files.length}');
+      print('Auth token exists: ${getAuthToken() != null}');
+      if (getAuthToken() != null) {
+        print('Auth token preview: ${getAuthToken()!.substring(0, 20)}...');
+      }
+      
+      final response = await post('/api/reports/parent', form);  // Updated endpoint
+      
+      print('--- HTTP RESPONSE DEBUG ---');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      print('Response Headers: ${response.headers}');
       
       if (response.statusCode == 201) {
+        print('SUCCESS: Creating ParentReport from response data');
         return ApiResponse.success(
           ParentReport.fromJson(response.body['data']), 
           response.body['message'] ?? 'Report created successfully',
         );
       } else {
+        print('ERROR: Status code ${response.statusCode}');
+        print('Error message: ${response.body['message'] ?? 'Failed to create report'}');
         return ApiResponse.error(
           response.body['message'] ?? 'Failed to create report'
         );
       }
     } catch (e) {
+      print('--- NETWORK EXCEPTION ---');
+      print('Error type: ${e.runtimeType}');
+      print('Error message: $e');
       return ApiResponse.error('Error creating report: $e');
     }
   }
@@ -75,7 +94,7 @@ class ParentReportService extends BaseApiService {
       
       if (status != null) query['status'] = status;
       
-      final response = await get('/api/reports/parent/my', query: query);
+      final response = await get('/api/parent-reports/my-reports', query: query);
       
       final result = handleResponse(response);
       
@@ -116,7 +135,7 @@ class ParentReportService extends BaseApiService {
       if (maxAge != null) query['maxAge'] = maxAge.toString();
       if (location != null) query['location'] = location;
       
-      final response = await get('/api/reports/parent', query: query);
+      final response = await get('/api/parent-reports', query: query);
       
       final result = handleResponse(response);
       
@@ -138,7 +157,7 @@ class ParentReportService extends BaseApiService {
   // Get report by ID
   Future<ApiResponse<ParentReport>> getReportById(String reportId) async {
     try {
-      final response = await get('/api/reports/parent/$reportId');
+      final response = await get('/api/parent-reports/$reportId');
       
       final result = handleResponse(response);
       
@@ -161,7 +180,7 @@ class ParentReportService extends BaseApiService {
     String status,
   ) async {
     try {
-      final response = await put('/api/reports/parent/$reportId', {
+      final response = await put('/api/parent-reports/$reportId', {
         'status': status,
       });
       

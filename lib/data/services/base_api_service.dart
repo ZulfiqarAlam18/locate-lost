@@ -4,9 +4,10 @@ import 'package:get_storage/get_storage.dart';
 class BaseApiService extends GetConnect {
   // 🔥 BACKEND SERVER CONFIGURATION
   // LocateLost Backend Server
-  static const String apiBaseUrl = 'http://10.11.73.25:5000'; // Your backend server IP
+  static const String apiBaseUrl = 'http://192.168.2.150:5000';  // Updated to correct IP // Your backend server IP
   // static const String apiBaseUrl = 'http://10.0.2.2:5000'; // Android emulator localhost  
-  // static const String apiBaseUrl = 'http://192.168.1.100:5000'; // Previous IP
+  // static const String apiBaseUrl = 'http://localhost:5000'; // For web/desktop development
+  // static const String apiBaseUrl = 'http://192.168.1.100:5000'; // Alternative IP
   final storage = GetStorage();
   
   @override
@@ -38,6 +39,27 @@ class BaseApiService extends GetConnect {
   // Get stored auth token
   String? getAuthToken() {
     return storage.read('access_token');
+  }
+
+  // Test backend connectivity
+  Future<bool> testConnectivity() async {
+    try {
+      print('--- TESTING BACKEND CONNECTIVITY ---');
+      print('Base URL: $apiBaseUrl');
+      print('Testing endpoint: /health');
+      
+      final response = await get('/health');  // Use /health instead of /
+      
+      print('Health check response:');
+      print('Status Code: ${response.statusCode}');
+      print('Body: ${response.body}');
+      print('Headers: ${response.headers}');
+      
+      return response.statusCode == 200; // Health endpoint should return 200
+    } catch (e) {
+      print('Health check failed with error: $e');
+      return false;
+    }
   }
 
   // Get headers with auth token

@@ -193,9 +193,9 @@ class _BackendTestScreenState extends State<BackendTestScreen> {
                                 SizedBox(height: 8.h),
                                 Text(
                                   '1. Make sure your Node.js backend server is running\n'
-                                  '2. Check if the IP address (192.168.1.100) is correct\n'
+                                  '2. Check if the IP address (${BaseApiService.apiBaseUrl}) is correct\n'
                                   '3. Ensure port 5000 is not blocked by firewall\n'
-                                  '4. Try connecting from a browser: http://192.168.1.100:5000\n'
+                                  '4. Try connecting from a browser: ${BaseApiService.apiBaseUrl}\n'
                                   '5. Make sure both devices are on the same network',
                                   style: TextStyle(
                                     fontSize: 12.sp,

@@ -9,28 +9,39 @@ class ConnectionTestService {
     try {
       print('🔍 Testing connection to: ${BaseApiService.apiBaseUrl}');
       
-      // Test basic connectivity using health endpoint (more reliable than root)
+      // First try with a shorter timeout to fail faster
       final response = await http.get(
-        Uri.parse('${BaseApiService.apiBaseUrl}/health'),
+        Uri.parse('${BaseApiService.apiBaseUrl}/'),
         headers: {'Content-Type': 'application/json'},
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 5));
       
       print('📡 Response status: ${response.statusCode}');
       print('📡 Response body: ${response.body}');
       
       return {
-        'success': response.statusCode == 200,
+        'success': response.statusCode == 200 || response.statusCode == 404,
         'statusCode': response.statusCode,
-        'message': response.statusCode == 200 ? 'Backend server is reachable' : 'Server responded but with error',
+        'message': response.statusCode == 200 || response.statusCode == 404 
+            ? 'Backend server is reachable' 
+            : 'Server responded but with error',
         'responseBody': response.body,
         'serverReachable': true,
       };
       
     } catch (e) {
       print('❌ Connection failed: $e');
+      
+      // Try to get more specific error information
+      String errorMessage = 'Connection failed: $e';
+      if (e.toString().contains('TimeoutException')) {
+        errorMessage = 'Connection timed out. Backend server might not be accessible from this device.';
+      } else if (e.toString().contains('SocketException')) {
+        errorMessage = 'Network error. Check if IP address is correct and server is running.';
+      }
+      
       return {
         'success': false,
-        'message': 'Connection failed: $e',
+        'message': errorMessage,
         'serverReachable': false,
       };
     }
@@ -42,12 +53,31 @@ class ConnectionTestService {
       print('🏥 Testing health endpoint: ${BaseApiService.apiBaseUrl}/health');
       
       final response = await http.get(
-        Uri.parse('${BaseApiService.apiBaseUrl}/health'),
+        Uri.parse('${BaseApiService.apiBaseUrl}/health'),  // Changed from /api/health to /health
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 10));
       
       print('🏥 Health response: ${response.statusCode} - ${response.body}');
       
+      // If health endpoint doesn't exist, try other common endpoints
+      if (response.statusCode == 404) {
+        print('🔄 Health endpoint not found, trying alternative endpoints...');
+        
+        // Try root endpoint
+        final rootResponse = await http.get(
+          Uri.parse('${BaseApiService.apiBaseUrl}/'),
+          headers: {'Content-Type': 'application/json'},
+        ).timeout(const Duration(seconds: 10));
+        
+        if (rootResponse.statusCode == 200) {
+          return {
+            'success': true,
+            'statusCode': rootResponse.statusCode,
+            'message': 'Backend server is running (via root endpoint)',
+            'responseBody': rootResponse.body,
+          };
+        }
+      }
       return {
         'success': response.statusCode == 200,
         'statusCode': response.statusCode,
@@ -67,11 +97,11 @@ class ConnectionTestService {
   // Test authentication endpoint
   static Future<Map<String, dynamic>> testAuthEndpoint() async {
     try {
-      print('🔐 Testing auth endpoint: ${BaseApiService.apiBaseUrl}/api/auth/login');
+      print('🔐 Testing auth endpoint: ${BaseApiService.apiBaseUrl}/api/auth/signin');
       
-      // Try to hit login endpoint with dummy data to see if it responds
+      // Try to hit signin endpoint with dummy data to see if it responds (expecting 400/401, not connection error)
       final response = await http.post(
-        Uri.parse('${BaseApiService.apiBaseUrl}/api/auth/login'),
+        Uri.parse('${BaseApiService.apiBaseUrl}/api/auth/signin'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': 'test@test.com',
@@ -104,6 +134,36 @@ class ConnectionTestService {
     }
   }
   
+  // Test localhost as fallback
+  static Future<Map<String, dynamic>> testLocalhost() async {
+    try {
+      print('🏠 Testing localhost fallback: http://localhost:5000/health');
+      
+      final response = await http.get(
+        Uri.parse('http://localhost:5000/health'),  // Changed from /api/health to /health
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 5));
+      
+      print('🏠 Localhost response: ${response.statusCode} - ${response.body}');
+      
+      return {
+        'success': response.statusCode == 200,
+        'statusCode': response.statusCode,
+        'message': response.statusCode == 200 
+            ? 'Localhost connection successful' 
+            : 'Localhost responded with error',
+        'responseBody': response.body,
+      };
+      
+    } catch (e) {
+      print('❌ Localhost test failed: $e');
+      return {
+        'success': false,
+        'message': 'Localhost test failed: $e',
+      };
+    }
+  }
+  
   // Run all connection tests
   static Future<Map<String, dynamic>> runAllTests() async {
     print('🚀 Starting backend connectivity tests...');
@@ -125,15 +185,27 @@ class ConnectionTestService {
     print('\n🔐 Test 3: Auth Endpoint');
     results['authEndpoint'] = await testAuthEndpoint();
     
+    // Test 4: Localhost fallback (try if main IP fails)
+    print('\n🏠 Test 4: Localhost Fallback');
+    results['localhostTest'] = await testLocalhost();
+    
     // Summary
     bool anySuccess = results['basicConnection']['success'] || 
                      results['healthCheck']['success'] || 
-                     results['authEndpoint']['success'];
+                     results['authEndpoint']['success'] ||
+                     results['localhostTest']['success'];
     
     results['overallSuccess'] = anySuccess;
-    results['summary'] = anySuccess 
-        ? '✅ Backend is reachable!' 
-        : '❌ Backend is not reachable. Check if server is running and IP is correct.';
+    
+    if (anySuccess) {
+      if (results['localhostTest']['success'] && !results['basicConnection']['success']) {
+        results['summary'] = '✅ Backend reachable via localhost only! Update IP to 127.0.0.1 or 192.168.x.x';
+      } else {
+        results['summary'] = '✅ Backend is reachable!';
+      }
+    } else {
+      results['summary'] = '❌ Backend is not reachable. Check if server is running.';
+    }
     
     print('\n📋 Connection Test Summary:');
     print('Backend URL: ${BaseApiService.apiBaseUrl}');

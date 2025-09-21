@@ -7,6 +7,7 @@ import 'package:locate_lost/core/utils/dialog_utils.dart';
 import 'package:locate_lost/core/utils/navigation_helper.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
+import 'package:locate_lost/data/services/base_api_service.dart';
 
 // Parent Case data model
 class ParentCaseData {
@@ -1021,6 +1022,24 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
               ),
             ],
           ),
+          SizedBox(height: 12.h),
+          // Test connectivity button for debugging
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => _testConnectivity(),
+              icon: Icon(Icons.wifi, size: 18.w),
+              label: Text('Test Backend Connection'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue,
+                side: BorderSide(color: Colors.blue),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 14.h),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -1061,6 +1080,62 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
         ],
       ),
     );
+  }
+
+  // Test backend connectivity
+  void _testConnectivity() async {
+    Get.snackbar(
+      'Testing Connection',
+      'Checking backend connectivity...',
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.blue,
+      colorText: Colors.white,
+    );
+
+    try {
+      final baseService = BaseApiService();
+      
+      // Check authentication token first
+      final token = baseService.getAuthToken();
+      print('--- AUTH TOKEN CHECK ---');
+      print('Token exists: ${token != null}');
+      if (token != null) {
+        print('Token preview: ${token.substring(0, 20)}...');
+      } else {
+        print('No authentication token found!');
+      }
+
+      final isConnected = await baseService.testConnectivity();
+      
+      if (isConnected) {
+        Get.snackbar(
+          'Connection Successful',
+          'Backend server is reachable! ${token != null ? "Auth token found." : "No auth token."}',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      } else {
+        Get.snackbar(
+          'Connection Failed',
+          'Cannot reach backend server',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Connection Error',
+        'Error: $e',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 5),
+      );
+    }
   }
   
   void _performSubmission() async {

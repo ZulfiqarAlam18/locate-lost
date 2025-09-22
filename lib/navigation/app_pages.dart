@@ -18,8 +18,9 @@ import '../presentation/pages/auth_screens/otp_verification_screen.dart';
 import '../presentation/pages/main_navigation_screen.dart';
 import '../presentation/pages/parent_screens/missing_person_details.dart';
 import '../presentation/pages/parent_screens/upload_images.dart';
-import '../presentation/pages/founder_screens/found_person_details.dart';
-import '../presentation/pages/founder_screens/camera_capture.dart';
+import '../presentation/pages/finder_screens/found_person_details.dart';
+import '../presentation/pages/finder_screens/camera_capture.dart';
+import '../presentation/pages/finder_screens/upload_images_screen.dart' as finder;
 import '../presentation/pages/drawer_screens/about_us_screen.dart';
 import '../presentation/pages/drawer_screens/emergency_screen.dart';
 import '../presentation/pages/drawer_screens/contact_us_screen.dart';
@@ -222,6 +223,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.cameraCapture,
       page: () => const CameraCaptureScreen(),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.finderUploadImages,
+      page: () => const finder.UploadImagesScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),

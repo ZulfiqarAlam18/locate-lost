@@ -32,6 +32,7 @@ class AppRoutes {
   static const String foundPersonDetails = '/found-person-details';
   static const String finderDetails = '/finder-details';
   static const String cameraCapture = '/camera-capture';
+  static const String finderUploadImages = '/finder-upload-images';
   static const String finderCaseSummary = '/finder-case-summary';
 
   // Drawer Routes

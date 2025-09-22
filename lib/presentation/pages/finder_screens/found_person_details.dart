@@ -116,6 +116,170 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
     super.dispose();
   }
 
+  // Show popup dialog for image options
+  void _showImageOptionsDialog() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(24.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Text(
+                'Select Image Option',
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'How would you like to provide images of the found person?',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+
+              // Capture Images Option
+              _buildImageOption(
+                icon: Icons.camera_alt,
+                title: 'Capture Images',
+                subtitle: 'Take photos using camera',
+                onTap: () {
+                  Get.back(); // Close dialog
+                  Get.toNamed(AppRoutes.cameraCapture);
+                },
+              ),
+              
+              SizedBox(height: 16.h),
+
+              // Upload from Gallery Option
+              _buildImageOption(
+                icon: Icons.photo_library,
+                title: 'Upload from Gallery',
+                subtitle: 'Select images from gallery',
+                onTap: () {
+                  Get.back(); // Close dialog
+                  Get.toNamed(AppRoutes.finderUploadImages);
+                },
+              ),
+
+              SizedBox(height: 20.h),
+
+              // Cancel Button
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => Get.back(),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.primary),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: true,
+    );
+  }
+
+  // Build individual image option widget
+  Widget _buildImageOption({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      width: double.infinity,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12.r),
+          child: Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(12.r),
+              color: AppColors.secondary.withOpacity(0.1),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: AppColors.primary,
+                    size: 24.sp,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey[400],
+                  size: 16.sp,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -293,7 +457,7 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                           CustomElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                Get.toNamed(AppRoutes.cameraCapture);
+                                _showImageOptionsDialog();
                               } else {
                                 Get.snackbar(
                                   'Form Incomplete',

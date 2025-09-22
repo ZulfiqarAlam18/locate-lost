@@ -17,10 +17,8 @@ import '../presentation/pages/auth_screens/forgot_password_screen.dart';
 import '../presentation/pages/auth_screens/otp_verification_screen.dart';
 import '../presentation/pages/main_navigation_screen.dart';
 import '../presentation/pages/parent_screens/missing_person_details.dart';
-import '../presentation/pages/parent_screens/reporter_details.dart';
 import '../presentation/pages/parent_screens/upload_images.dart';
 import '../presentation/pages/founder_screens/found_person_details.dart';
-import '../presentation/pages/founder_screens/finder_details.dart';
 import '../presentation/pages/founder_screens/camera_capture.dart';
 import '../presentation/pages/drawer_screens/about_us_screen.dart';
 import '../presentation/pages/drawer_screens/emergency_screen.dart';
@@ -189,12 +187,12 @@ class AppPages {
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
-    GetPage(
-      name: AppRoutes.reporterDetails,
-      page: () => const ReporterDetailsScreen(),
-      transition: Transition.cupertino,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+    // GetPage(
+    //   name: AppRoutes.reporterDetails,
+    //   page: () => const ReporterDetailsScreen(),
+    //   transition: Transition.cupertino,
+    //   transitionDuration: const Duration(milliseconds: 300),
+    // ),
     GetPage(
       name: AppRoutes.uploadImages,
       page: () => const UploadImagesScreen(),
@@ -215,12 +213,12 @@ class AppPages {
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
-    GetPage(
-      name: AppRoutes.finderDetails,
-      page: () => const FinderDetailsScreen(),
-      transition: Transition.cupertino,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+    // GetPage(
+    //   name: AppRoutes.finderDetails,
+    //   page: () => const FinderDetailsScreen(),
+    //   transition: Transition.cupertino,
+    //   transitionDuration: const Duration(milliseconds: 300),
+    // ),
     GetPage(
       name: AppRoutes.cameraCapture,
       page: () => const CameraCaptureScreen(),

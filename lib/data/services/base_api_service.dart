@@ -21,7 +21,11 @@ class BaseApiService extends GetConnect {
       if (token != null) {
         request.headers['Authorization'] = 'Bearer $token';
       }
-      request.headers['Content-Type'] = 'application/json';
+      // Only set Content-Type for non-FormData requests
+      // GetConnect will handle multipart/form-data automatically
+      if (request.files == null || (request.files?.files.isEmpty ?? true)) {
+        request.headers['Content-Type'] = 'application/json';
+      }
       return request;
     });
     

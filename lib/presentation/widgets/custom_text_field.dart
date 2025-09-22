@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/app_colors.dart';
@@ -14,6 +15,9 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final Color? fillColor; // background color
   final double? height; // height of input field
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
     super.key,
@@ -27,6 +31,9 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.fillColor,
     this.height,
+    this.readOnly = false,
+    this.onTap,
+    this.inputFormatters,
   });
 
   @override
@@ -40,6 +47,9 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: isPassword,
           keyboardType: keyboardType,
           validator: validator,
+          readOnly: readOnly,
+          onTap: onTap,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
           //  labelText: labelText,
             labelText: labelText?.isNotEmpty == true ? labelText : null,

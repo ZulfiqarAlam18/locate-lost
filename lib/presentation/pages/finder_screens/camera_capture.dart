@@ -23,6 +23,18 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   String? _errorMessage;
   final int _maxImages = 5;
 
+  // Dynamic progress calculation (90% base + 10% for images)
+  double get progressPercent {
+    const baseProgress = 0.90; // Base progress for completing form
+    const maxAdditionalProgress = 0.10; // Final 10% for images
+    
+    int imageCount = _capturedImages.length;
+    // Progress increases with images, completes at 3+ images
+    double imageProgress = (imageCount >= 3 ? 1.0 : imageCount / 3.0) * maxAdditionalProgress;
+    
+    return baseProgress + imageProgress;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -651,6 +663,53 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                         ),
+                      ),
+                    ),
+                    // Progress indicator
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${(progressPercent * 100).toInt()}%',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Container(
+                            width: 30.w,
+                            height: 4.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(2.r),
+                            ),
+                            child: FractionallySizedBox(
+                              alignment: Alignment.centerLeft,
+                              widthFactor: progressPercent,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: _capturedImages.isEmpty
+                                      ? Colors.orange
+                                      : _capturedImages.length >= 3
+                                          ? Colors.green
+                                          : Colors.orange,
+                                  borderRadius: BorderRadius.circular(2.r),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

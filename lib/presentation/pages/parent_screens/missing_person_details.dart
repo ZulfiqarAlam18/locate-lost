@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:locate_lost/core/constants/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_elevated_button.dart';
 import 'package:locate_lost/presentation/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import '../../controllers/missing_person_controller.dart';
 
 class MissingPersonDetailsScreen extends StatefulWidget {
   const MissingPersonDetailsScreen({Key? key}) : super(key: key);
@@ -18,22 +20,115 @@ class MissingPersonDetailsScreen extends StatefulWidget {
 class _MissingPersonDetailsScreenState
     extends State<MissingPersonDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final MissingPersonController controller = Get.put(MissingPersonController());
 
   final Map<String, TextEditingController> _controllers = {
     'name': TextEditingController(),
     'fatherName': TextEditingController(),
     'caste': TextEditingController(),
-    'gender': TextEditingController(),
+    'age': TextEditingController(),
     'height': TextEditingController(),
     'hairColor': TextEditingController(),
     'skinColor': TextEditingController(),
     'disability': TextEditingController(),
     'lastSeenPlace': TextEditingController(),
+    'lastSeenDate': TextEditingController(),
     'lastSeenTime': TextEditingController(),
     'phoneNumber': TextEditingController(),
+    'secondPhoneNumber': TextEditingController(),
+    'additionalDetails': TextEditingController(),
   };
 
-  double progressPercent = 0.25;
+  String? selectedGender;
+
+  // Dynamic progress tracking
+  double get progressPercent => _calculateProgress();
+  
+  // Base progress for this screen (20%) plus dynamic progress based on field completion
+  double _calculateProgress() {
+    const maxProgress = 0.80; // This screen can complete up to 80% of total progress
+    
+    // Required fields for progress calculation
+    List<bool> requiredFieldsCompleted = [
+      _controllers['name']!.text.isNotEmpty,
+      _controllers['fatherName']!.text.isNotEmpty,
+      selectedGender != null && selectedGender!.isNotEmpty,
+      _controllers['lastSeenPlace']!.text.isNotEmpty,
+      _controllers['lastSeenDate']!.text.isNotEmpty,
+      _controllers['lastSeenTime']!.text.isNotEmpty,
+      _controllers['phoneNumber']!.text.isNotEmpty && 
+        _validatePhone(_controllers['phoneNumber']!.text),
+    ];
+    
+    int completedFields = requiredFieldsCompleted.where((completed) => completed).length;
+    double progress = (completedFields / requiredFieldsCompleted.length) * maxProgress;
+    
+    return progress;
+  }
+  
+  // Helper method to validate phone number
+  bool _validatePhone(String phone) {
+    if (phone.isEmpty) return false;
+    if (phone.length < 10 || phone.length > 11) return false;
+    return RegExp(r'^(03|02|04|05)\d{8,9}$').hasMatch(phone);
+  }
+  
+  // Method to trigger progress update
+  void _updateProgress() {
+    setState(() {
+      // This will trigger a rebuild and recalculate progress
+    });
+  }
+
+  @override
+  void dispose() {
+    // Remove listeners before disposing controllers
+    _controllers['name']!.removeListener(_updateProgress);
+    _controllers['fatherName']!.removeListener(_updateProgress);
+    _controllers['lastSeenPlace']!.removeListener(_updateProgress);
+    _controllers['lastSeenDate']!.removeListener(_updateProgress);
+    _controllers['lastSeenTime']!.removeListener(_updateProgress);
+    _controllers['phoneNumber']!.removeListener(_updateProgress);
+    
+    // Dispose all controllers to prevent memory leaks
+    _controllers.values.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Pre-populate with any existing data
+    _controllers['name']!.text = controller.childName;
+    _controllers['fatherName']!.text = controller.fatherName;
+    _controllers['caste']!.text = controller.surname;
+    _controllers['age']!.text = controller.age.toString();
+    selectedGender = controller.gender.isNotEmpty ? controller.gender : null;
+    _controllers['height']!.text = controller.height;
+    _controllers['hairColor']!.text = controller.hairColor;
+    _controllers['skinColor']!.text = controller.skinColor;
+    _controllers['disability']!.text = controller.disability;
+    _controllers['lastSeenPlace']!.text = controller.lastSeenPlace;
+    // Split existing lastSeenTime if it exists (assuming format: "date at time")
+    String existingDateTime = controller.lastSeenTime;
+    if (existingDateTime.isNotEmpty) {
+      List<String> parts = existingDateTime.split(' at ');
+      if (parts.length == 2) {
+        _controllers['lastSeenDate']!.text = parts[0];
+        _controllers['lastSeenTime']!.text = parts[1];
+      }
+    }
+    _controllers['phoneNumber']!.text = controller.phoneNumber;
+    _controllers['additionalDetails']!.text = controller.additionalDetails;
+    
+    // Add listeners to required fields for dynamic progress updates
+    _controllers['name']!.addListener(_updateProgress);
+    _controllers['fatherName']!.addListener(_updateProgress);
+    _controllers['lastSeenPlace']!.addListener(_updateProgress);
+    _controllers['lastSeenDate']!.addListener(_updateProgress);
+    _controllers['lastSeenTime']!.addListener(_updateProgress);
+    _controllers['phoneNumber']!.addListener(_updateProgress);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +209,18 @@ class _MissingPersonDetailsScreenState
   }
 
   Widget _buildProgressText() {
+    int totalRequiredFields = 7; // Name, Father's Name, Gender, Place, Date, Time, Phone
+    int completedFields = 0;
+    
+    // Count completed required fields
+    if (_controllers['name']!.text.isNotEmpty) completedFields++;
+    if (_controllers['fatherName']!.text.isNotEmpty) completedFields++;
+    if (selectedGender != null && selectedGender!.isNotEmpty) completedFields++;
+    if (_controllers['lastSeenPlace']!.text.isNotEmpty) completedFields++;
+    if (_controllers['lastSeenDate']!.text.isNotEmpty) completedFields++;
+    if (_controllers['lastSeenTime']!.text.isNotEmpty) completedFields++;
+    if (_controllers['phoneNumber']!.text.isNotEmpty && _validatePhone(_controllers['phoneNumber']!.text)) completedFields++;
+    
     return Expanded(
       flex: 3,
       child: Column(
@@ -121,7 +228,7 @@ class _MissingPersonDetailsScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Application Progress',
+            'Form Progress',
             style: TextStyle(
               fontSize: 18.sp,
               color: AppColors.primary,
@@ -130,7 +237,7 @@ class _MissingPersonDetailsScreenState
           ),
           SizedBox(height: 8.h),
           Text(
-            'Enter missing person\'s details\nto continue',
+            '$completedFields of $totalRequiredFields required fields completed',
             style: TextStyle(
               fontSize: 14.sp,
               color: AppColors.myRedColor,
@@ -143,23 +250,33 @@ class _MissingPersonDetailsScreenState
   }
 
   Widget _buildProgressIndicator() {
+    double currentProgress = progressPercent;
+    
     return Expanded(
       flex: 1,
       child: CircularPercentIndicator(
         radius: 45.r,
         lineWidth: 8.0.w,
-        percent: progressPercent,
+        percent: currentProgress,
         animation: true,
-        animationDuration: 1200,
-        progressColor: AppColors.primary,
+        animationDuration: 800,
+        progressColor: currentProgress >= 0.6 
+            ? AppColors.primary 
+            : currentProgress >= 0.3 
+                ? Colors.orange 
+                : AppColors.myRedColor,
         backgroundColor: Colors.grey.shade300,
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
-          "${(progressPercent * 100).toInt()}%",
+          "${(currentProgress * 100).toInt()}%",
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primary,
+            color: currentProgress >= 0.6 
+                ? AppColors.primary 
+                : currentProgress >= 0.3 
+                    ? Colors.orange 
+                    : AppColors.myRedColor,
           ),
         ),
       ),
@@ -203,58 +320,31 @@ class _MissingPersonDetailsScreenState
         'fatherName',
         true,
       ),
+      _buildGenderDropdown(),
       _buildTextField(
-        'Surname',
-        'Enter Missing Person\'s surname',
-        'caste',
-        true,
-      ),
-      _buildTextField(
-        'Gender',
-        'Enter Missing Person\'s gender',
-        'gender',
-        true,
-      ),
-      _buildTextField(
-        'Height',
-        'Enter Missing Person\'s height (ft)',
-        'height',
-        true,
-      ),
-      _buildTextField(
-        'Skin Color',
-        'Enter Missing Person\'s skin color',
-        'skinColor',
-        true,
-      ),
-      _buildTextField(
-        'Hair Color',
-        'Enter Missing Person\'s hair color',
-        'hairColor',
-        true,
-      ),
-      _buildTextField(
-        'Disability (if any)',
-        'Enter Missing Person\'s disability',
-        'disability',
-        false,
-      ),
-      _buildTextField(
-        'Last Seen Place',
-        'Where was the person seen last?',
+        'Place Last Seen',
+        'Enter the location where the person was last seen',
         'lastSeenPlace',
         true,
       ),
-      _buildTextField(
-        'Last Seen Time',
-        'Enter Missing Person\'s last seen time',
-        'lastSeenTime',
+      _buildDatePicker(),
+      _buildTimePicker(),
+      _buildPhoneField(
+        'Primary Contact Number',
+        'Enter primary contact number (e.g., 03001234567)',
+        'phoneNumber',
         true,
       ),
+      _buildPhoneField(
+        'Secondary Contact (Optional)',
+        'Alternative contact number if primary is unreachable',
+        'secondPhoneNumber',
+        false,
+      ),
       _buildTextField(
-        'Phone Number (optional)',
-        'Enter Missing Person\'s phone number',
-        'phoneNumber',
+        'Additional Information',
+        'Any other relevant details that might help locate the person',
+        'additionalDetails',
         false,
       ),
     ];
@@ -267,7 +357,7 @@ class _MissingPersonDetailsScreenState
     bool isRequired,
   ) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 16.0.w),
+      padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 16.0.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -308,16 +398,277 @@ class _MissingPersonDetailsScreenState
     );
   }
 
-  Widget _buildSectionTitle(String title, {double size = 16}) {
+  Widget _buildPhoneField(
+    String label,
+    String hint,
+    String controllerKey,
+    bool isRequired,
+  ) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: size.sp,
-          color: size > 16 ? AppColors.primary : AppColors.myBlackColor,
-          fontWeight: size > 16 ? FontWeight.w600 : FontWeight.w500,
-        ),
+      padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 16.0.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: label,
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              children: [
+                TextSpan(
+                  text: isRequired ? ' *' : '',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 6.h),
+          CustomTextFormField(
+            hintText: hint,
+            controller: _controllers[controllerKey]!,
+            keyboardType: TextInputType.phone,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(11),
+            ],
+            validator: (value) {
+              if (isRequired && (value?.isEmpty ?? true)) {
+                return 'This field is required';
+              }
+              if (value != null && value.isNotEmpty) {
+                if (value.length < 10 || value.length > 11) {
+                  return 'Phone number must be 10-11 digits';
+                }
+                if (!RegExp(r'^(03|02|04|05)\d{8,9}$').hasMatch(value)) {
+                  return 'Enter valid Pakistan phone number (e.g., 03001234567)';
+                }
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDatePicker() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 16.0.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: 'Date Last Seen',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              children: [
+                TextSpan(
+                  text: ' *',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 6.h),
+          CustomTextFormField(
+            hintText: 'Select date when person was last seen',
+            controller: _controllers['lastSeenDate']!,
+            readOnly: true,
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime.now(),
+                builder: (context, child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.primary,
+                        onPrimary: Colors.white,
+                        surface: Colors.white,
+                        onSurface: Colors.black,
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+              if (pickedDate != null) {
+                String formattedDate = "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year}";
+                _controllers['lastSeenDate']!.text = formattedDate;
+                _updateProgress(); // Update progress when date is selected
+              }
+            },
+            suffixIcon: Icon(Icons.calendar_today, color: AppColors.primary),
+            validator: (value) {
+              if (value?.isEmpty ?? true) {
+                return 'Please select the date';
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimePicker() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 16.0.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: 'Time Last Seen',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              children: [
+                TextSpan(
+                  text: ' *',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 6.h),
+          CustomTextFormField(
+            hintText: 'Select time when person was last seen',
+            controller: _controllers['lastSeenTime']!,
+            readOnly: true,
+            onTap: () async {
+              TimeOfDay? pickedTime = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+                builder: (context, child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.primary,
+                        onPrimary: Colors.white,
+                        surface: Colors.white,
+                        onSurface: Colors.black,
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+              if (pickedTime != null) {
+                String formattedTime = pickedTime.format(context);
+                _controllers['lastSeenTime']!.text = formattedTime;
+                _updateProgress(); // Update progress when time is selected
+              }
+            },
+            suffixIcon: Icon(Icons.access_time, color: AppColors.primary),
+            validator: (value) {
+              if (value?.isEmpty ?? true) {
+                return 'Please select the time';
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGenderDropdown() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 16.0.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: 'Gender',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              children: [
+                TextSpan(
+                  text: ' *',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 6.h),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: DropdownButtonFormField<String>(
+              value: selectedGender,
+              hint: Text(
+                'Select Gender',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                border: InputBorder.none,
+              ),
+              items: ['MALE', 'FEMALE', 'OTHER'].map((String gender) {
+                return DropdownMenuItem<String>(
+                  value: gender,
+                  child: Text(
+                    gender.toLowerCase().replaceFirst(gender[0], gender[0].toUpperCase()),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.black87,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedGender = newValue;
+                });
+                _updateProgress(); // Update progress when gender is selected
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a gender';
+                }
+                return null;
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -344,6 +695,31 @@ class _MissingPersonDetailsScreenState
           CustomElevatedButton(
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
+                // Combine date and time for lastSeenTime
+                String combinedDateTime = '';
+                if (_controllers['lastSeenDate']!.text.isNotEmpty && _controllers['lastSeenTime']!.text.isNotEmpty) {
+                  combinedDateTime = '${_controllers['lastSeenDate']!.text} at ${_controllers['lastSeenTime']!.text}';
+                }
+                
+                // Save data to controller
+                controller.updateMissingPersonDetails(
+                  name: _controllers['name']!.text,
+                  father: _controllers['fatherName']!.text,
+                  sur: _controllers['caste']!.text,
+                  ageValue: int.tryParse(_controllers['age']!.text) ?? 0,
+                  gen: selectedGender ?? '',
+                  hgt: _controllers['height']!.text,
+                  skin: _controllers['skinColor']!.text,
+                  hair: _controllers['hairColor']!.text,
+                  dis: _controllers['disability']!.text,
+                  place: _controllers['lastSeenPlace']!.text,
+                  time: combinedDateTime,
+                  phone: _controllers['phoneNumber']!.text,
+                );
+                
+                // Update additional details directly
+                controller.additionalDetails = _controllers['additionalDetails']!.text;
+                
                 Get.toNamed(AppRoutes.uploadImages);
               } else {
                 Get.snackbar(

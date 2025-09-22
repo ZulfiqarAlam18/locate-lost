@@ -23,10 +23,12 @@ class ParentReportService extends BaseApiService {
     try {
       final form = FormData({
         'childName': childName,
-        'childAge': age.toString(),
-        'description': '${clothes ?? ''} ${additionalDetails ?? ''}'.trim(),
-        'lastSeenLocation': placeLost,
-        'contactInfo': '${additionalDetails ?? ''}'.trim(),
+        'age': age.toString(),  // Fixed: was childAge
+        'gender': gender.toUpperCase(),  // Backend expects uppercase
+        'placeLost': placeLost,  // Fixed: was lastSeenLocation  
+        'lostTime': lostTime.toIso8601String(),
+        'clothes': clothes ?? '',
+        'additionalDetails': additionalDetails ?? '',
         if (latitude != null) 'latitude': latitude.toString(),
         if (longitude != null) 'longitude': longitude.toString(),
         if (locationName != null && locationName.isNotEmpty) 
@@ -52,7 +54,19 @@ class ParentReportService extends BaseApiService {
         print('Auth token preview: ${getAuthToken()!.substring(0, 20)}...');
       }
       
-      final response = await post('/api/reports/parent', form);  // Updated endpoint
+      // TEMPORARY: Set test token for development
+      if (getAuthToken() == null) {
+        storage.write('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTkyYTJmYS1kNmE4LTQ1ODQtYTcxMS0zNjJhODE3NjU3NDgiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzU4NDgxMzcyLCJleHAiOjE3NTg0ODIyNzJ9.CU0PaYS1F390C9DdMdGm-eK-t4iJJkCIuHJtKG4_ENc');
+        print('TEMP: Set test token for development');
+      }
+      
+      // Ensure the service is initialized
+      onInit();
+      
+      // Make the request with explicit URL if baseUrl is not set
+      final response = httpClient.baseUrl != null && httpClient.baseUrl!.isNotEmpty
+          ? await post('/api/reports/parent', form)  // Use relative URL if base URL is set
+          : await httpClient.post('http://192.168.2.150:5000/api/reports/parent', body: form);  // Use absolute URL as fallback
       
       print('--- HTTP RESPONSE DEBUG ---');
       print('Status Code: ${response.statusCode}');

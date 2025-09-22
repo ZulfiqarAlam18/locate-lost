@@ -8,6 +8,7 @@ import 'package:locate_lost/core/utils/navigation_helper.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
 import 'package:locate_lost/data/services/base_api_service.dart';
+import '../../controllers/missing_person_controller.dart';
 
 // Parent Case data model
 class ParentCaseData {
@@ -75,6 +76,7 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   late ParentCaseData caseData;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  final MissingPersonController controller = Get.find<MissingPersonController>();
 
   @override
   void initState() {
@@ -84,8 +86,8 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   }
 
   void _initializeData() {
-    // Use provided data or create sample data
-    caseData = widget.caseData ?? _getSampleParentCaseData();
+    // Use provided data or create data from controller
+    caseData = widget.caseData ?? _getDataFromController();
   }
 
   void _setupAnimations() {
@@ -97,6 +99,32 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
     _animationController.forward();
+  }
+
+  ParentCaseData _getDataFromController() {
+    // Convert controller data to ParentCaseData format
+    return ParentCaseData(
+      caseId: 'MP-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
+      caseType: 'Missing Person Report',
+      status: 'Draft - Ready to Submit',
+      reportedDate: DateTime.now(),
+      missingPersonName: controller.childName,
+      age: controller.age,
+      gender: controller.gender,
+      lastSeenLocation: controller.lastSeenPlace,
+      reporterName: controller.reporterName,
+      relationship: controller.relationship,
+      phone: controller.reporterPhone,
+      email: 'N/A', // You can add email field to the form if needed
+      description: controller.completeDescription,
+      uploadedImages: controller.selectedImages.map((xFile) => xFile.path).toList(),
+      physicalCharacteristics: 'Height: ${controller.height}, Skin: ${controller.skinColor}, Hair: ${controller.hairColor}',
+      clothingDescription: controller.disability.isNotEmpty ? 'Special Note: ${controller.disability}' : 'No special clothing description',
+      lastSeenTime: controller.lastSeenDateTime,
+      currentStatus: CaseStatus.active,
+      priority: CasePriority.high,
+      additionalDetails: '${controller.additionalDetails}\nEmergency Contact: ${controller.emergencyContact}',
+    );
   }
 
   ParentCaseData _getSampleParentCaseData() {
@@ -1140,47 +1168,51 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   
   void _performSubmission() async {
     // Show loading indicator
-    Get.dialog(
-      Center(
-        child: Container(
-          padding: EdgeInsets.all(20.w),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(color: AppColors.primary),
-              SizedBox(height: 16.h),
-              Text('Submitting report...'),
-            ],
-          ),
-        ),
-      ),
-      barrierDismissible: false,
-    );
+    // Get.dialog(
+    //   Center(
+    //     child: Container(
+    //       padding: EdgeInsets.all(20.w),
+    //       decoration: BoxDecoration(
+    //         color: Colors.white,
+    //         borderRadius: BorderRadius.circular(12.r),
+    //       ),
+    //       child: Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           CircularProgressIndicator(color: AppColors.primary),
+    //           SizedBox(height: 16.h),
+    //           Text('Submitting report to authorities...'),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    //   barrierDismissible: false,
+    // );
     
-    // Simulate API call
-    await Future.delayed(Duration(seconds: 2));
-    
-    // Close loading dialog
-    Get.back();
-    
-    // Simulate success/failure (replace with actual API logic)
-    bool isSuccess = DateTime.now().millisecondsSinceEpoch % 2 == 0; // Random success/failure for demo
-    
-    if (isSuccess) {
-      DialogUtils.showCaseSubmissionSuccess(
-        onViewCases: () {
-
-           NavigationHelper.goToMyCases();
-
-
-
-        },
-      );
-    } else {
+    try {
+      // Use controller to submit the report
+      bool success = await controller.submitReport();
+      
+      // Close loading dialog
+      Get.back();
+      
+      if (success) {
+        DialogUtils.showCaseSubmissionSuccess(
+          onViewCases: () {
+            NavigationHelper.goToMyCases();
+          },
+        );
+      } else {
+        DialogUtils.showCaseSubmissionError(
+          onRetry: () {
+            _performSubmission(); // Retry submission
+          },
+        );
+      }
+    } catch (e) {
+      // Close loading dialog
+      Get.back();
+      
       DialogUtils.showCaseSubmissionError(
         onRetry: () {
           _performSubmission(); // Retry submission

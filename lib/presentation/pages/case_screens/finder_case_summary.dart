@@ -98,6 +98,16 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
 
   FinderCaseData _getDataFromController() {
     // Convert controller data to FinderCaseData format
+    List<String> imagePaths = [];
+    
+    // Handle images from controller (they might be empty, XFile objects, or already paths)
+    if (controller.selectedImages.isNotEmpty) {
+      imagePaths = controller.selectedImages.map((xFile) => xFile.path).toList();
+    } else {
+      // If no images selected, show placeholder text instead of empty carousel
+      imagePaths = [];
+    }
+    
     return FinderCaseData(
       caseId: 'FP-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
       caseType: 'Found Person Report',
@@ -112,7 +122,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
       finderPhone: controller.finderPhone,
       finderSecondaryPhone: controller.finderSecondaryPhone,
       additionalDetails: controller.additionalDetails,
-      uploadedImages: controller.selectedImages.map((xFile) => xFile.path).toList(),
+      uploadedImages: imagePaths,
       foundDateTime: controller.foundDateTime,
       currentStatus: FinderCaseStatus.reported,
       priority: FinderCasePriority.high,
@@ -123,21 +133,6 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
   void dispose() {
     _animationController.dispose();
     super.dispose();
-  }
-
-  Color _getStatusColor(FinderCaseStatus status) {
-    switch (status) {
-      case FinderCaseStatus.reported:
-        return Colors.blue;
-      case FinderCaseStatus.investigating:
-        return Colors.orange;
-      case FinderCaseStatus.matched:
-        return Colors.purple;
-      case FinderCaseStatus.reunited:
-        return Colors.green;
-      case FinderCaseStatus.closed:
-        return Colors.grey;
-    }
   }
 
   Color _getPriorityColor(FinderCasePriority priority) {
@@ -171,7 +166,6 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
           child: Column(
             children: [
               _buildHeaderSection(),
-              _buildSafetyStatusCard(),
               _buildFoundPersonDetailsCard(),
               _buildCapturedImagesSection(),
               _buildFinderInfoCard(),
@@ -259,147 +253,6 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSafetyStatusCard() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-      child: _buildModernCard(
-        title: 'Safety Status',
-        icon: Icons.security,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade50,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: Colors.green.shade200,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                          size: 32.w,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'Person is Safe',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.green.shade700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade50,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: Colors.green.shade200,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.favorite,
-                          color: Colors.green,
-                          size: 32.w,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'No Medical Need',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.green.shade700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Current Status',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Row(
-                      children: [
-                        Container(
-                          width: 8.w,
-                          height: 8.h,
-                          decoration: BoxDecoration(
-                            color: _getStatusColor(caseData.currentStatus),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          caseData.status,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: _getStatusColor(caseData.currentStatus),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Current Location',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      caseData.foundLocation,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -820,7 +673,10 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
               Icons.phone,
               () => _makePhoneCall(caseData.finderPhone),
             ),
-            if (caseData.finderSecondaryPhone.isNotEmpty)
+            if (caseData.finderSecondaryPhone.isNotEmpty && 
+                caseData.finderSecondaryPhone != 'Not provided' && 
+                caseData.finderSecondaryPhone != 'Not specified' &&
+                caseData.finderSecondaryPhone.length >= 10)
               _buildContactRow(
                 'Secondary Phone',
                 caseData.finderSecondaryPhone,
@@ -1069,41 +925,42 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             ],
           ),
           SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _contactAuthorities(),
-                  icon: Icon(Icons.local_police, size: 18.w),
-                  label: Text('Contact Police'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.blue[700],
-                    side: BorderSide(color: Colors.blue[700]!),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _shareReport(),
-                  icon: Icon(Icons.share, size: 18.w),
-                  label: Text('Share Report'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.grey[700],
-                    side: BorderSide(color: Colors.grey[400]!),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // TODO: Uncomment these buttons when needed
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: OutlinedButton.icon(
+          //         onPressed: () => _contactAuthorities(),
+          //         icon: Icon(Icons.local_police, size: 18.w),
+          //         label: Text('Contact Police'),
+          //         style: OutlinedButton.styleFrom(
+          //           foregroundColor: Colors.blue[700],
+          //           side: BorderSide(color: Colors.blue[700]!),
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(12.r),
+          //           ),
+          //           padding: EdgeInsets.symmetric(vertical: 14.h),
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(width: 12.w),
+          //     Expanded(
+          //       child: OutlinedButton.icon(
+          //         onPressed: () => _shareReport(),
+          //         icon: Icon(Icons.share, size: 18.w),
+          //         label: Text('Share Report'),
+          //         style: OutlinedButton.styleFrom(
+          //           foregroundColor: Colors.grey[700],
+          //           side: BorderSide(color: Colors.grey[400]!),
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(12.r),
+          //           ),
+          //           padding: EdgeInsets.symmetric(vertical: 14.h),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
@@ -1203,31 +1060,32 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     }
   }
 
-  void _contactAuthorities() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Contacting local authorities...'),
-        backgroundColor: Colors.blue[700],
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
-  }
+  // TODO: Uncomment these methods when contact police and share report features are needed
+  // void _contactAuthorities() {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Contacting local authorities...'),
+  //       backgroundColor: Colors.blue[700],
+  //       behavior: SnackBarBehavior.floating,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  void _shareReport() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Sharing found person report...'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
-  }
+  // void _shareReport() {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Sharing found person report...'),
+  //       backgroundColor: AppColors.primary,
+  //       behavior: SnackBarBehavior.floating,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _makePhoneCall(String phone) {
     ScaffoldMessenger.of(context).showSnackBar(

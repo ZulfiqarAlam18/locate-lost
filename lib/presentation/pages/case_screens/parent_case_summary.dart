@@ -918,59 +918,59 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
             ],
           ),
           SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _shareReport(),
-                  icon: Icon(Icons.share, size: 18.w),
-                  label: Text('Share Missing Person'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.primary,
-                    side: BorderSide(color: AppColors.primary),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _exportReport(),
-                  icon: Icon(Icons.print, size: 18.w),
-                  label: Text('Print Flyer'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.grey[700],
-                    side: BorderSide(color: Colors.grey[400]!),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: OutlinedButton.icon(
+          //         onPressed: () => _shareReport(),
+          //         icon: Icon(Icons.share, size: 18.w),
+          //         label: Text('Share Missing Person'),
+          //         style: OutlinedButton.styleFrom(
+          //           foregroundColor: AppColors.primary,
+          //           side: BorderSide(color: AppColors.primary),
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(12.r),
+          //           ),
+          //           padding: EdgeInsets.symmetric(vertical: 14.h),
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(width: 12.w),
+          //     Expanded(
+          //       child: OutlinedButton.icon(
+          //         onPressed: () => _exportReport(),
+          //         icon: Icon(Icons.print, size: 18.w),
+          //         label: Text('Print Flyer'),
+          //         style: OutlinedButton.styleFrom(
+          //           foregroundColor: Colors.grey[700],
+          //           side: BorderSide(color: Colors.grey[400]!),
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(12.r),
+          //           ),
+          //           padding: EdgeInsets.symmetric(vertical: 14.h),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           SizedBox(height: 12.h),
           // Test connectivity button for debugging
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () => _testConnectivity(),
-              icon: Icon(Icons.wifi, size: 18.w),
-              label: Text('Test Backend Connection'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blue,
-                side: BorderSide(color: Colors.blue),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-              ),
-            ),
-          ),
+          // SizedBox(
+          //   width: double.infinity,
+          //   child: OutlinedButton.icon(
+          //     onPressed: () => _testConnectivity(),
+          //     icon: Icon(Icons.wifi, size: 18.w),
+          //     label: Text('Test Backend Connection'),
+          //     style: OutlinedButton.styleFrom(
+          //       foregroundColor: Colors.blue,
+          //       side: BorderSide(color: Colors.blue),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(12.r),
+          //       ),
+          //       padding: EdgeInsets.symmetric(vertical: 14.h),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -1013,61 +1013,61 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
     );
   }
 
-  // Test backend connectivity
-  void _testConnectivity() async {
-    Get.snackbar(
-      'Testing Connection',
-      'Checking backend connectivity...',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.blue,
-      colorText: Colors.white,
-    );
+  // // Test backend connectivity
+  // void _testConnectivity() async {
+  //   Get.snackbar(
+  //     'Testing Connection',
+  //     'Checking backend connectivity...',
+  //     snackPosition: SnackPosition.TOP,
+  //     backgroundColor: Colors.blue,
+  //     colorText: Colors.white,
+  //   );
 
-    try {
-      final baseService = BaseApiService();
+  //   try {
+  //     final baseService = BaseApiService();
       
-      // Check authentication token first
-      final token = baseService.getAuthToken();
-      print('--- AUTH TOKEN CHECK ---');
-      print('Token exists: ${token != null}');
-      if (token != null) {
-        print('Token preview: ${token.substring(0, 20)}...');
-      } else {
-        print('No authentication token found!');
-      }
+  //     // Check authentication token first
+  //     final token = baseService.getAuthToken();
+  //     print('--- AUTH TOKEN CHECK ---');
+  //     print('Token exists: ${token != null}');
+  //     if (token != null) {
+  //       print('Token preview: ${token.substring(0, 20)}...');
+  //     } else {
+  //       print('No authentication token found!');
+  //     }
 
-      final isConnected = await baseService.testConnectivity();
+  //     final isConnected = await baseService.testConnectivity();
       
-      if (isConnected) {
-        Get.snackbar(
-          'Connection Successful',
-          'Backend server is reachable! ${token != null ? "Auth token found." : "No auth token."}',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-        );
-      } else {
-        Get.snackbar(
-          'Connection Failed',
-          'Cannot reach backend server',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-        );
-      }
-    } catch (e) {
-      Get.snackbar(
-        'Connection Error',
-        'Error: $e',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: Duration(seconds: 5),
-      );
-    }
-  }
+  //     if (isConnected) {
+  //       Get.snackbar(
+  //         'Connection Successful',
+  //         'Backend server is reachable! ${token != null ? "Auth token found." : "No auth token."}',
+  //         snackPosition: SnackPosition.TOP,
+  //         backgroundColor: Colors.green,
+  //         colorText: Colors.white,
+  //         duration: Duration(seconds: 3),
+  //       );
+  //     } else {
+  //       Get.snackbar(
+  //         'Connection Failed',
+  //         'Cannot reach backend server',
+  //         snackPosition: SnackPosition.TOP,
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //         duration: Duration(seconds: 3),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar(
+  //       'Connection Error',
+  //       'Error: $e',
+  //       snackPosition: SnackPosition.TOP,
+  //       backgroundColor: Colors.red,
+  //       colorText: Colors.white,
+  //       duration: Duration(seconds: 5),
+  //     );
+  //   }
+  // }
   
   void _performSubmission() async {
     // Show loading indicator

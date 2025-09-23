@@ -7,6 +7,8 @@ import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../controllers/found_person_controller.dart';
 
 class CameraCaptureScreen extends StatefulWidget {
   const CameraCaptureScreen({super.key});
@@ -22,6 +24,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   bool _isLoading = true;
   String? _errorMessage;
   final int _maxImages = 5;
+  
+  // Add FoundPersonController to store images
+  final FoundPersonController foundPersonController = Get.put(FoundPersonController());
 
   // Dynamic progress calculation (90% base + 10% for images)
   double get progressPercent {
@@ -442,6 +447,12 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   }
 
   void _proceedToNextScreen() {
+    // Convert File objects to XFile objects and store in FoundPersonController
+    if (_capturedImages.isNotEmpty) {
+      List<XFile> xFiles = _capturedImages.map((file) => XFile(file.path)).toList();
+      foundPersonController.updateImages(xFiles);
+    }
+    
     Navigator.of(context).pop();
     Get.toNamed(AppRoutes.foundPersonDetails);
   }

@@ -7,7 +7,7 @@ import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_elevated_button.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../controllers/missing_person_controller.dart';
+import '../../controllers/found_person_controller.dart';
 
 class UploadImagesScreen extends StatefulWidget {
   const UploadImagesScreen({super.key});
@@ -18,7 +18,7 @@ class UploadImagesScreen extends StatefulWidget {
 
 class _UploadImagesScreenState extends State<UploadImagesScreen> {
   final ImagePicker _picker = ImagePicker();
-  final MissingPersonController controller = Get.put(MissingPersonController());
+  final FoundPersonController controller = Get.put(FoundPersonController());
   
   // Dynamic progress calculation for upload images screen
   double get progressPercent {
@@ -38,12 +38,13 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
     const maxFormProgress = 0.80;
     
     List<bool> formFieldsCompleted = [
-      controller.childName.isNotEmpty,
+      controller.personName.isNotEmpty,
       controller.fatherName.isNotEmpty,
       controller.gender.isNotEmpty,
-      controller.lastSeenPlace.isNotEmpty,
-      controller.lastSeenTime.isNotEmpty,
-      controller.phoneNumber.isNotEmpty,
+      controller.foundPlace.isNotEmpty,
+      controller.foundDate.isNotEmpty,
+      controller.foundTime.isNotEmpty,
+      controller.finderPhone.isNotEmpty,
     ];
     
     int completedFields = formFieldsCompleted.where((completed) => completed).length;

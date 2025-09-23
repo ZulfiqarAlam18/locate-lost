@@ -565,6 +565,84 @@ class _SignupScreenState extends State<SignupScreen> {
                     SocialIconButton(icon: Icons.apple, onPressed: () {}),
                   ],
                 ),
+
+                SizedBox(height: 30.h),
+
+                // Temporary Skip Authentication Button for Testing
+                Container(
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade50,
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: Colors.orange.shade200,
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        '🧪 TESTING MODE',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.orange.shade700,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      TextButton(
+                        onPressed: () {
+                          // Show confirmation dialog
+                          Get.dialog(
+                            AlertDialog(
+                              title: Text(
+                                'Skip Authentication',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              content: Text(
+                                'This is for testing only. Skip signup and go directly to home screen?',
+                                style: TextStyle(fontSize: 14.sp),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Get.back(); // Close dialog
+                                    Get.offAllNamed(AppRoutes.mainNavigation);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.orange,
+                                  ),
+                                  child: Text(
+                                    'Skip',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Skip Authentication (Testing)',
+                          style: TextStyle(
+                            color: Colors.orange.shade700,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20.h),
               ],
             ),
           ),

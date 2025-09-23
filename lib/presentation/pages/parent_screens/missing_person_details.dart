@@ -695,30 +695,25 @@ class _MissingPersonDetailsScreenState
           CustomElevatedButton(
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                // Combine date and time for lastSeenTime
-                String combinedDateTime = '';
-                if (_controllers['lastSeenDate']!.text.isNotEmpty && _controllers['lastSeenTime']!.text.isNotEmpty) {
-                  combinedDateTime = '${_controllers['lastSeenDate']!.text} at ${_controllers['lastSeenTime']!.text}';
-                }
-                
-                // Save data to controller
+                // Save data to controller with updated field structure
                 controller.updateMissingPersonDetails(
                   name: _controllers['name']!.text,
                   father: _controllers['fatherName']!.text,
+                  gen: selectedGender ?? '',
+                  place: _controllers['lastSeenPlace']!.text,
+                  date: _controllers['lastSeenDate']!.text,
+                  time: _controllers['lastSeenTime']!.text,
+                  phone: _controllers['phoneNumber']!.text,
+                  secondPhone: _controllers['secondPhoneNumber']!.text,
+                  additional: _controllers['additionalDetails']!.text,
+                  // Legacy fields (from unused controllers)
                   sur: _controllers['caste']!.text,
                   ageValue: int.tryParse(_controllers['age']!.text) ?? 0,
-                  gen: selectedGender ?? '',
                   hgt: _controllers['height']!.text,
                   skin: _controllers['skinColor']!.text,
                   hair: _controllers['hairColor']!.text,
                   dis: _controllers['disability']!.text,
-                  place: _controllers['lastSeenPlace']!.text,
-                  time: combinedDateTime,
-                  phone: _controllers['phoneNumber']!.text,
                 );
-                
-                // Update additional details directly
-                controller.additionalDetails = _controllers['additionalDetails']!.text;
                 
                 Get.toNamed(AppRoutes.uploadImages);
               } else {

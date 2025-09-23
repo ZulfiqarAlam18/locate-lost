@@ -5,19 +5,24 @@ import '../../data/services/parent_report_service.dart';
 import '../../data/models/parent_report_model.dart';
 
 class MissingPersonController extends GetxController {
-  // Missing Person Details
+  // Missing Person Details - Updated to match current UI fields
   String childName = '';
   String fatherName = '';
-  String surname = '';
   String gender = '';
+  String lastSeenPlace = '';
+  String lastSeenDate = '';
+  String lastSeenTime = '';
+  String phoneNumber = '';
+  String secondPhoneNumber = '';
+  String additionalDetails = '';
+  
+  // Legacy fields (kept for backward compatibility but not used in current UI)
+  String surname = '';
   int age = 0;
   String height = '';
   String skinColor = '';
   String hairColor = '';
   String disability = '';
-  String lastSeenPlace = '';
-  String lastSeenTime = '';
-  String phoneNumber = '';
   
   // Images
   var selectedImages = <XFile>[].obs;
@@ -27,7 +32,6 @@ class MissingPersonController extends GetxController {
   String relationship = '';
   String reporterPhone = '';
   String emergencyContact = '';
-  String additionalDetails = '';
   
   // Loading states
   var isLoading = false.obs;
@@ -49,51 +53,62 @@ class MissingPersonController extends GetxController {
   void clearData() {
     childName = '';
     fatherName = '';
-    surname = '';
     gender = '';
+    lastSeenPlace = '';
+    lastSeenDate = '';
+    lastSeenTime = '';
+    phoneNumber = '';
+    secondPhoneNumber = '';
+    additionalDetails = '';
+    // Legacy fields
+    surname = '';
     age = 0;
     height = '';
     skinColor = '';
     hairColor = '';
     disability = '';
-    lastSeenPlace = '';
-    lastSeenTime = '';
-    phoneNumber = '';
     selectedImages.clear();
     reporterName = '';
     relationship = '';
     reporterPhone = '';
     emergencyContact = '';
-    additionalDetails = '';
   }
   
-  // Update missing person details
+  // Update missing person details - Updated to match current UI
   void updateMissingPersonDetails({
     required String name,
     required String father,
-    required String sur,
     required String gen,
-    required int ageValue,
-    required String hgt,
-    required String skin,
-    required String hair,
-    String? dis,
     required String place,
+    required String date,
     required String time,
-    String? phone,
+    required String phone,
+    String? secondPhone,
+    String? additional,
+    // Legacy parameters for backward compatibility
+    String? sur,
+    int? ageValue,
+    String? hgt,
+    String? skin,
+    String? hair,
+    String? dis,
   }) {
     childName = name;
     fatherName = father;
-    surname = sur;
     gender = gen;
-    age = ageValue;
-    height = hgt;
-    skinColor = skin;
-    hairColor = hair;
-    disability = dis ?? '';
     lastSeenPlace = place;
+    lastSeenDate = date;
     lastSeenTime = time;
-    phoneNumber = phone ?? '';
+    phoneNumber = phone;
+    secondPhoneNumber = secondPhone ?? '';
+    additionalDetails = additional ?? '';
+    // Legacy fields (maintain for backward compatibility)
+    surname = sur ?? '';
+    age = ageValue ?? 0;
+    height = hgt ?? '';
+    skinColor = skin ?? '';
+    hairColor = hair ?? '';
+    disability = dis ?? '';
   }
   
   // Update images
@@ -129,12 +144,45 @@ class MissingPersonController extends GetxController {
     return descriptions.join(', ');
   }
   
-  // Parse last seen time (you might want to use a proper date picker)
+  // Build additional details string from all available information
+  String _buildAdditionalDetailsString() {
+    List<String> details = [];
+    
+    // Add father's name if available
+    if (fatherName.isNotEmpty) details.add('Father: $fatherName');
+    
+    // Add legacy physical description fields if available
+    if (skinColor.isNotEmpty) details.add('Skin: $skinColor');
+    if (hairColor.isNotEmpty) details.add('Hair: $hairColor');
+    if (disability.isNotEmpty) details.add('Disability: $disability');
+    
+    // Add phone numbers
+    if (phoneNumber.isNotEmpty) details.add('Contact: $phoneNumber');
+    if (secondPhoneNumber.isNotEmpty) details.add('Alt Contact: $secondPhoneNumber');
+    
+    // Add user-provided additional details
+    if (additionalDetails.isNotEmpty) details.add(additionalDetails);
+    
+    return details.join(', ');
+  }
+  
+  // Parse last seen date and time into DateTime
   DateTime get lastSeenDateTime {
-    // For now, return current time minus some hours
-    // You should update this to parse the actual time from the form
     try {
-      // If you implement proper date/time picker, parse it here
+      // Combine date and time if both are available
+      if (lastSeenDate.isNotEmpty && lastSeenTime.isNotEmpty) {
+        // Parse date (DD/MM/YYYY format) and time (HH:MM AM/PM format)
+        final dateParts = lastSeenDate.split('/');
+        if (dateParts.length == 3) {
+          final day = int.parse(dateParts[0]);
+          final month = int.parse(dateParts[1]);
+          final year = int.parse(dateParts[2]);
+          
+          // For simplicity, assume current time if time parsing fails
+          // In a real app, you'd want to parse the time properly
+          return DateTime(year, month, day);
+        }
+      }
       return DateTime.now().subtract(Duration(hours: 2));
     } catch (e) {
       return DateTime.now().subtract(Duration(hours: 2));
@@ -154,23 +202,24 @@ class MissingPersonController extends GetxController {
       
       print('--- SUBMITTING MISSING PERSON REPORT ---');
       print('Child Name: $childName');
-      print('Age: $age');
+      print('Father Name: $fatherName');
       print('Gender: $gender');
       print('Last Seen Place: $lastSeenPlace');
-      print('Reporter: $reporterName');
+      print('Last Seen Date: $lastSeenDate');
+      print('Last Seen Time: $lastSeenTime');
+      print('Phone: $phoneNumber');
+      print('Secondary Phone: $secondPhoneNumber');
       print('Images count: ${imageFiles.length}');
       
-      // Submit to backend
+      // Submit to backend using available fields
       final response = await _reportService.createReport(
         childName: childName,
-        age: age,
+        age: age > 0 ? age : 0, // Use age if available, otherwise 0
         gender: gender,
         placeLost: lastSeenPlace,
         lostTime: lastSeenDateTime,
-        clothes: '$skinColor skin, $hairColor hair, height: $height',
-        additionalDetails: disability.isNotEmpty 
-            ? 'Disability: $disability${additionalDetails.isNotEmpty ? ', $additionalDetails' : ''}'
-            : additionalDetails,
+        clothes: height.isNotEmpty ? 'Height: $height' : '', // Use height if available
+        additionalDetails: _buildAdditionalDetailsString(),
         latitude: null, // You can add location services later
         longitude: null,
         locationName: lastSeenPlace,

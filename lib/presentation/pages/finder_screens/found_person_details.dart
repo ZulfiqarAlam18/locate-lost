@@ -7,6 +7,7 @@ import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_elevated_button.dart';
 import 'package:locate_lost/presentation/widgets/custom_text_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import '../../controllers/found_person_controller.dart';
 
 class FoundPersonDetailsScreen extends StatefulWidget {
   const FoundPersonDetailsScreen({super.key});
@@ -18,6 +19,7 @@ class FoundPersonDetailsScreen extends StatefulWidget {
 
 class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FoundPersonController controller = Get.put(FoundPersonController());
   
   // Organized controllers map for better management
   final Map<String, TextEditingController> _controllers = {
@@ -92,6 +94,18 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    
+    // Pre-populate with any existing data from controller
+    _controllers['name']!.text = controller.personName;
+    _controllers['fatherName']!.text = controller.fatherName;
+    selectedGender = controller.gender.isNotEmpty ? controller.gender : null;
+    _controllers['foundPlace']!.text = controller.foundPlace;
+    _controllers['foundDate']!.text = controller.foundDate;
+    _controllers['foundTime']!.text = controller.foundTime;
+    _controllers['finderPhone']!.text = controller.finderPhone;
+    _controllers['finderSecondaryPhone']!.text = controller.finderSecondaryPhone;
+    _controllers['additionalDetails']!.text = controller.additionalDetails;
+    
     // Add listeners to required fields for dynamic progress updates
     _controllers['name']!.addListener(_updateProgress);
     _controllers['fatherName']!.addListener(_updateProgress);
@@ -457,12 +471,21 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                           ),
                           CustomElevatedButton(
                             onPressed: () {
-
                               if (_formKey.currentState!.validate()) {
+                                // Save data to controller
+                                controller.updateFoundPersonDetails(
+                                  name: _controllers['name']!.text,
+                                  father: _controllers['fatherName']!.text,
+                                  gen: selectedGender ?? '',
+                                  place: _controllers['foundPlace']!.text,
+                                  date: _controllers['foundDate']!.text,
+                                  time: _controllers['foundTime']!.text,
+                                  phone: _controllers['finderPhone']!.text,
+                                  secondPhone: _controllers['finderSecondaryPhone']!.text,
+                                  additional: _controllers['additionalDetails']!.text,
+                                );
                                 
-                                  Get.toNamed(AppRoutes.finderCaseSummary);
-
-
+                                Get.toNamed(AppRoutes.finderCaseSummary);
                               } else {
                                 Get.snackbar(
                                   'Form Incomplete',
@@ -472,7 +495,6 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                                   colorText: Colors.white,
                                 );
                               }
-
                             },
                             height: 45.h,
                             width: 130.w,

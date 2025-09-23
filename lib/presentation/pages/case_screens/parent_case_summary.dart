@@ -125,21 +125,6 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
     super.dispose();
   }
 
-  Color _getStatusColor(CaseStatus status) {
-    switch (status) {
-      case CaseStatus.active:
-        return Colors.orange;
-      case CaseStatus.investigating:
-        return Colors.blue;
-      case CaseStatus.resolved:
-        return Colors.green;
-      case CaseStatus.cold:
-        return Colors.grey;
-      case CaseStatus.closed:
-        return Colors.red;
-    }
-  }
-
   Color _getPriorityColor(CasePriority priority) {
     switch (priority) {
       case CasePriority.low:
@@ -171,7 +156,6 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
           child: Column(
             children: [
               _buildHeaderSection(),
-              _buildCaseStatusCard(),
               _buildMissingPersonDetailsCard(),
               _buildUploadedImagesSection(),
               _buildReporterInfoCard(),
@@ -263,80 +247,6 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCaseStatusCard() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-      child: _buildModernCard(
-        title: 'Report Status',
-        icon: Icons.info_outline,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Current Status',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Row(
-                      children: [
-                        Container(
-                          width: 8.w,
-                          height: 8.h,
-                          decoration: BoxDecoration(
-                            color: _getStatusColor(caseData.currentStatus),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          caseData.status,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: _getStatusColor(caseData.currentStatus),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Report Type',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      caseData.caseType,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -756,7 +666,10 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
               Icons.phone,
               () => _makePhoneCall(caseData.primaryPhone),
             ),
-            if (caseData.secondaryPhone.isNotEmpty && caseData.secondaryPhone != 'Not provided')
+            if (caseData.secondaryPhone.isNotEmpty && 
+                caseData.secondaryPhone != 'Not provided' && 
+                caseData.secondaryPhone != 'Not specified' &&
+                caseData.secondaryPhone.length >= 10) // Ensure it's a valid phone number
               _buildContactRow(
                 'Secondary Phone',
                 caseData.secondaryPhone,

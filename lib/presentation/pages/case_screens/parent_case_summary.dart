@@ -18,21 +18,18 @@ class ParentCaseData {
   final String status;
   final DateTime reportedDate;
   final String missingPersonName;
-  final int age;
+  final String fatherName;
   final String gender;
   final String lastSeenLocation;
-  final String reporterName;
-  final String relationship;
-  final String phone;
-  final String email;
-  final String description;
+  final String lastSeenDate;
+  final String lastSeenTime;
+  final String primaryPhone;
+  final String secondaryPhone;
+  final String additionalDetails;
   final List<String> uploadedImages;
-  final String physicalCharacteristics;
-  final String clothingDescription;
-  final DateTime lastSeenTime;
+  final DateTime lastSeenDateTime;
   final CaseStatus currentStatus;
   final CasePriority priority;
-  final String additionalDetails;
 
   ParentCaseData({
     required this.caseId,
@@ -40,21 +37,18 @@ class ParentCaseData {
     required this.status,
     required this.reportedDate,
     required this.missingPersonName,
-    required this.age,
+    required this.fatherName,
     required this.gender,
     required this.lastSeenLocation,
-    required this.reporterName,
-    required this.relationship,
-    required this.phone,
-    required this.email,
-    required this.description,
-    required this.uploadedImages,
-    required this.physicalCharacteristics,
-    required this.clothingDescription,
+    required this.lastSeenDate,
     required this.lastSeenTime,
+    required this.primaryPhone,
+    required this.secondaryPhone,
+    required this.additionalDetails,
+    required this.uploadedImages,
+    required this.lastSeenDateTime,
     required this.currentStatus,
     required this.priority,
-    required this.additionalDetails,
   });
 }
 
@@ -109,22 +103,19 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
       caseType: 'Missing Person Report',
       status: 'Draft - Ready to Submit',
       reportedDate: DateTime.now(),
-      missingPersonName: controller.childName,
-      age: controller.age,
-      gender: controller.gender,
-      lastSeenLocation: controller.lastSeenPlace,
-      reporterName: controller.reporterName,
-      relationship: controller.relationship,
-      phone: controller.reporterPhone,
-      email: 'N/A', // You can add email field to the form if needed
-      description: controller.completeDescription,
+      missingPersonName: controller.childName.isEmpty ? 'Not specified' : controller.childName,
+      fatherName: controller.fatherName.isEmpty ? 'Not specified' : controller.fatherName,
+      gender: controller.gender.isEmpty ? 'Not specified' : controller.gender,
+      lastSeenLocation: controller.lastSeenPlace.isEmpty ? 'Not specified' : controller.lastSeenPlace,
+      lastSeenDate: controller.lastSeenDate.isEmpty ? 'Not specified' : controller.lastSeenDate,
+      lastSeenTime: controller.lastSeenTime.isEmpty ? 'Not specified' : controller.lastSeenTime,
+      primaryPhone: controller.phoneNumber.isEmpty ? 'Not specified' : controller.phoneNumber,
+      secondaryPhone: controller.secondPhoneNumber.isEmpty ? 'Not provided' : controller.secondPhoneNumber,
+      additionalDetails: controller.additionalDetails.isEmpty ? 'No additional details provided' : controller.additionalDetails,
       uploadedImages: controller.selectedImages.map((xFile) => xFile.path).toList(),
-      physicalCharacteristics: 'Height: ${controller.height}, Skin: ${controller.skinColor}, Hair: ${controller.hairColor}',
-      clothingDescription: controller.disability.isNotEmpty ? 'Special Note: ${controller.disability}' : 'No special clothing description',
-      lastSeenTime: controller.lastSeenDateTime,
+      lastSeenDateTime: controller.lastSeenDateTime,
       currentStatus: CaseStatus.active,
       priority: CasePriority.high,
-      additionalDetails: '${controller.additionalDetails}\nEmergency Contact: ${controller.emergencyContact}',
     );
   }
 
@@ -359,13 +350,8 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
         child: Column(
           children: [
             _buildDetailRow('Name', caseData.missingPersonName),
-            _buildDetailRow('Age', '${caseData.age} years old'),
+            _buildDetailRow('Father\'s Name', caseData.fatherName),
             _buildDetailRow('Gender', caseData.gender),
-            _buildDetailRow(
-              'Physical Characteristics',
-              caseData.physicalCharacteristics,
-            ),
-            _buildDetailRow('Last Seen Wearing', caseData.clothingDescription),
           ],
         ),
       ),
@@ -760,24 +746,23 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Your Contact Information',
+        title: 'Contact Information',
         icon: Icons.contact_phone,
         child: Column(
           children: [
-            _buildDetailRow('Your Name', caseData.reporterName),
-            _buildDetailRow('Relationship', caseData.relationship),
             _buildContactRow(
-              'Phone',
-              caseData.phone,
+              'Primary Phone',
+              caseData.primaryPhone,
               Icons.phone,
-              () => _makePhoneCall(caseData.phone),
+              () => _makePhoneCall(caseData.primaryPhone),
             ),
-            _buildContactRow(
-              'Email',
-              caseData.email,
-              Icons.email,
-              () => _sendEmail(caseData.email),
-            ),
+            if (caseData.secondaryPhone.isNotEmpty && caseData.secondaryPhone != 'Not provided')
+              _buildContactRow(
+                'Secondary Phone',
+                caseData.secondaryPhone,
+                Icons.phone_android,
+                () => _makePhoneCall(caseData.secondaryPhone),
+              ),
           ],
         ),
       ),
@@ -793,10 +778,8 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
         child: Column(
           children: [
             _buildDetailRow('Last Seen Location', caseData.lastSeenLocation),
-            _buildDetailRow(
-              'Last Seen Time',
-              _formatDateTime(caseData.lastSeenTime),
-            ),
+            _buildDetailRow('Last Seen Date', caseData.lastSeenDate),
+            _buildDetailRow('Last Seen Time', caseData.lastSeenTime),
             SizedBox(height: 12.h),
             ElevatedButton.icon(
               onPressed: () => _openMap(caseData.lastSeenLocation),
@@ -827,24 +810,6 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Description of Circumstances',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              caseData.description,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[700],
-                height: 1.5,
-              ),
-            ),
-            SizedBox(height: 16.h),
             Text(
               'Additional Information',
               style: TextStyle(
@@ -1276,19 +1241,6 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Call: $phone'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
-  }
-
-  void _sendEmail(String email) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Email: $email'),
         backgroundColor: AppColors.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(

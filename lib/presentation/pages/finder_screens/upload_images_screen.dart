@@ -18,7 +18,7 @@ class UploadImagesScreen extends StatefulWidget {
 
 class _UploadImagesScreenState extends State<UploadImagesScreen> {
   final ImagePicker _picker = ImagePicker();
-  final MissingPersonController controller = Get.find<MissingPersonController>();
+  final MissingPersonController controller = Get.put(MissingPersonController());
   
   // Dynamic progress calculation for upload images screen
   double get progressPercent {
@@ -513,7 +513,9 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                   CustomElevatedButton(
                     onPressed: () {
                       if (controller.selectedImages.isNotEmpty) {
-                     Get.toNamed(AppRoutes.parentCaseSummary);
+                              Get.toNamed(AppRoutes.foundPersonDetails);
+
+
 
 
                     //    Get.toNamed(AppRoutes.reporterDetails);

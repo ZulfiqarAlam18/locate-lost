@@ -188,12 +188,7 @@ class AppPages {
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
-    // GetPage(
-    //   name: AppRoutes.reporterDetails,
-    //   page: () => const ReporterDetailsScreen(),
-    //   transition: Transition.cupertino,
-    //   transitionDuration: const Duration(milliseconds: 300),
-    // ),
+   
     GetPage(
       name: AppRoutes.uploadImages,
       page: () => const UploadImagesScreen(),
@@ -359,13 +354,7 @@ class AppPages {
       transitionDuration: const Duration(milliseconds: 300),
     ),
 
-    // Demo Routes
-    // GetPage(
-    //   name: AppRoutes.dialogDemo,
-    //   page: () => const DialogDemoScreen(),
-    //   transition: Transition.fadeIn,
-    //   transitionDuration: const Duration(milliseconds: 300),
-    // ),
+   
     GetPage(
       name: AppRoutes.locationPermissionTest,
       page: () => const LocationPermissionTestScreen(),

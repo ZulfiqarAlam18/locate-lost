@@ -4,6 +4,13 @@ import 'package:get/get.dart';
 import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
+
+enum LocationCheckResult {
+  enabled,
+  serviceDisabled,
+  permissionDenied,
+}
 
 class LocationPermissionService {
   static bool _hasCheckedThisSession = false;
@@ -22,6 +29,20 @@ class LocationPermissionService {
     await checkLocationPermissionAfterLogin();
   }
   
+  /// Comprehensive location check - both services and permissions
+  static Future<LocationCheckResult> checkFullLocationStatus() async {
+    final isServiceEnabled = await isLocationServiceEnabled();
+    final isPermissionGranted = await isLocationPermissionGranted();
+    
+    if (!isServiceEnabled) {
+      return LocationCheckResult.serviceDisabled;
+    } else if (!isPermissionGranted) {
+      return LocationCheckResult.permissionDenied;
+    } else {
+      return LocationCheckResult.enabled;
+    }
+  }
+  
   /// Get current location permission status
   static Future<PermissionStatus> getCurrentLocationStatus() async {
     return await Permission.location.status;
@@ -33,14 +54,36 @@ class LocationPermissionService {
     return status == PermissionStatus.granted || status == PermissionStatus.limited;
   }
   
+  /// Check if device location services are enabled
+  static Future<bool> isLocationServiceEnabled() async {
+    return await Geolocator.isLocationServiceEnabled();
+  }
+  
   /// Main method to check and handle location permissions after login
   static Future<void> checkLocationPermissionAfterLogin() async {
     // Skip if already checked this session
     if (_hasCheckedThisSession) {
-      Get.offAllNamed(AppRoutes.home);
+      // Even if checked this session, verify location is still enabled
+      final isServiceEnabled = await isLocationServiceEnabled();
+      final isPermissionGranted = await isLocationPermissionGranted();
+      
+      if (isServiceEnabled && isPermissionGranted) {
+        Get.offAllNamed(AppRoutes.home);
+        return;
+      } else {
+        // Reset session check if location is disabled
+        _hasCheckedThisSession = false;
+      }
+    }
+    
+    // First check if location services are enabled on the device
+    final isServiceEnabled = await isLocationServiceEnabled();
+    if (!isServiceEnabled) {
+      _showLocationServiceDisabledDialog();
       return;
     }
     
+    // Then check app permissions
     final status = await Permission.location.status;
     
     switch (status) {
@@ -67,12 +110,198 @@ class LocationPermissionService {
         break;
         
       default:
-        // Unknown status, proceed to home
-        _hasCheckedThisSession = true;
-        Get.offAllNamed(AppRoutes.home);
+        // Unknown status, show explanation dialog
+        _showLocationPermissionDialog();
     }
   }
   
+  /// Show dialog when device location services are disabled
+  static void _showLocationServiceDisabledDialog() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(24.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon
+              Container(
+                width: 80.w,
+                height: 80.w,
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.location_disabled_outlined,
+                  size: 40.sp,
+                  color: Colors.red[700],
+                ),
+              ),
+              
+              SizedBox(height: 20.h),
+              
+              // Title
+              Text(
+                'Location Services Disabled',
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[700],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              
+              SizedBox(height: 16.h),
+              
+              // Description
+              Text(
+                'LocateLost requires location services to be enabled on your device to help find missing children safely.',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.grey[700],
+                  height: 1.4,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              
+              SizedBox(height: 20.h),
+              
+              // Critical features notice
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.red[50],
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: Colors.red[200]!),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.warning_amber_rounded, color: Colors.red[600], size: 20.sp),
+                        SizedBox(width: 8.w),
+                        Text(
+                          'This app cannot work without location!',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red[700],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      'To enable location services:\n1. Go to your device Settings\n2. Find "Location" or "Location Services"\n3. Turn on Location Services\n4. Return to this app',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Colors.red[700],
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              SizedBox(height: 24.h),
+              
+              // Buttons
+              Column(
+                children: [
+                  // Primary button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Get.back();
+                        // Recheck after user potentially enabled location
+                        await checkLocationPermissionAfterLogin();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red[700],
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        'I\'ve Enabled Location Services',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  
+                  SizedBox(height: 12.h),
+                  
+                  // Secondary button - exit app
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
+                        // Close the app since location is mandatory
+                        Get.dialog(
+                          AlertDialog(
+                            title: Text('Exit App?'),
+                            content: Text('Location services are required for this app to function. The app will close now.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Get.back(),
+                                child: Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Force close the app
+                                  Get.back();
+                                  Get.back();
+                                  // You might want to use SystemNavigator.pop() or exit(0) here
+                                },
+                                child: Text('Exit App'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          side: BorderSide(color: Colors.grey[300]!),
+                        ),
+                      ),
+                      child: Text(
+                        'Exit App',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
   /// Show the friendly explanation dialog for location permission
   static void _showLocationPermissionDialog() {
     Get.dialog(
@@ -486,29 +715,40 @@ class LocationPermissionService {
   
   /// Request location permission
   static Future<void> _requestLocationPermission() async {
-    final status = await Permission.location.request();
+    // First check if location services are enabled
+    final isServiceEnabled = await isLocationServiceEnabled();
+    if (!isServiceEnabled) {
+      _showLocationServiceDisabledDialog();
+      return;
+    }
     
-    _hasCheckedThisSession = true;
+    final status = await Permission.location.request();
     
     switch (status) {
       case PermissionStatus.granted:
       case PermissionStatus.limited:
-        // Permission granted, show success and go to home
-        Get.snackbar(
-          'Location Enabled',
-          'Location services are now enabled for better safety features!',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.TOP,
-          duration: Duration(seconds: 3),
-          icon: Icon(Icons.check_circle, color: Colors.white),
-        );
-        Get.offAllNamed(AppRoutes.home);
+        // Permission granted, double-check location services are still enabled
+        final stillEnabled = await isLocationServiceEnabled();
+        if (stillEnabled) {
+          _hasCheckedThisSession = true;
+          Get.snackbar(
+            'Location Enabled',
+            'Location services are now enabled for better safety features!',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.TOP,
+            duration: Duration(seconds: 3),
+            icon: Icon(Icons.check_circle, color: Colors.white),
+          );
+          Get.offAllNamed(AppRoutes.home);
+        } else {
+          _showLocationServiceDisabledDialog();
+        }
         break;
         
       case PermissionStatus.denied:
-        // User denied, but can ask again later
-        Get.offAllNamed(AppRoutes.home);
+        // User denied, but can ask again later - but still need location services
+        _showLocationPermissionDialog();
         break;
         
       case PermissionStatus.permanentlyDenied:
@@ -517,14 +757,195 @@ class LocationPermissionService {
         break;
         
       default:
-        Get.offAllNamed(AppRoutes.home);
+        _showLocationPermissionDialog();
     }
   }
   
-  /// Skip location permission and go to home
-  static void _skipLocationPermission() {
+  /// Skip location permission with warning
+  static void _skipLocationPermission() async {
+    // Check if location services are enabled on device
+    final isServiceEnabled = await isLocationServiceEnabled();
+    if (!isServiceEnabled) {
+      _showLocationServiceDisabledDialog();
+      return;
+    }
+    
+    // Show a warning dialog before allowing to skip
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(24.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Warning icon
+              Icon(
+                Icons.warning_amber_rounded,
+                size: 48.sp,
+                color: Colors.orange[600],
+              ),
+              
+              SizedBox(height: 16.h),
+              
+              // Title
+              Text(
+                'Limited App Functionality',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              
+              SizedBox(height: 12.h),
+              
+              // Warning message
+              Text(
+                'Without location access, you will miss important features:',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              
+              SizedBox(height: 16.h),
+              
+              // Missing features list
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.red[50],
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: Colors.red[200]!),
+                ),
+                child: Column(
+                  children: [
+                    _buildMissingFeatureItem('📍 Nearby missing person alerts'),
+                    _buildMissingFeatureItem('🚨 Location-based emergency notifications'),
+                    _buildMissingFeatureItem('📊 Accurate found person reporting'),
+                    _buildMissingFeatureItem('🗺️ Map-based case matching'),
+                  ],
+                ),
+              ),
+              
+              SizedBox(height: 20.h),
+              
+              Text(
+                'You can enable location later in app settings.',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.grey[500],
+                  fontStyle: FontStyle.italic,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              
+              SizedBox(height: 24.h),
+              
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Get.back();
+                        _proceedWithoutLocation();
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                          side: BorderSide(color: Colors.grey[300]!),
+                        ),
+                      ),
+                      child: Text(
+                        'Continue Without',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ),
+                  
+                  SizedBox(width: 12.w),
+                  
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        _requestLocationPermission();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ),
+                      child: Text(
+                        'Enable Location',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+  
+  /// Actually proceed without location after warning
+  static void _proceedWithoutLocation() async {
+    // Final check - if location services are disabled, don't allow proceeding
+    final isServiceEnabled = await isLocationServiceEnabled();
+    if (!isServiceEnabled) {
+      _showLocationServiceDisabledDialog();
+      return;
+    }
+    
     _hasCheckedThisSession = true;
     Get.offAllNamed(AppRoutes.home);
+  }
+  
+  /// Helper method to build missing feature items
+  static Widget _buildMissingFeatureItem(String text) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.h),
+      child: Row(
+        children: [
+          Icon(Icons.remove, color: Colors.red[600], size: 16.sp),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: Colors.red[700],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
   
   /// Open app settings
@@ -539,7 +960,8 @@ class LocationPermissionService {
         snackPosition: SnackPosition.TOP,
       );
     }
-    _skipLocationPermission();
+    // After settings, recheck the entire location flow instead of proceeding without
+    await checkLocationPermissionAfterLogin();
   }
   
   /// Helper method to build benefit items in the dialog

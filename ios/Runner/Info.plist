@@ -45,5 +45,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Location permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>LocateLost needs location access to help find missing children in your area and provide accurate location data when reporting found persons.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>LocateLost needs location access to send you nearby missing person alerts and help authorities respond quickly to emergency situations.</string>
 </dict>
 </plist>

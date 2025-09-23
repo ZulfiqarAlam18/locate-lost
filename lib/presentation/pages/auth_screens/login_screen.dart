@@ -6,6 +6,7 @@ import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/dialogs/animated_loading_dialog.dart';
 import 'package:locate_lost/presentation/widgets/custom_text_field.dart';
 import 'package:locate_lost/data/controllers/auth_controller.dart';
+import 'package:locate_lost/data/services/location_permission_service.dart';
 
 import '../../widgets/custom_elevated_button.dart';
 
@@ -372,9 +373,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Login Button
                       CustomElevatedButton(
                         onPressed: () {
-                          if (!_isLoading) {
-                            _handleLogin();
-                          }
+
+                                  Get.offAllNamed(AppRoutes.home);
+
+
+                          // if (!_isLoading) {
+                          //   _handleLogin();
+                          // }
                         },
                         height: 60.h,
                         width: 241.w,
@@ -701,13 +706,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               SizedBox(height: 16.h),
 
-                              // Secondary button
+                              // Secondary button - with warning
                               SizedBox(
                                 width: double.infinity,
                                 child: TextButton(
                                   onPressed: () {
                                     Get.back();
-                                    _navigateToHome();
+                                    _showLocationSkipWarning();
                                   },
                                   style: TextButton.styleFrom(
                                     padding: EdgeInsets.symmetric(
@@ -779,53 +784,143 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Navigate to home with fade animation
   void _navigateToHome() {
-
-    // Add subtle delay for better UX
-    // Future.delayed(const Duration(milliseconds: 100), () {
-    //   Get.offAllNamed(AppRoutes.home);
-    // });
-
-     Get.offAllNamed(AppRoutes.home);
-
+    Get.offAllNamed(AppRoutes.home);
   }
 
   // Enable location and navigate to home
   void _enableLocationAndContinue() async {
-    // Show success message with better styling
-    Get.snackbar(
-      'Location Enabled! 🎉',
-      'Location services are now active. Ready to help keep children safe!',
-      backgroundColor: Colors.green[600],
-      colorText: Colors.white,
-      snackPosition: SnackPosition.TOP,
-      duration: const Duration(seconds: 3),
-      margin: EdgeInsets.all(16.w),
-      borderRadius: 12.r,
-      icon: Container(
-        padding: EdgeInsets.all(8.w),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.2),
-          shape: BoxShape.circle,
+    try {
+      // Call the existing LocationPermissionService
+      await LocationPermissionService.checkLocationPermissionAfterLogin();
+    } catch (e) {
+      Get.snackbar(
+        'Location Error',
+        'An unexpected error occurred: $e',
+        backgroundColor: Colors.red[600],
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 4),
+      );
+    }
+  }
+
+  // Show warning when user tries to skip location
+  void _showLocationSkipWarning() {
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        title: Row(
+          children: [
+            Icon(Icons.warning_amber, color: Colors.orange[600], size: 24.sp),
+            SizedBox(width: 8.w),
+            Expanded(
+              child: Text(
+                'Location is Important!',
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
-        child: Icon(
-          Icons.check_circle_rounded,
-          color: Colors.white,
-          size: 24.sp,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Location services help us:',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 12.h),
+            _buildWarningItem(Icons.search_rounded, 'Show nearby missing children'),
+            _buildWarningItem(Icons.notifications_active, 'Send urgent alerts'),
+            _buildWarningItem(Icons.my_location, 'Help with accurate reporting'),
+            _buildWarningItem(Icons.security, 'Improve response time'),
+            SizedBox(height: 16.h),
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: Colors.red.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.red[600], size: 20.sp),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      'Without location, the app\'s effectiveness is significantly reduced.',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Colors.red[700],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+        actions: [
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                    _navigateToHome();
+                  },
+                  child: Text(
+                    'Continue Without Location',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 13.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                    _enableLocationAndContinue();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: const Text(
+                    'Enable Location',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-      boxShadows: [
-        BoxShadow(
-          color: Colors.green.withValues(alpha: 0.3),
-          blurRadius: 20.r,
-          offset: Offset(0, 8.h),
-        ),
-      ],
     );
+  }
 
-    // Add slight delay for better UX
-   // await Future.delayed(const Duration(milliseconds: 500));
-
-    // Navigate to home
-    _navigateToHome();
+  // Helper method for warning items
+  Widget _buildWarningItem(IconData icon, String text) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: Row(
+        children: [
+          Icon(icon, size: 16.sp, color: AppColors.primary),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

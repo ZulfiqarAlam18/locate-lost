@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -124,40 +125,6 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
       currentStatus: CaseStatus.active,
       priority: CasePriority.high,
       additionalDetails: '${controller.additionalDetails}\nEmergency Contact: ${controller.emergencyContact}',
-    );
-  }
-
-  ParentCaseData _getSampleParentCaseData() {
-    return ParentCaseData(
-      caseId:
-          'MP-2024-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
-      caseType: 'Missing Person Report',
-      status: 'Active - Under Investigation',
-      reportedDate: DateTime.now().subtract(Duration(days: 2)),
-      missingPersonName: 'Emma Johnson',
-      age: 8,
-      gender: 'Female',
-      lastSeenLocation: 'Riverside Park, Main Street, Downtown',
-      reporterName: 'Sarah Johnson',
-      relationship: 'Mother',
-      phone: '+1 (555) 987-6543',
-      email: 'sarah.johnson@email.com',
-      description:
-          'Emma was playing in the park with friends when she disappeared. She was wearing her favorite pink dress and carrying a small teddy bear.',
-      uploadedImages: [
-        'assets/images/zulfiqar.png', // Recent photos of missing person
-        'assets/images/ali.png',
-        'assets/images/bg.png',
-      ],
-      physicalCharacteristics:
-          'Height: 4\'2", Blonde hair, Green eyes, Small birthmark on left cheek',
-      clothingDescription:
-          'Pink floral dress, white sandals, small backpack with cartoon characters',
-      lastSeenTime: DateTime.now().subtract(Duration(days: 2, hours: 3)),
-      currentStatus: CaseStatus.active,
-      priority: CasePriority.critical,
-      additionalDetails:
-          'Emma has never wandered off before. She knows her address and phone number. Very friendly with strangers.',
     );
   }
 
@@ -549,33 +516,61 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12.r),
                       ),
-                      child: Image.asset(
-                        images[index],
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[300],
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.broken_image,
-                                  size: 32.w,
-                                  color: Colors.grey[500],
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  'Image not found',
-                                  style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Colors.grey[600],
+                      child: images[index].startsWith('assets/')
+                          ? Image.asset(
+                              images[index],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.broken_image,
+                                        size: 32.w,
+                                        color: Colors.grey[500],
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        'Image not found',
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                );
+                              },
+                            )
+                          : Image.file(
+                              File(images[index]),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.broken_image,
+                                        size: 32.w,
+                                        color: Colors.grey[500],
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        'Image not found',
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                     Positioned(
                       bottom: 4.h,
@@ -664,35 +659,65 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
                             margin: EdgeInsets.symmetric(horizontal: 8.w),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16.r),
-                              child: Image.asset(
-                                images[index],
-                                fit: BoxFit.contain,
-                                width: double.infinity,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: Colors.grey[200],
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.broken_image,
-                                          size: 64.w,
-                                          color: Colors.grey[400],
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Text(
-                                          'Image not available',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.grey[600],
+                              child: images[index].startsWith('assets/')
+                                  ? Image.asset(
+                                      images[index],
+                                      fit: BoxFit.contain,
+                                      width: double.infinity,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[200],
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.broken_image,
+                                                size: 64.w,
+                                                color: Colors.grey[400],
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Text(
+                                                'Image not available',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                        );
+                                      },
+                                    )
+                                  : Image.file(
+                                      File(images[index]),
+                                      fit: BoxFit.contain,
+                                      width: double.infinity,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[200],
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.broken_image,
+                                                size: 64.w,
+                                                color: Colors.grey[400],
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Text(
+                                                'Image not available',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
                             ),
                           );
                         },

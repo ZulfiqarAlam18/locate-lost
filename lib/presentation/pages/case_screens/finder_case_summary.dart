@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:locate_lost/core/constants/app_colors.dart';
 import 'package:locate_lost/core/utils/dialog_utils.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/presentation/widgets/custom_app_bar.dart';
+import '../../controllers/found_person_controller.dart';
 
 import '../../../core/utils/navigation_helper.dart' show NavigationHelper;
 
@@ -15,48 +17,38 @@ class FinderCaseData {
   final String caseType;
   final String status;
   final DateTime reportedDate;
-  final String foundPersonDescription;
-  final String estimatedAge;
+  final String foundPersonName;  // Changed from foundPersonDescription to match actual data
+  final String fatherName;       // Added to match input fields
   final String gender;
   final String foundLocation;
-  final String finderName;
+  final String foundDate;        // Added separate date field
+  final String foundTime;        // Added separate time field
   final String finderPhone;
-  final String finderEmail;
-  final String circumstances;
-  final List<String> capturedImages;
-  final String physicalDescription;
-  final String clothingDescription;
-  final DateTime foundTime;
-  final String currentLocation;
+  final String finderSecondaryPhone; // Added secondary phone
+  final String additionalDetails; // Changed from circumstances to match controller
+  final List<String> uploadedImages; // Changed from capturedImages to match pattern
+  final DateTime foundDateTime;   // Computed from foundDate and foundTime
   final FinderCaseStatus currentStatus;
   final FinderCasePriority priority;
-  final String additionalNotes;
-  final bool isPersonSafe;
-  final bool needsMedicalAttention;
 
   FinderCaseData({
     required this.caseId,
     required this.caseType,
     required this.status,
     required this.reportedDate,
-    required this.foundPersonDescription,
-    required this.estimatedAge,
+    required this.foundPersonName,
+    required this.fatherName,
     required this.gender,
     required this.foundLocation,
-    required this.finderName,
-    required this.finderPhone,
-    required this.finderEmail,
-    required this.circumstances,
-    required this.capturedImages,
-    required this.physicalDescription,
-    required this.clothingDescription,
+    required this.foundDate,
     required this.foundTime,
-    required this.currentLocation,
+    required this.finderPhone,
+    required this.finderSecondaryPhone,
+    required this.additionalDetails,
+    required this.uploadedImages,
+    required this.foundDateTime,
     required this.currentStatus,
     required this.priority,
-    required this.additionalNotes,
-    required this.isPersonSafe,
-    required this.needsMedicalAttention,
   });
 }
 
@@ -79,6 +71,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
   late FinderCaseData caseData;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  final FoundPersonController controller = Get.find<FoundPersonController>();
 
   @override
   void initState() {
@@ -88,8 +81,8 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
   }
 
   void _initializeData() {
-    // Use provided data or create sample data
-    caseData = widget.caseData ?? _getSampleFinderCaseData();
+    // Use provided data or create data from controller
+    caseData = widget.caseData ?? _getDataFromController();
   }
 
   void _setupAnimations() {
@@ -103,40 +96,26 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     _animationController.forward();
   }
 
-  FinderCaseData _getSampleFinderCaseData() {
+  FinderCaseData _getDataFromController() {
+    // Convert controller data to FinderCaseData format
     return FinderCaseData(
-      caseId:
-          'FP-2024-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
+      caseId: 'FP-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
       caseType: 'Found Person Report',
-      status: 'Reported - Awaiting Match',
-      reportedDate: DateTime.now().subtract(Duration(hours: 3)),
-      foundPersonDescription:
-          'Young girl found wandering alone, appears lost and confused',
-      estimatedAge: '7-9 years old',
-      gender: 'Female',
-      foundLocation: 'Shopping Mall, Food Court Area, Main Street',
-      finderName: 'Michael Rodriguez',
-      finderPhone: '+1 (555) 456-7890',
-      finderEmail: 'michael.rodriguez@email.com',
-      circumstances:
-          'Found the child crying near the food court. She seemed lost and was looking for her mother. Currently staying with security.',
-      capturedImages: [
-        'assets/images/Map1.png', // Photos taken by finder
-        'assets/images/Map2.png',
-        'assets/images/Map3.png',
-      ],
-      physicalDescription:
-          'Approx. 4\'0" tall, Brown hair in pigtails, Brown eyes, Small build',
-      clothingDescription:
-          'Pink dress with white flowers, white sneakers, small purple backpack',
-      foundTime: DateTime.now().subtract(Duration(hours: 3, minutes: 30)),
-      currentLocation: 'Mall Security Office - Safe and supervised',
+      status: 'Draft - Ready to Submit',
+      reportedDate: DateTime.now(),
+      foundPersonName: controller.personName,
+      fatherName: controller.fatherName,
+      gender: controller.gender,
+      foundLocation: controller.foundPlace,
+      foundDate: controller.foundDate,
+      foundTime: controller.foundTime,
+      finderPhone: controller.finderPhone,
+      finderSecondaryPhone: controller.finderSecondaryPhone,
+      additionalDetails: controller.additionalDetails,
+      uploadedImages: controller.selectedImages.map((xFile) => xFile.path).toList(),
+      foundDateTime: controller.foundDateTime,
       currentStatus: FinderCaseStatus.reported,
       priority: FinderCasePriority.high,
-      additionalNotes:
-          'Child appears healthy and unharmed. Speaking clearly and knows her first name. Security has provided snacks and comfort.',
-      isPersonSafe: true,
-      needsMedicalAttention: false,
     );
   }
 
@@ -298,40 +277,26 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   child: Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
-                      color:
-                          caseData.isPersonSafe
-                              ? Colors.green.shade50
-                              : Colors.red.shade50,
+                      color: Colors.green.shade50,
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color:
-                            caseData.isPersonSafe
-                                ? Colors.green.shade200
-                                : Colors.red.shade200,
+                        color: Colors.green.shade200,
                       ),
                     ),
                     child: Column(
                       children: [
                         Icon(
-                          caseData.isPersonSafe
-                              ? Icons.check_circle
-                              : Icons.warning,
-                          color:
-                              caseData.isPersonSafe ? Colors.green : Colors.red,
+                          Icons.check_circle,
+                          color: Colors.green,
                           size: 32.w,
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          caseData.isPersonSafe
-                              ? 'Person is Safe'
-                              : 'Safety Concern',
+                          'Person is Safe',
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            color:
-                                caseData.isPersonSafe
-                                    ? Colors.green.shade700
-                                    : Colors.red.shade700,
+                            color: Colors.green.shade700,
                           ),
                         ),
                       ],
@@ -343,42 +308,26 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   child: Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
-                      color:
-                          !caseData.needsMedicalAttention
-                              ? Colors.green.shade50
-                              : Colors.orange.shade50,
+                      color: Colors.green.shade50,
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color:
-                            !caseData.needsMedicalAttention
-                                ? Colors.green.shade200
-                                : Colors.orange.shade200,
+                        color: Colors.green.shade200,
                       ),
                     ),
                     child: Column(
                       children: [
                         Icon(
-                          !caseData.needsMedicalAttention
-                              ? Icons.favorite
-                              : Icons.medical_services,
-                          color:
-                              !caseData.needsMedicalAttention
-                                  ? Colors.green
-                                  : Colors.orange,
+                          Icons.favorite,
+                          color: Colors.green,
                           size: 32.w,
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          !caseData.needsMedicalAttention
-                              ? 'No Medical Need'
-                              : 'Needs Medical Care',
+                          'No Medical Need',
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            color:
-                                !caseData.needsMedicalAttention
-                                    ? Colors.green.shade700
-                                    : Colors.orange.shade700,
+                            color: Colors.green.shade700,
                           ),
                         ),
                       ],
@@ -437,7 +386,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      caseData.currentLocation,
+                      caseData.foundLocation,
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -463,14 +412,10 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         icon: Icons.person,
         child: Column(
           children: [
-            _buildDetailRow('Description', caseData.foundPersonDescription),
-            _buildDetailRow('Estimated Age', caseData.estimatedAge),
+            _buildDetailRow('Person Name', caseData.foundPersonName.isEmpty ? 'Unknown' : caseData.foundPersonName),
+            _buildDetailRow('Father Name', caseData.fatherName.isEmpty ? 'Unknown' : caseData.fatherName),
             _buildDetailRow('Gender', caseData.gender),
-            _buildDetailRow(
-              'Physical Description',
-              caseData.physicalDescription,
-            ),
-            _buildDetailRow('Clothing', caseData.clothingDescription),
+            _buildDetailRow('Additional Details', caseData.additionalDetails.isEmpty ? 'No additional details provided' : caseData.additionalDetails),
           ],
         ),
       ),
@@ -486,13 +431,13 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (caseData.capturedImages.isNotEmpty) ...[
+            if (caseData.uploadedImages.isNotEmpty) ...[
               _buildImageGalleryHeader(
                 'Photos You Captured',
-                caseData.capturedImages.length,
+                caseData.uploadedImages.length,
               ),
               SizedBox(height: 12.h),
-              _buildImageCarousel(caseData.capturedImages),
+              _buildImageCarousel(caseData.uploadedImages),
               SizedBox(height: 12.h),
               Container(
                 padding: EdgeInsets.all(12.w),
@@ -621,33 +566,61 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12.r),
                       ),
-                      child: Image.asset(
-                        images[index],
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[300],
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.broken_image,
-                                  size: 32.w,
-                                  color: Colors.grey[500],
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  'Image not found',
-                                  style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Colors.grey[600],
+                      child: images[index].startsWith('assets/')
+                          ? Image.asset(
+                              images[index],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.broken_image,
+                                        size: 32.w,
+                                        color: Colors.grey[500],
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        'Image not found',
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                );
+                              },
+                            )
+                          : Image.file(
+                              File(images[index]),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.broken_image,
+                                        size: 32.w,
+                                        color: Colors.grey[500],
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        'Image not found',
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                     Positioned(
                       bottom: 4.h,
@@ -736,35 +709,65 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                             margin: EdgeInsets.symmetric(horizontal: 8.w),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16.r),
-                              child: Image.asset(
-                                images[index],
-                                fit: BoxFit.contain,
-                                width: double.infinity,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: Colors.grey[200],
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.broken_image,
-                                          size: 64.w,
-                                          color: Colors.grey[400],
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Text(
-                                          'Image not available',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.grey[600],
+                              child: images[index].startsWith('assets/')
+                                  ? Image.asset(
+                                      images[index],
+                                      fit: BoxFit.contain,
+                                      width: double.infinity,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[200],
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.broken_image,
+                                                size: 64.w,
+                                                color: Colors.grey[400],
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Text(
+                                                'Image not available',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                        );
+                                      },
+                                    )
+                                  : Image.file(
+                                      File(images[index]),
+                                      fit: BoxFit.contain,
+                                      width: double.infinity,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[200],
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.broken_image,
+                                                size: 64.w,
+                                                color: Colors.grey[400],
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Text(
+                                                'Image not available',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
                             ),
                           );
                         },
@@ -811,19 +814,19 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         icon: Icons.person_pin,
         child: Column(
           children: [
-            _buildDetailRow('Your Name', caseData.finderName),
             _buildContactRow(
-              'Phone',
+              'Primary Phone',
               caseData.finderPhone,
               Icons.phone,
               () => _makePhoneCall(caseData.finderPhone),
             ),
-            _buildContactRow(
-              'Email',
-              caseData.finderEmail,
-              Icons.email,
-              () => _sendEmail(caseData.finderEmail),
-            ),
+            if (caseData.finderSecondaryPhone.isNotEmpty)
+              _buildContactRow(
+                'Secondary Phone',
+                caseData.finderSecondaryPhone,
+                Icons.phone_android,
+                () => _makePhoneCall(caseData.finderSecondaryPhone),
+              ),
           ],
         ),
       ),
@@ -839,8 +842,8 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         child: Column(
           children: [
             _buildDetailRow('Found Location', caseData.foundLocation),
-            _buildDetailRow('Found Time', _formatDateTime(caseData.foundTime)),
-            _buildDetailRow('Current Location', caseData.currentLocation),
+            _buildDetailRow('Found Date', caseData.foundDate),
+            _buildDetailRow('Found Time', caseData.foundTime),
             SizedBox(height: 12.h),
             ElevatedButton.icon(
               onPressed: () => _openMap(caseData.foundLocation),
@@ -881,25 +884,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
             ),
             SizedBox(height: 8.h),
             Text(
-              caseData.circumstances,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[700],
-                height: 1.5,
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'Additional Notes',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              caseData.additionalNotes,
+              caseData.additionalDetails.isEmpty ? 'No additional details provided' : caseData.additionalDetails,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[700],
@@ -1248,19 +1233,6 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Call: $phone'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
-  }
-
-  void _sendEmail(String email) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Email: $email'),
         backgroundColor: AppColors.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(

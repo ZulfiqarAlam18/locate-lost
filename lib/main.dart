@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'navigation/app_pages.dart';
 import 'navigation/app_routes.dart';
-import 'data/services/location_permission_service.dart';
-import 'data/bindings/app_bindings.dart';
 
 void main() {
   // Reset location permission check on app start
-  LocationPermissionService.resetSessionCheck();
+ // LocationPermissionService.resetSessionCheck();
   runApp(MyApp());
 }
 
@@ -30,7 +28,7 @@ class MyApp extends StatelessWidget {
 
           title: 'LocateLost',
 
-          initialBinding: AppBindings(), // Initialize backend integration
+        //  initialBinding: AppBindings(), // Initialize backend integration
            initialRoute: AppRoutes.splash,
          // initialRoute: AppRoutes.mainNavigation,
           getPages: AppPages.pages,

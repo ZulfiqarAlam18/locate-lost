@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/main_bottom_navigation.dart';
+import 'package:locate_lost/controllers/auth_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
   final bool isInNavigation;
@@ -45,10 +46,10 @@ class _ProfileScreenState extends State<ProfileScreen>
   String? _newPasswordError;
   String? _confirmPasswordError;
 
-  // User data
-  String username = 'Zohaib Khoso';
-  String email = 'zohaib.khoso@example.com';
-  String phone = '+92 300 1234567';
+  // Get AuthController for dynamic user data
+  AuthController get authController => Get.find<AuthController>();
+
+  // User data - will be populated from AuthController
   int activeCases = 3;
   String lastLogin = '2 hours ago';
   DateTime joinDate = DateTime(2024, 1, 15);
@@ -92,10 +93,10 @@ class _ProfileScreenState extends State<ProfileScreen>
       curve: Curves.elasticOut,
     ));
 
-    // Initialize text controllers
-    _nameController.text = username;
-    _phoneController.text = phone;
-    _emailController.text = email;
+    // Initialize text controllers with data from AuthController
+    _nameController.text = authController.userName.value;
+    _phoneController.text = authController.userPhone.value;
+    _emailController.text = authController.userEmail.value;
 
     // Start animations
     _animationController.forward();
@@ -171,12 +172,14 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (_nameError == null && _phoneError == null) {
       setState(() => _isLoading = true);
       
-      // Simulate API call
+      // Simulate API call (in production, call actual API to update profile)
       await Future.delayed(const Duration(seconds: 1));
       
+      // Update AuthController values (in production, this would be done after successful API call)
+      // authController.userName.value = _nameController.text;
+      // authController.userPhone.value = _phoneController.text;
+      
       setState(() {
-        username = _nameController.text;
-        phone = _phoneController.text;
         _isEditingProfile = false;
         _isLoading = false;
       });
@@ -240,8 +243,14 @@ class _ProfileScreenState extends State<ProfileScreen>
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
+              
+              // Get AuthController and logout
+              final authController = Get.find<AuthController>();
+              await authController.logout();
+              
+              // Navigate to login screen and clear all previous routes
               Get.offAllNamed(AppRoutes.login);
             },
             child: Text(
@@ -467,25 +476,29 @@ class _ProfileScreenState extends State<ProfileScreen>
               SizedBox(height: 16.h),
               
               // Username
-              Text(
-                username,
+              Obx(() => Text(
+                authController.userName.value.isNotEmpty 
+                    ? authController.userName.value 
+                    : 'User',
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
                 ),
-              ),
+              )),
               
               SizedBox(height: 4.h),
               
               // Email
-              Text(
-                email,
+              Obx(() => Text(
+                authController.userEmail.value.isNotEmpty
+                    ? authController.userEmail.value
+                    : 'user@example.com',
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: AppColors.textSecondary,
                 ),
-              ),
+              )),
             ],
           ),
         );
@@ -592,8 +605,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                   onPressed: () {
                     setState(() {
                       _isEditingProfile = false;
-                      _nameController.text = username;
-                      _phoneController.text = phone;
+                      _nameController.text = authController.userName.value;
+                      _phoneController.text = authController.userPhone.value;
                       _nameError = null;
                       _phoneError = null;
                     });
@@ -618,11 +631,20 @@ class _ProfileScreenState extends State<ProfileScreen>
             ),
           ] else ...[
             // View Mode
-            _buildInfoRow(Icons.person, 'Name', username),
+            Obx(() => _buildInfoRow(Icons.person, 'Name', 
+                authController.userName.value.isNotEmpty 
+                    ? authController.userName.value 
+                    : 'User')),
             SizedBox(height: 16.h),
-            _buildInfoRow(Icons.email, 'Email', email),
+            Obx(() => _buildInfoRow(Icons.email, 'Email', 
+                authController.userEmail.value.isNotEmpty
+                    ? authController.userEmail.value
+                    : 'user@example.com')),
             SizedBox(height: 16.h),
-            _buildInfoRow(Icons.phone, 'Phone', phone),
+            Obx(() => _buildInfoRow(Icons.phone, 'Phone', 
+                authController.userPhone.value.isNotEmpty
+                    ? authController.userPhone.value
+                    : 'Not provided')),
           ],
         ],
       ),

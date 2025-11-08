@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/constants/app_colors.dart';
 import 'splash_screen_1.dart';
 import '../../../navigation/app_routes.dart';
 import 'splash_screen_2.dart';
 import 'splash_screen_3.dart';
+import '../../../controllers/auth_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,6 +19,56 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final PageController _controller = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstTimeAndNavigate();
+  }
+
+  Future<void> _checkFirstTimeAndNavigate() async {
+    // Wait for 2 seconds to show splash screen
+    await Future.delayed(const Duration(seconds: 2));
+
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstTime = prefs.getBool('isFirstTime') ?? true;
+
+    if (isFirstTime) {
+      // First time opening the app - show onboarding screens
+      // Don't navigate, just show the PageView
+      return;
+    } else {
+      // Not first time - check if user is logged in
+      _checkAuthAndNavigate();
+    }
+  }
+
+  Future<void> _checkAuthAndNavigate() async {
+    try {
+      // Initialize AuthController to load saved data
+      final authController = Get.put(AuthController());
+      
+      // Wait a bit for controller to initialize
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (authController.isLoggedIn.value) {
+        // User is logged in - go to home
+        Get.offAllNamed(AppRoutes.home);
+      } else {
+        // User is not logged in - go to login
+        Get.offAllNamed(AppRoutes.login);
+      }
+    } catch (e) {
+      print('Error checking auth: $e');
+      // On error, go to login
+      Get.offAllNamed(AppRoutes.login);
+    }
+  }
+
+  Future<void> _markOnboardingComplete() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,8 +262,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(16.r),
-                          onTap: () {
-                            Get.toNamed(AppRoutes.signup);
+                          onTap: () async {
+                            // Mark onboarding as complete
+                            await _markOnboardingComplete();
+                            // Navigate to signup
+                            Get.offAllNamed(AppRoutes.signup);
                           },
                           child: Container(
                             alignment: Alignment.center,

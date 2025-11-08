@@ -5,6 +5,8 @@ import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_elevated_button.dart';
 import 'package:locate_lost/views/widgets/custom_text_field.dart';
+import 'package:locate_lost/controllers/auth_controller.dart';
+import 'package:locate_lost/views/dialogs/animated_loading_dialog.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -25,9 +27,9 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;
-  bool _isLoading = false;
   
-  // Get the auth controller
+  // Get the auth controller using lazy binding
+  AuthController get authController => Get.find<AuthController>();
 
   @override
   void initState() {
@@ -81,23 +83,76 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
     
-    // UI-only flow: simulate registration and navigate to login
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() => _isLoading = false);
+    // Show loading dialog
+    if (mounted) {
+      LoadingDialogHelper.show(
+        context: context,
+        message: 'Creating Account...',
+        subtitle: 'Please wait while we set up your account',
+        showLogo: true,
+      );
+    }
 
-    Get.snackbar(
-      'Success',
-      'Account created successfully! You can now login.',
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-      snackPosition: SnackPosition.TOP,
-      margin: EdgeInsets.all(16.w),
-      borderRadius: 12.r,
-      icon: Icon(Icons.check_circle, color: Colors.white),
-    );
-    // Navigate to login screen (UI-only)
-    Get.offNamed(AppRoutes.login);
+    try {
+      // Perform signup using AuthController
+      final response = await authController.register(
+        name: cName.text.trim(),
+        email: cEmail.text.trim(),
+        phone: cNum.text.trim(),
+        password: cPass.text,
+      );
+
+      // Close loading dialog
+      if (mounted) {
+        LoadingDialogHelper.hide(context);
+      }
+
+      if (response.success) {
+        // Show success message
+        Get.snackbar(
+          'Success',
+          'Account created successfully! Please login to continue.',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP,
+          margin: EdgeInsets.all(16.w),
+          borderRadius: 12.r,
+          icon: Icon(Icons.check_circle, color: Colors.white),
+        );
+        
+        // Navigate to login screen (user needs to login after signup)
+        Get.offAllNamed(AppRoutes.login);
+      } else {
+        // Show error message from API
+        Get.snackbar(
+          'Signup Failed',
+          response.message,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP,
+          margin: EdgeInsets.all(16.w),
+          borderRadius: 12.r,
+          icon: Icon(Icons.error_outline, color: Colors.white),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (mounted) {
+        LoadingDialogHelper.hide(context);
+      }
+      
+      // Show error dialog
+      Get.snackbar(
+        'Error',
+        'An error occurred: ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        margin: EdgeInsets.all(16.w),
+        borderRadius: 12.r,
+        icon: Icon(Icons.error_outline, color: Colors.white),
+      );
+    }
   }
 
   void _showTermsAndConditionsDialog() {
@@ -501,9 +556,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(height: 10.h),
                       
                       // Custom Button
-                      CustomElevatedButton(
+                      Obx(() => CustomElevatedButton(
                         onPressed: () {
-                          if (!_isLoading) {
+                          if (!authController.isLoading.value) {
                             _handleSignup();
                           }
                         },
@@ -511,8 +566,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 241.w,
                         fontSize: 20.sp,
                         borderRadius: 10.r,
-                        label: _isLoading ? 'Creating Account...' : 'Create Account',
-                      ),
+                        label: authController.isLoading.value ? 'Creating Account...' : 'Create Account',
+                      )),
                     ],
                   ),
                 ),

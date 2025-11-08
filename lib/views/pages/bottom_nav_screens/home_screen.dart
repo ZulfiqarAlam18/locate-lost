@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/views/widgets/main_bottom_navigation.dart';
+import 'package:locate_lost/controllers/auth_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isInNavigation;
@@ -15,7 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-String get username => 'User';
+  // Get AuthController for dynamic user data
+  AuthController get authController => Get.find<AuthController>();
   
   // Statistics variables (will be updated with real data later)
   int activeCases = 12;
@@ -262,43 +264,56 @@ String get username => 'User';
                       CircleAvatar(
                         radius: 24.r,
                         backgroundColor: Colors.white.withOpacity(0.2),
-                        child: CircleAvatar(
-                          radius: 22.r,
-                          backgroundColor: Colors.white,
-                          backgroundImage: AssetImage('assets/images/ali.png'),
-                          onBackgroundImageError: (exception, stackTrace) {},
-                          child: Text(
-                            username.split(' ').map((e) => e[0]).join(''),
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ),
+                        child: Obx(() {
+                          final userName = authController.userName.value.isNotEmpty 
+                              ? authController.userName.value 
+                              : 'User';
+                          final profileImage = authController.userProfileImage.value;
+                          
+                          return CircleAvatar(
+                            radius: 22.r,
+                            backgroundColor: Colors.white,
+                            backgroundImage: profileImage.isNotEmpty 
+                                ? NetworkImage(profileImage) as ImageProvider
+                                : const AssetImage('assets/images/ali.png'),
+                            onBackgroundImageError: (exception, stackTrace) {},
+                            child: profileImage.isEmpty ? Text(
+                              userName.split(' ').map((e) => e.isNotEmpty ? e[0] : '').join(''),
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
+                              ),
+                            ) : null,
+                          );
+                        }),
                       ),
                       SizedBox(width: 16.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              username,
+                            Obx(() => Text(
+                              authController.userName.value.isNotEmpty 
+                                  ? authController.userName.value 
+                                  : 'User',
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
-                            ),
+                            )),
                             SizedBox(height: 2.h),
-                            Text(
-                              'Community Safety Officer',
+                            Obx(() => Text(
+                              authController.userRole.value.isNotEmpty
+                                  ? '${authController.userRole.value.toUpperCase()} User'
+                                  : 'Community Safety Officer',
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 color: Colors.white.withOpacity(0.8),
                                 fontWeight: FontWeight.w500,
                               ),
-                            ),
+                            )),
                           ],
                         ),
                       ),
@@ -737,34 +752,48 @@ String get username => 'User';
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 30.r,
-                    backgroundColor: AppColors.primary,
-                    child: Text(
-                      username.split(' ').map((e) => e[0]).join(''),
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
+                  Obx(() {
+                    final userName = authController.userName.value.isNotEmpty 
+                        ? authController.userName.value 
+                        : 'User';
+                    final profileImage = authController.userProfileImage.value;
+                    
+                    return CircleAvatar(
+                      radius: 30.r,
+                      backgroundColor: Colors.white,
+                      backgroundImage: profileImage.isNotEmpty 
+                          ? NetworkImage(profileImage) as ImageProvider
+                          : null,
+                      child: profileImage.isEmpty ? Text(
+                        userName.split(' ').map((e) => e.isNotEmpty ? e[0] : '').join(''),
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ) : null,
+                    );
+                  }),
                   SizedBox(height: 12.h),
-                  Text(
-                    username,
+                  Obx(() => Text(
+                    authController.userName.value.isNotEmpty 
+                        ? authController.userName.value 
+                        : 'User',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  ),
-                  Text(
-                    'Community Helper',
+                  )),
+                  Obx(() => Text(
+                    authController.userEmail.value.isNotEmpty
+                        ? authController.userEmail.value
+                        : 'user@example.com',
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: Colors.white.withOpacity(0.9),
                     ),
-                  ),
+                  )),
                 ],
               ),
             ),
@@ -813,9 +842,66 @@ String get username => 'User';
             _buildDrawerItem(
               icon: Icons.logout_rounded,
               title: 'Log Out',
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Get.toNamed(AppRoutes.login);
+                
+                // Show confirmation dialog
+                final confirmed = await Get.dialog<bool>(
+                  AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    title: Text(
+                      'Confirm Logout',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    content: Text(
+                      'Are you sure you want to logout?',
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Get.back(result: false),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Get.back(result: true),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.error,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        child: Text(
+                          'Logout',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+                
+                // If user confirmed logout
+                if (confirmed == true) {
+                  // Get AuthController and logout
+                  final authController = Get.find<AuthController>();
+                  await authController.logout();
+                  
+                  // Navigate to login screen and clear all previous routes
+                  Get.offAllNamed(AppRoutes.login);
+                }
               },
             ),
           ],

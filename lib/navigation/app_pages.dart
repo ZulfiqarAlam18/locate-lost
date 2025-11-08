@@ -37,6 +37,7 @@ import '../views/pages/settings_screens/support_settings_screen.dart';
 import '../views/pages/settings_screens/about_settings_screen.dart';
 import '../views/pages/settings_screens/danger_zone_settings_screen.dart';
 import '../views/pages/location_permission_test_screen.dart';
+import '../controllers/auth_controller.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -71,12 +72,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.signup,
       page: () => const SignupScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -124,6 +131,9 @@ class AppPages {
         
         return MainNavigationScreen(initialIndex: initialIndex);
       },
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -132,12 +142,18 @@ class AppPages {
       page:
           () =>
               MainNavigationScreen(), // Route home to MainNavigationScreen
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.profile,
       page: () => const ProfileScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -283,6 +299,9 @@ class AppPages {
     GetPage(
       name: AppRoutes.settings,
       page: () => const SettingsScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
     ),

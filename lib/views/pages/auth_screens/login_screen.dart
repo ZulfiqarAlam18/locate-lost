@@ -5,6 +5,7 @@ import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/dialogs/animated_loading_dialog.dart';
 import 'package:locate_lost/views/widgets/custom_text_field.dart';
+import 'package:locate_lost/controllers/auth_controller.dart';
 
 import '../../widgets/custom_elevated_button.dart';
 
@@ -20,30 +21,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController cEmail = TextEditingController();
   final TextEditingController cPass = TextEditingController();
 
-  bool _isLoading = false;
   bool _obscurePassword = true;
   
-  // Get the auth controller
+  // Get the auth controller using lazy binding
+  AuthController get authController => Get.find<AuthController>();
+  
   @override
   void initState() {
     super.initState();
-  }
-
-  // Real login with backend API
-  Future<bool> _performLogin() async {
-    // UI-only: simulate a login attempt
-    try {
-      await Future.delayed(const Duration(milliseconds: 800));
-      final email = cEmail.text.trim();
-      final pass = cPass.text;
-      if (email.isNotEmpty && pass.length >= 6) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      print('Login simulation error: $e');
-      return false;
-    }
   }
 
   // Show error dialog with retry option
@@ -177,22 +162,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_key.currentState!.validate()) {
       Get.snackbar(
         'Validation Error',
-        'Please enter a valid email and password',
-        backgroundColor: Colors.orange[600],
+        'Please fill all required fields correctly.',
+        backgroundColor: Colors.redAccent,
         colorText: Colors.white,
-        snackPosition: SnackPosition.TOP,
+        icon: Icon(Icons.warning_rounded, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.all(16.w),
         borderRadius: 12.r,
-        icon: Icon(Icons.warning_rounded, color: Colors.white),
       );
       return;
     }
-
-    if (_isLoading) return;
-
-    setState(() {
-      _isLoading = true;
-    });
 
     // Show animated loading
     if (mounted) {
@@ -204,25 +183,45 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
 
-    // Perform login
-    final success = await _performLogin();
+    try {
+      // Perform login using AuthController
+      final response = await authController.login(
+        cEmail.text.trim(),
+        cPass.text,
+      );
 
-    // Close loading dialog
-    if (mounted) {
-      LoadingDialogHelper.hide(context);
-    }
+      // Close loading dialog
+      if (mounted) {
+        LoadingDialogHelper.hide(context);
+      }
 
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (success) {
-      // Show location permission dialog
-      _showLocationPermissionPopup();
-    } else {
-      // UI-only error message
-      const errorMessage = 'Unable to login. Please check your credentials and try again.';
-      _showErrorDialog(errorMessage);
+      if (response.success) {
+        // Show success message
+        Get.snackbar(
+          'Success',
+          'Login successful!',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          icon: Icon(Icons.check_circle, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.all(16.w),
+          borderRadius: 12.r,
+        );
+        
+        // Show location permission dialog
+        _showLocationPermissionPopup();
+      } else {
+        // Show error message from API
+        _showErrorDialog(response.message);
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (mounted) {
+        LoadingDialogHelper.hide(context);
+      }
+      
+      // Show error dialog
+      _showErrorDialog('An error occurred: ${e.toString()}');
     }
   }
 
@@ -368,22 +367,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 8.h), // Small space before login button
 
                       // Login Button
-                      CustomElevatedButton(
+                      Obx(() => CustomElevatedButton(
                         onPressed: () {
-
-                                  Get.offAllNamed(AppRoutes.home);
-
-
-                          // if (!_isLoading) {
-                          //   _handleLogin();
-                          // }
+                          if (!authController.isLoading.value) {
+                            _handleLogin();
+                          }
                         },
                         height: 60.h,
                         width: 241.w,
                         fontSize: 20.sp,
                         borderRadius: 10.r,
-                        label: _isLoading ? 'Please Wait...' : 'Log In',
-                      ),
+                        label: authController.isLoading.value ? 'Please Wait...' : 'Log In',
+                      )),
                       
                       SizedBox(height: 10.h),
                       
@@ -789,6 +784,9 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Call the existing LocationPermissionService
       //await LocationPermissionService.checkLocationPermissionAfterLogin();
+      
+      // Navigate to home after location permission
+      _navigateToHome();
     } catch (e) {
       Get.snackbar(
         'Location Error',

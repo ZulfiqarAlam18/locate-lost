@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../../navigation/app_routes.dart';
+import '../../../controllers/auth_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -469,8 +470,14 @@ class _SettingsScreenState extends State<SettingsScreen>
             ),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
+              
+              // Get AuthController and logout
+              final authController = Get.find<AuthController>();
+              await authController.logout();
+              
+              // Navigate to login screen and clear all previous routes
               Get.offAllNamed(AppRoutes.login);
             },
             style: ElevatedButton.styleFrom(

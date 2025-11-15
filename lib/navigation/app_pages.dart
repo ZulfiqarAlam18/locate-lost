@@ -1,43 +1,43 @@
 import 'package:get/get.dart';
-import 'package:locate_lost/views/pages/bottom_nav_screens/case_details_screen.dart';
-import 'package:locate_lost/views/pages/bottom_nav_screens/map_nearby_reports_screen.dart';
-import 'package:locate_lost/views/pages/bottom_nav_screens/my_cases_screen.dart';
+import 'package:locate_lost/controllers/auth_controller.dart';
+import 'package:locate_lost/views/pages/auth_screens/forgot_password_screen.dart';
+import 'package:locate_lost/views/pages/auth_screens/login_screen.dart';
+import 'package:locate_lost/views/pages/auth_screens/otp_verification_screen.dart';
+import 'package:locate_lost/views/pages/auth_screens/signup_screen.dart';
+import 'package:locate_lost/views/pages/bottom_nav_screens/case_details_screen.dart' show CaseDetailsScreen;
 import 'package:locate_lost/views/pages/case_screens/case_summary.dart';
-import 'package:locate_lost/views/pages/case_screens/finder_case_summary.dart';
+import 'package:locate_lost/views/pages/case_screens/finder_case_summary.dart' show FinderCaseSummaryScreen;
 import 'package:locate_lost/views/pages/case_screens/parent_case_summary.dart';
+import 'package:locate_lost/views/pages/drawer_screens/contact_us_screen.dart' show ContactUsScreen;
+import 'package:locate_lost/views/pages/drawer_screens/faqs_screen.dart';
 import 'package:locate_lost/views/pages/drawer_screens/profile_screen_old.dart';
-import 'package:locate_lost/views/pages/notifications/notification_screen.dart';
-import '../views/pages/splash_screens/splash_screen.dart';
-import '../views/pages/splash_screens/splash_screen_1.dart';
-import '../views/pages/splash_screens/splash_screen_2.dart';
-import '../views/pages/splash_screens/splash_screen_3.dart';
-import '../views/pages/auth_screens/login_screen.dart';
-import '../views/pages/auth_screens/signup_screen.dart';
-import '../views/pages/auth_screens/forgot_password_screen.dart';
-import '../views/pages/auth_screens/otp_verification_screen.dart';
-import '../views/pages/main_navigation_screen.dart';
-import '../views/pages/parent_screens/missing_person_details.dart';
-import '../views/pages/parent_screens/upload_images.dart';
-import '../views/pages/finder_screens/found_person_details.dart';
-import '../views/pages/finder_screens/camera_capture.dart';
-import '../views/pages/finder_screens/upload_images_screen.dart' as finder;
-import '../views/pages/drawer_screens/about_us_screen.dart';
+import 'package:locate_lost/views/pages/drawer_screens/terms_and_conditions_screen.dart' show TermsAndConditionsScreen;
+import 'package:locate_lost/views/pages/finder_screens/camera_capture.dart' show CameraCaptureScreen;
+import 'package:locate_lost/views/pages/finder_screens/found_person_details.dart' show FoundPersonDetailsScreen;
+import 'package:locate_lost/views/pages/finder_screens/upload_images_screen.dart' show UploadImagesScreen;
+import 'package:locate_lost/views/pages/main_navigation_screen.dart';
+import 'package:locate_lost/views/pages/parent_screens/missing_person_details.dart' show MissingPersonDetailsScreen;
+import 'package:locate_lost/views/pages/settings_screens/about_settings_screen.dart';
+import 'package:locate_lost/views/pages/settings_screens/account_settings_screen.dart';
+import 'package:locate_lost/views/pages/settings_screens/appearance_settings_screen.dart';
+import 'package:locate_lost/views/pages/settings_screens/danger_zone_settings_screen.dart';
+import 'package:locate_lost/views/pages/settings_screens/language_settings_screen.dart' show LanguageSettingsScreen;
+import 'package:locate_lost/views/pages/settings_screens/notification_settings_screen.dart';
+import 'package:locate_lost/views/pages/settings_screens/privacy_settings_screen.dart' show PrivacySettingsScreen;
+import 'package:locate_lost/views/pages/settings_screens/settings_screen.dart';
+import 'package:locate_lost/views/pages/settings_screens/support_settings_screen.dart' show SupportSettingsScreen;
+import 'package:locate_lost/views/pages/splash_screens/splash_screen.dart';
+import 'package:locate_lost/views/pages/splash_screens/splash_screen_1.dart';
+import 'package:locate_lost/views/pages/splash_screens/splash_screen_2.dart';
+import 'package:locate_lost/views/pages/splash_screens/splash_screen_3.dart';
+
+
+import '../views/pages/bottom_nav_screens/map_nearby_reports_screen.dart';
+import '../views/pages/bottom_nav_screens/my_cases_screen.dart' show MyCasesScreen;
+import '../views/pages/drawer_screens/about_us_screen_new.dart';
 import '../views/pages/drawer_screens/emergency_screen.dart';
-import '../views/pages/drawer_screens/contact_us_screen.dart';
-import '../views/pages/drawer_screens/faqs_screen.dart';
-import '../views/pages/drawer_screens/stats_screen.dart';
-import '../views/pages/drawer_screens/terms_and_conditions_screen.dart';
-import '../views/pages/settings_screens/settings_screen.dart';
-import '../views/pages/settings_screens/account_settings_screen.dart';
-import '../views/pages/settings_screens/notification_settings_screen.dart';
-import '../views/pages/settings_screens/appearance_settings_screen.dart';
-import '../views/pages/settings_screens/privacy_settings_screen.dart';
-import '../views/pages/settings_screens/language_settings_screen.dart';
-import '../views/pages/settings_screens/support_settings_screen.dart';
-import '../views/pages/settings_screens/about_settings_screen.dart';
-import '../views/pages/settings_screens/danger_zone_settings_screen.dart';
-import '../views/pages/location_permission_test_screen.dart';
-import '../controllers/auth_controller.dart';
+import '../views/pages/drawer_screens/stats_screen.dart' show StatsScreen;
+import '../views/pages/notifications/notification_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -238,7 +238,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.finderUploadImages,
-      page: () => const finder.UploadImagesScreen(),
+      page: () => const UploadImagesScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -379,6 +379,11 @@ class AppPages {
     //   transition: Transition.fadeIn,
     //   transitionDuration: const Duration(milliseconds: 300),
     // ),
-   
+    // GetPage(
+    //   name: AppRoutes.backendTest,
+    //   page: () => const BackendTestScreen(),
+    //   transition: Transition.fadeIn,
+    //   transitionDuration: const Duration(milliseconds: 300),
+    // ),
   ];
 }

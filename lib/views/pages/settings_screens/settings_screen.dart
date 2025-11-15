@@ -473,12 +473,56 @@ class _SettingsScreenState extends State<SettingsScreen>
             onPressed: () async {
               Navigator.pop(context);
               
-              // Get AuthController and logout
-              final authController = Get.find<AuthController>();
-              await authController.logout();
+              // Show loading dialog
+              Get.dialog(
+                WillPopScope(
+                  onWillPop: () async => false,
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.all(20.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(color: AppColors.primary),
+                          SizedBox(height: 16.h),
+                          Text('Logging out...', style: TextStyle(fontSize: 16.sp)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                barrierDismissible: false,
+              );
               
-              // Navigate to login screen and clear all previous routes
-              Get.offAllNamed(AppRoutes.login);
+              try {
+                // Get AuthController and logout
+                final authController = Get.find<AuthController>();
+                await authController.logout();
+                
+                // Close loading dialog
+                if (Get.isDialogOpen ?? false) {
+                  Get.back();
+                }
+                
+                // Delete controller instance to ensure fresh state
+                Get.delete<AuthController>();
+                
+                // Navigate to login screen and clear all previous routes
+                Get.offAllNamed(AppRoutes.login);
+              } catch (e) {
+                // Close loading dialog
+                if (Get.isDialogOpen ?? false) {
+                  Get.back();
+                }
+                
+                // Still navigate to login even if error
+                Get.delete<AuthController>(force: true);
+                Get.offAllNamed(AppRoutes.login);
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

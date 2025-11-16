@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:locate_lost/controllers/parent_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/utils/utils/dialog_utils.dart';
 import 'package:locate_lost/utils/utils/navigation_helper.dart';
@@ -69,11 +70,12 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   late ParentCaseData caseData;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
-  // MissingPersonController removed — UI-only mode
+  late final ParentReportController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = Get.find<ParentReportController>();
     _initializeData();
     _setupAnimations();
   }
@@ -95,22 +97,22 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   }
 
   ParentCaseData _getDataFromController() {
-    // UI-only: return default placeholder data
+    // Get data from controller
     return ParentCaseData(
       caseId: 'MP-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
       caseType: 'Missing Person Report',
       status: 'Draft - Ready to Submit',
       reportedDate: DateTime.now(),
-      missingPersonName: 'Not specified',
-      fatherName: 'Not specified',
-      gender: 'Not specified',
-      lastSeenLocation: 'Not specified',
-      lastSeenDate: 'Not specified',
-      lastSeenTime: 'Not specified',
-      primaryPhone: 'Not specified',
-      secondaryPhone: 'Not provided',
-      additionalDetails: 'No additional details provided',
-      uploadedImages: [],
+      missingPersonName: controller.childName.value.isEmpty ? 'Not specified' : controller.childName.value,
+      fatherName: controller.fatherName.value.isEmpty ? 'Not specified' : controller.fatherName.value,
+      gender: controller.gender.value.isEmpty ? 'Not specified' : controller.gender.value,
+      lastSeenLocation: controller.placeLost.value.isEmpty ? 'Not specified' : controller.placeLost.value,
+      lastSeenDate: controller.lostDate.value.isEmpty ? 'Not specified' : controller.lostDate.value,
+      lastSeenTime: controller.lostTime.value.isEmpty ? 'Not specified' : controller.lostTime.value,
+      primaryPhone: controller.contactNumber.value.isEmpty ? 'Not specified' : controller.contactNumber.value,
+      secondaryPhone: controller.emergency.value.isEmpty ? 'Not provided' : controller.emergency.value,
+      additionalDetails: controller.additionalDetails.value.isEmpty ? 'No additional details provided' : controller.additionalDetails.value,
+      uploadedImages: controller.selectedImages.map((img) => img.path).toList(),
       lastSeenDateTime: DateTime.now(),
       currentStatus: CaseStatus.active,
       priority: CasePriority.high,
@@ -1068,7 +1070,7 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
   // }
   
   void _performSubmission() async {
-    // UI-only: simulate submission with loading
+    // Show loading dialog
     Get.dialog(
       Center(
         child: Container(
@@ -1090,15 +1092,54 @@ class _ParentCaseSummaryScreenState extends State<ParentCaseSummaryScreen>
       barrierDismissible: false,
     );
 
-    await Future.delayed(Duration(seconds: 1));
-    Get.back();
+    try {
+      // Validate images
+      if (controller.selectedImages.isEmpty) {
+        Get.back(); // Close loading
+        Get.snackbar(
+          'Error',
+          'Please select at least one image',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
 
-    // Simulate success
-    DialogUtils.showCaseSubmissionSuccess(
-      onViewCases: () {
-        NavigationHelper.goToMyCases();
-      },
-    );
+      // Call API through controller
+      final response = await controller.submitReport();
+      
+      Get.back(); // Close loading dialog
+
+      if (response.success) {
+        // Show success dialog
+        DialogUtils.showCaseSubmissionSuccess(
+          onViewCases: () {
+            NavigationHelper.goToMyCases();
+          },
+        );
+      } else {
+        // Show error
+        Get.snackbar(
+          'Submission Failed',
+          response.message.isEmpty ? 'Unable to submit report. Please try again.' : response.message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 5),
+        );
+      }
+    } catch (e) {
+      Get.back(); // Close loading dialog
+      Get.snackbar(
+        'Error',
+        'An error occurred: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 5),
+      );
+    }
   }
 
   // Sharing and export helpers removed in UI-only mode

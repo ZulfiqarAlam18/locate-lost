@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:locate_lost/controllers/parent_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_elevated_button.dart';
@@ -19,10 +20,12 @@ class MissingPersonDetailsScreen extends StatefulWidget {
 class _MissingPersonDetailsScreenState
     extends State<MissingPersonDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // Removed MissingPersonController dependency - this screen runs in UI-only mode.
+  
+  // Get controller instance
+  late final ParentReportController controller;
 
   final Map<String, TextEditingController> _controllers = {
-    'name': TextEditingController(),
+    'childName': TextEditingController(),
     'fatherName': TextEditingController(),
     'caste': TextEditingController(),
     'age': TextEditingController(),
@@ -30,11 +33,11 @@ class _MissingPersonDetailsScreenState
     'hairColor': TextEditingController(),
     'skinColor': TextEditingController(),
     'disability': TextEditingController(),
-    'lastSeenPlace': TextEditingController(),
-    'lastSeenDate': TextEditingController(),
-    'lastSeenTime': TextEditingController(),
-    'phoneNumber': TextEditingController(),
-    'secondPhoneNumber': TextEditingController(),
+    'placeLost': TextEditingController(),
+    'lostDate': TextEditingController(),
+    'lostTime': TextEditingController(),
+    'contactNumber': TextEditingController(),
+    'emergency': TextEditingController(),
     'additionalDetails': TextEditingController(),
   };
 
@@ -49,14 +52,14 @@ class _MissingPersonDetailsScreenState
     
     // Required fields for progress calculation
     List<bool> requiredFieldsCompleted = [
-      _controllers['name']!.text.isNotEmpty,
+      _controllers['childName']!.text.isNotEmpty,
       _controllers['fatherName']!.text.isNotEmpty,
       selectedGender != null && selectedGender!.isNotEmpty,
-      _controllers['lastSeenPlace']!.text.isNotEmpty,
-      _controllers['lastSeenDate']!.text.isNotEmpty,
-      _controllers['lastSeenTime']!.text.isNotEmpty,
-      _controllers['phoneNumber']!.text.isNotEmpty && 
-        _validatePhone(_controllers['phoneNumber']!.text),
+      _controllers['placeLost']!.text.isNotEmpty,
+      _controllers['lostDate']!.text.isNotEmpty,
+      _controllers['lostTime']!.text.isNotEmpty,
+      _controllers['contactNumber']!.text.isNotEmpty && 
+        _validatePhone(_controllers['contactNumber']!.text),
     ];
     
     int completedFields = requiredFieldsCompleted.where((completed) => completed).length;
@@ -79,15 +82,28 @@ class _MissingPersonDetailsScreenState
     });
   }
 
+  // Method to sync local state to controller
+  void _syncToController() {
+    controller.setField('childName', _controllers['childName']!.text);
+    controller.setField('fatherName', _controllers['fatherName']!.text);
+    controller.setField('gender', selectedGender ?? '');
+    controller.setField('placeLost', _controllers['placeLost']!.text);
+    controller.setField('lostDate', _controllers['lostDate']!.text);
+    controller.setField('lostTime', _controllers['lostTime']!.text);
+    controller.setField('contactNumber', _controllers['contactNumber']!.text);
+    controller.setField('emergency', _controllers['emergency']!.text);
+    controller.setField('additionalDetails', _controllers['additionalDetails']!.text);
+  }
+
   @override
   void dispose() {
     // Remove listeners before disposing controllers
-    _controllers['name']!.removeListener(_updateProgress);
+    _controllers['childName']!.removeListener(_updateProgress);
     _controllers['fatherName']!.removeListener(_updateProgress);
-    _controllers['lastSeenPlace']!.removeListener(_updateProgress);
-    _controllers['lastSeenDate']!.removeListener(_updateProgress);
-    _controllers['lastSeenTime']!.removeListener(_updateProgress);
-    _controllers['phoneNumber']!.removeListener(_updateProgress);
+    _controllers['placeLost']!.removeListener(_updateProgress);
+    _controllers['lostDate']!.removeListener(_updateProgress);
+    _controllers['lostTime']!.removeListener(_updateProgress);
+    _controllers['contactNumber']!.removeListener(_updateProgress);
     
     // Dispose all controllers to prevent memory leaks
     _controllers.values.forEach((controller) => controller.dispose());
@@ -97,14 +113,28 @@ class _MissingPersonDetailsScreenState
   @override
   void initState() {
     super.initState();
-    // No controller available in UI-only mode. Start with empty inputs here.
+    
+    // Initialize controller
+    controller = Get.find<ParentReportController>();
+    
+    // Load existing data from controller if available
+    _controllers['childName']!.text = controller.childName.value;
+    _controllers['fatherName']!.text = controller.fatherName.value;
+    selectedGender = controller.gender.value.isEmpty ? null : controller.gender.value;
+    _controllers['placeLost']!.text = controller.placeLost.value;
+    _controllers['lostDate']!.text = controller.lostDate.value;
+    _controllers['lostTime']!.text = controller.lostTime.value;
+    _controllers['contactNumber']!.text = controller.contactNumber.value;
+    _controllers['emergency']!.text = controller.emergency.value;
+    _controllers['additionalDetails']!.text = controller.additionalDetails.value;
+    
     // Add listeners to required fields for dynamic progress updates
-    _controllers['name']!.addListener(_updateProgress);
+    _controllers['childName']!.addListener(_updateProgress);
     _controllers['fatherName']!.addListener(_updateProgress);
-    _controllers['lastSeenPlace']!.addListener(_updateProgress);
-    _controllers['lastSeenDate']!.addListener(_updateProgress);
-    _controllers['lastSeenTime']!.addListener(_updateProgress);
-    _controllers['phoneNumber']!.addListener(_updateProgress);
+    _controllers['placeLost']!.addListener(_updateProgress);
+    _controllers['lostDate']!.addListener(_updateProgress);
+    _controllers['lostTime']!.addListener(_updateProgress);
+    _controllers['contactNumber']!.addListener(_updateProgress);
   }
 
   @override
@@ -190,13 +220,13 @@ class _MissingPersonDetailsScreenState
     int completedFields = 0;
     
     // Count completed required fields
-    if (_controllers['name']!.text.isNotEmpty) completedFields++;
+    if (_controllers['childName']!.text.isNotEmpty) completedFields++;
     if (_controllers['fatherName']!.text.isNotEmpty) completedFields++;
     if (selectedGender != null && selectedGender!.isNotEmpty) completedFields++;
-    if (_controllers['lastSeenPlace']!.text.isNotEmpty) completedFields++;
-    if (_controllers['lastSeenDate']!.text.isNotEmpty) completedFields++;
-    if (_controllers['lastSeenTime']!.text.isNotEmpty) completedFields++;
-    if (_controllers['phoneNumber']!.text.isNotEmpty && _validatePhone(_controllers['phoneNumber']!.text)) completedFields++;
+    if (_controllers['placeLost']!.text.isNotEmpty) completedFields++;
+    if (_controllers['lostDate']!.text.isNotEmpty) completedFields++;
+    if (_controllers['lostTime']!.text.isNotEmpty) completedFields++;
+    if (_controllers['contactNumber']!.text.isNotEmpty && _validatePhone(_controllers['contactNumber']!.text)) completedFields++;
     
     return Expanded(
       flex: 3,
@@ -290,10 +320,10 @@ class _MissingPersonDetailsScreenState
 
   List<Widget> _buildFormFields() {
     return [
-      _buildTextField('Name', 'Enter Missing Person\'s name', 'name', true),
+      _buildTextField('Child\'s Name', 'Enter Missing Child\'s name', 'childName', true),
       _buildTextField(
         'Father\'s Name',
-        'Enter Missing Person\'s father\'s name',
+        'Enter Missing Child\'s father\'s name',
         'fatherName',
         true,
       ),
@@ -301,7 +331,7 @@ class _MissingPersonDetailsScreenState
       _buildTextField(
         'Place Last Seen',
         'Enter the location where the person was last seen',
-        'lastSeenPlace',
+        'placeLost',
         true,
       ),
       _buildDatePicker(),
@@ -309,13 +339,13 @@ class _MissingPersonDetailsScreenState
       _buildPhoneField(
         'Primary Contact Number',
         'Enter primary contact number (e.g., 03001234567)',
-        'phoneNumber',
+        'contactNumber',
         true,
       ),
       _buildPhoneField(
-        'Secondary Contact (Optional)',
+        'Emergency Contact (Optional)',
         'Alternative contact number if primary is unreachable',
-        'secondPhoneNumber',
+        'emergency',
         false,
       ),
       _buildTextField(
@@ -464,7 +494,7 @@ class _MissingPersonDetailsScreenState
           SizedBox(height: 6.h),
           CustomTextFormField(
             hintText: 'Select date when person was last seen',
-            controller: _controllers['lastSeenDate']!,
+            controller: _controllers['lostDate']!,
             readOnly: true,
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
@@ -488,7 +518,7 @@ class _MissingPersonDetailsScreenState
               );
               if (pickedDate != null) {
                 String formattedDate = "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year}";
-                _controllers['lastSeenDate']!.text = formattedDate;
+                _controllers['lostDate']!.text = formattedDate;
                 _updateProgress(); // Update progress when date is selected
               }
             },
@@ -534,7 +564,7 @@ class _MissingPersonDetailsScreenState
           SizedBox(height: 6.h),
           CustomTextFormField(
             hintText: 'Select time when person was last seen',
-            controller: _controllers['lastSeenTime']!,
+            controller: _controllers['lostTime']!,
             readOnly: true,
             onTap: () async {
               TimeOfDay? pickedTime = await showTimePicker(
@@ -556,7 +586,7 @@ class _MissingPersonDetailsScreenState
               );
               if (pickedTime != null) {
                 String formattedTime = pickedTime.format(context);
-                _controllers['lastSeenTime']!.text = formattedTime;
+                _controllers['lostTime']!.text = formattedTime;
                 _updateProgress(); // Update progress when time is selected
               }
             },
@@ -672,12 +702,11 @@ class _MissingPersonDetailsScreenState
           CustomElevatedButton(
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                // UI-only: simulate saving form data locally (no controller/backend)
-                Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
-                Future.delayed(Duration(milliseconds: 700), () {
-                  if (Get.isDialogOpen ?? false) Get.back();
-                  Get.toNamed(AppRoutes.uploadImages);
-                });
+                // Sync form data to controller
+                _syncToController();
+                
+                // Navigate to next screen
+                Get.toNamed(AppRoutes.uploadImages);
               } else {
                 Get.snackbar(
                   'Form Incomplete',

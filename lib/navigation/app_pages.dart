@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:locate_lost/controllers/auth_controller.dart';
+import 'package:locate_lost/controllers/parent_report_controller.dart';
 import 'package:locate_lost/views/pages/auth_screens/forgot_password_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/login_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/otp_verification_screen.dart';
@@ -14,9 +15,10 @@ import 'package:locate_lost/views/pages/drawer_screens/profile_screen_old.dart';
 import 'package:locate_lost/views/pages/drawer_screens/terms_and_conditions_screen.dart' show TermsAndConditionsScreen;
 import 'package:locate_lost/views/pages/finder_screens/camera_capture.dart' show CameraCaptureScreen;
 import 'package:locate_lost/views/pages/finder_screens/found_person_details.dart' show FoundPersonDetailsScreen;
-import 'package:locate_lost/views/pages/finder_screens/upload_images_screen.dart' show UploadImagesScreen;
+import 'package:locate_lost/views/pages/finder_screens/upload_images_screen.dart' show FinderUploadImagesScreen;
 import 'package:locate_lost/views/pages/main_navigation_screen.dart';
 import 'package:locate_lost/views/pages/parent_screens/missing_person_details.dart' show MissingPersonDetailsScreen;
+import 'package:locate_lost/views/pages/parent_screens/upload_images.dart' show UploadImagesScreen;
 import 'package:locate_lost/views/pages/settings_screens/about_settings_screen.dart';
 import 'package:locate_lost/views/pages/settings_screens/account_settings_screen.dart';
 import 'package:locate_lost/views/pages/settings_screens/appearance_settings_screen.dart';
@@ -200,6 +202,9 @@ class AppPages {
     GetPage(
       name: AppRoutes.missingPersonDetails,
       page: () => const MissingPersonDetailsScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ParentReportController>(() => ParentReportController(), fenix: true);
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -207,12 +212,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.uploadImages,
       page: () => const UploadImagesScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ParentReportController>(() => ParentReportController(), fenix: true);
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.parentCaseSummary,
       page: () => const ParentCaseSummaryScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ParentReportController>(() => ParentReportController(), fenix: true);
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -238,7 +249,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.finderUploadImages,
-      page: () => const UploadImagesScreen(),
+      page: () => const FinderUploadImagesScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),

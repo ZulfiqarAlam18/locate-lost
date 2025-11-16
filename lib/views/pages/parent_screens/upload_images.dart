@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:locate_lost/controllers/parent_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_elevated_button.dart';
@@ -17,84 +18,45 @@ class UploadImagesScreen extends StatefulWidget {
 
 class _UploadImagesScreenState extends State<UploadImagesScreen> {
   final ImagePicker _picker = ImagePicker();
-  // Removed MissingPersonController dependency - keep images and form data local
-  List<XFile> _selectedImages = [];
-  late final _LocalMissingPerson controller;
+  late final ParentReportController controller;
   
-  // Dynamic progress calculation for upload images screen
+  // Progress calc
   double get progressPercent {
-    // Calculate base progress from previous screen completion
-    double baseProgress = _calculateFormCompletionProgress();
-    const maxAdditionalProgress = 0.10; // Additional 10% progress available for images
-    
-  int imageCount = _selectedImages.length;
-    // Progress increases with images, maxes out at 3 images (recommended minimum)
+    const maxAdditionalProgress = 0.10;
+    int imageCount = controller.selectedImages.length;
     double imageProgress = (imageCount >= 3 ? 1.0 : imageCount / 3.0) * maxAdditionalProgress;
-    
-    return baseProgress + imageProgress;
+    return 0.80 + imageProgress; // Form is assumed 80% from previous screen
   }
-  
-  // Calculate how much of the form was completed (0.0 to 0.80)
-  double _calculateFormCompletionProgress() {
-    const maxFormProgress = 0.80;
-    
-    List<bool> formFieldsCompleted = [
-      // In UI-only mode these are local/default empty values; progress will be 0
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-    ];
-    
-    int completedFields = formFieldsCompleted.where((completed) => completed).length;
-    return (completedFields / formFieldsCompleted.length) * maxFormProgress;
-  }
-  
+
   @override
   void initState() {
     super.initState();
-    // Initialize local controller shim to delegate to this state's _selectedImages
-    controller = _LocalMissingPerson(
-      () => _selectedImages,
-      (newList) {
-        setState(() {
-          _selectedImages = newList;
-        });
-      },
-    );
+    controller = Get.find<ParentReportController>();
   }
 
   Future<void> _pickImages() async {
     if (controller.selectedImages.length >= 5) {
-      Get.snackbar(
-        'Limit Reached',
-        'You can only select up to 5 images',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: AppColors.myRedColor,
-        colorText: Colors.white,
-      );
+      Get.snackbar('Limit Reached', 'You can only select up to 5 images',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.myRedColor,
+          colorText: Colors.white);
       return;
     }
 
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles != null) {
       int remainingSlots = 5 - controller.selectedImages.length;
-      
-      List<XFile> currentImages = List.from(controller.selectedImages);
-      List<XFile> imagesToAdd = pickedFiles.take(remainingSlots).toList();
-      currentImages.addAll(imagesToAdd);
-      
-      controller.updateImages(currentImages);
-      
-      // Trigger UI update for progress
-      setState(() {});
+
+      List<XFile> updated = List.from(controller.selectedImages);
+      updated.addAll(pickedFiles.take(remainingSlots));
+
+      controller.updateImages(updated);
+      setState(() {}); // Trigger UI update
 
       if (pickedFiles.length > remainingSlots) {
         Get.snackbar(
           'Selection Limited',
-          'Only $remainingSlots images were added. Maximum 5 images allowed.',
+          'Only $remainingSlots images were added.',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: AppColors.primary,
           colorText: Colors.white,
@@ -104,45 +66,32 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
   }
 
   void _removeImage(int index) {
-    List<XFile> currentImages = List.from(controller.selectedImages);
-    currentImages.removeAt(index);
-    controller.updateImages(currentImages);
-    
-    // Trigger UI update for progress
-    setState(() {});
+    List<XFile> updated = List.from(controller.selectedImages);
+    updated.removeAt(index);
+    controller.updateImages(updated);
+    setState(() {}); // Trigger UI update
   }
 
   void _viewImageFullScreen(String imagePath) {
     Get.dialog(
       Dialog(
         backgroundColor: Colors.black,
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: Stack(
-            children: [
-              Center(
-                child: InteractiveViewer(
-                  child: Image.file(
-                    File(imagePath),
-                    fit: BoxFit.contain,
-                  ),
-                ),
+        child: Stack(
+          children: [
+            Center(
+              child: InteractiveViewer(
+                child: Image.file(File(imagePath), fit: BoxFit.contain),
               ),
-              Positioned(
-                top: 40,
-                right: 20,
-                child: IconButton(
-                  onPressed: () => Get.back(),
-                  icon: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
+            ),
+            Positioned(
+              top: 40,
+              right: 20,
+              child: IconButton(
+                onPressed: () => Get.back(),
+                icon: Icon(Icons.close, color: Colors.white, size: 30),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -152,7 +101,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.secondary,
-      body: Obx(() => SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0.w),
           child: Column(
@@ -170,14 +119,10 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                 ),
               ),
 
-              Divider(
-                color: AppColors.primary,
-                indent: 100.w,
-                endIndent: 100.w,
-                thickness: 2.h,
-              ),
+              Divider(color: AppColors.primary, indent: 100.w, endIndent: 100.w, thickness: 2.h),
               SizedBox(height: 20.h),
 
+              // Progress Card
               Container(
                 width: 390.w,
                 height: 140.h,
@@ -192,12 +137,8 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.0.w,
-                      vertical: 12.h,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           flex: 3,
@@ -205,14 +146,11 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Upload Progress',
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Text('Upload Progress',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600)),
                               SizedBox(height: 6.h),
                               Text(
                                 controller.selectedImages.isEmpty
@@ -221,7 +159,6 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.myRedColor,
-                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],
@@ -234,12 +171,9 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                             lineWidth: 8.0.w,
                             percent: progressPercent,
                             animation: true,
-                            animationDuration: 800,
-                            progressColor: controller.selectedImages.isEmpty
-                                ? Colors.orange  // 80% - form completed but no images
-                                : controller.selectedImages.length >= 3
-                                    ? AppColors.primary  // 90% - good progress with images
-                                    : Colors.orange, // 80-90% - some images
+                            progressColor: controller.selectedImages.length >= 3
+                                ? AppColors.primary
+                                : Colors.orange,
                             backgroundColor: Colors.teal.shade100,
                             circularStrokeCap: CircularStrokeCap.round,
                             center: Text(
@@ -247,11 +181,9 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
-                                color: controller.selectedImages.isEmpty
-                                    ? Colors.orange
-                                    : controller.selectedImages.length >= 3
-                                        ? AppColors.primary
-                                        : Colors.orange,
+                                color: controller.selectedImages.length >= 3
+                                    ? AppColors.primary
+                                    : Colors.orange,
                               ),
                             ),
                           ),
@@ -263,20 +195,15 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
               ),
 
               SizedBox(height: 20.h),
-              Divider(
-                color: AppColors.primary,
-                indent: 100.w,
-                endIndent: 100.w,
-                thickness: 2.h,
-              ),
+              Divider(color: AppColors.primary, indent: 100.w, endIndent: 100.w, thickness: 2.h),
+
               SizedBox(height: 10.h),
               Text(
                 'Upload clear and front facing images of the missing person (1-5 images).',
                 style: TextStyle(
-                  fontSize: 16.sp,
-                  color: AppColors.myBlackColor,
-                  fontWeight: FontWeight.w600,
-                ),
+                    fontSize: 16.sp,
+                    color: AppColors.myBlackColor,
+                    fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 20.h),
 
@@ -287,47 +214,33 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20.r),
                   border: Border.all(color: AppColors.primary, width: 1.5.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(20.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Images (${controller.selectedImages.length}/5)',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      Text('Images (${controller.selectedImages.length}/5)',
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600)),
                       SizedBox(height: 15.h),
-                      
-                      // Upload area
+
                       GestureDetector(
                         onTap: controller.selectedImages.length < 5 ? _pickImages : null,
                         child: Container(
-                          width: double.infinity,
                           height: 120.h,
                           decoration: BoxDecoration(
-                            color: controller.selectedImages.length < 5 
-                                ? AppColors.secondary.withOpacity(0.7) 
+                            color: controller.selectedImages.length < 5
+                                ? AppColors.secondary.withOpacity(0.7)
                                 : Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(16.r),
                             border: Border.all(
-                              color: controller.selectedImages.isEmpty 
-                                  ? AppColors.myRedColor 
+                              color: controller.selectedImages.isEmpty
+                                  ? AppColors.myRedColor
                                   : AppColors.primary,
                               width: 2.w,
-                              style: BorderStyle.solid,
                             ),
                           ),
                           child: Center(
@@ -335,29 +248,27 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  controller.selectedImages.length < 5 
-                                      ? Icons.add_photo_alternate 
+                                  controller.selectedImages.length < 5
+                                      ? Icons.add_photo_alternate
                                       : Icons.photo_library,
-                                  color: controller.selectedImages.length < 5 
-                                      ? AppColors.primary 
+                                  color: controller.selectedImages.length < 5
+                                      ? AppColors.primary
                                       : Colors.grey,
                                   size: 45.sp,
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
                                   controller.selectedImages.isEmpty
-                                      ? 'Tap to select images from gallery'
+                                      ? 'Tap to select images'
                                       : controller.selectedImages.length < 5
                                           ? 'Tap to add more images'
                                           : 'Maximum 5 images selected',
                                   style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: controller.selectedImages.length < 5 
-                                        ? AppColors.primary 
+                                    color: controller.selectedImages.length < 5
+                                        ? AppColors.primary
                                         : Colors.grey,
-                                    fontWeight: FontWeight.w500,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                                 if (controller.selectedImages.isEmpty)
                                   Padding(
@@ -365,10 +276,8 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                                     child: Text(
                                       'At least 1 image required*',
                                       style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.myRedColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                          fontSize: 12.sp,
+                                          color: AppColors.myRedColor),
                                     ),
                                   ),
                               ],
@@ -376,123 +285,65 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                           ),
                         ),
                       ),
-                      
+
                       SizedBox(height: 20.h),
-                      
-                      // Image Preview Grid
+
                       if (controller.selectedImages.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Selected Images',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 10.h),
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 10.w,
-                                mainAxisSpacing: 10.h,
-                                childAspectRatio: 1,
-                              ),
-                              itemCount: controller.selectedImages.length,
-                              itemBuilder: (context, index) {
-                                return Stack(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => _viewImageFullScreen(controller.selectedImages[index].path),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(12.r),
-                                          border: Border.all(
-                                            color: AppColors.primary.withOpacity(0.3),
-                                            width: 1.w,
-                                          ),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(12.r),
-                                          child: Image.file(
-                                            File(controller.selectedImages[index].path),
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 10.w,
+                              mainAxisSpacing: 10.h),
+                          itemCount: controller.selectedImages.length,
+                          itemBuilder: (_, index) {
+                            return Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () =>
+                                      _viewImageFullScreen(controller.selectedImages[index].path),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    child: Image.file(
+                                      File(controller.selectedImages[index].path),
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
                                     ),
-                                    Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: GestureDetector(
-                                        onTap: () => _removeImage(index),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: AppColors.myRedColor,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black26,
-                                                blurRadius: 4,
-                                                offset: Offset(0, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          padding: EdgeInsets.all(4.w),
-                                          child: Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                            size: 18.sp,
-                                          ),
-                                        ),
-                                      ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 5,
+                                  right: 5,
+                                  child: GestureDetector(
+                                    onTap: () => _removeImage(index),
+                                    child: CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: AppColors.myRedColor,
+                                      child: Icon(Icons.close,
+                                          size: 16.sp, color: Colors.white),
                                     ),
-                                  ],
-                                );
-                              },
-                            ),
-                            SizedBox(height: 15.h),
-                          ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                      
-                      // Instructions
+
+                      SizedBox(height: 15.h),
+
                       Container(
                         padding: EdgeInsets.all(12.w),
                         decoration: BoxDecoration(
                           color: AppColors.secondary.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(10.r),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Image Guidelines:',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 5.h),
-                            Text(
-                              '• Upload 1-5 clear images of the missing person\n'
-                              '• Use front-facing, well-lit photos\n'
-                              '• Each image should be less than 10 MB\n'
-                              '• Tap on any image to view in full screen',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: AppColors.myBlackColor,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          '• Upload 1-5 clear images\n'
+                          '• Use front-facing, well-lit photos\n'
+                          '• Tap to view in full screen',
+                          style: TextStyle(fontSize: 12.sp),
                         ),
                       ),
                     ],
@@ -501,13 +352,12 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
               ),
 
               SizedBox(height: 10.h),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CustomElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                     height: 45.h,
                     width: 130.w,
                     fontSize: 15.sp,
@@ -520,18 +370,14 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                   CustomElevatedButton(
                     onPressed: () {
                       if (controller.selectedImages.isNotEmpty) {
-                     Get.toNamed(AppRoutes.parentCaseSummary);
-
-
-                    //    Get.toNamed(AppRoutes.reporterDetails);
+                        Get.toNamed(AppRoutes.parentCaseSummary);
                       } else {
                         Get.snackbar(
-                          'Images Required',
-                          'Please select at least 1 image to continue',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: AppColors.myRedColor,
-                          colorText: Colors.white,
-                        );
+                            'Images Required',
+                            'Please select at least 1 image',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: AppColors.myRedColor,
+                            colorText: Colors.white);
                       }
                     },
                     height: 45.h,
@@ -539,8 +385,8 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
                     fontSize: 15.sp,
                     borderRadius: 10.r,
                     label: 'Next',
-                    backgroundColor: controller.selectedImages.isEmpty 
-                        ? Colors.grey.shade400 
+                    backgroundColor: controller.selectedImages.isEmpty
+                        ? Colors.grey.shade400
                         : AppColors.primary,
                   ),
                 ],
@@ -548,30 +394,7 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
             ],
           ),
         ),
-      )),
+      ),
     );
   }
-}
-
-// Local shim to emulate the parts of the missing MissingPersonController used by
-// the UI. Delegates selectedImages get/set to provided callbacks so the
-// stateful widget can remain the single source of truth.
-class _LocalMissingPerson {
-  final List<XFile> Function() _getList;
-  final void Function(List<XFile>) _setList;
-
-  _LocalMissingPerson(this._getList, this._setList);
-
-  List<XFile> get selectedImages => _getList();
-  set selectedImages(List<XFile> imgs) => _setList(imgs);
-
-  void updateImages(List<XFile> imgs) => _setList(imgs);
-
-  // Minimal fields expected by UI; left empty for UI-only mode.
-  String childName = '';
-  String fatherName = '';
-  String gender = '';
-  String lastSeenPlace = '';
-  String lastSeenTime = '';
-  String phoneNumber = '';
 }

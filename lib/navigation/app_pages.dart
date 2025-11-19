@@ -15,7 +15,7 @@ import 'package:locate_lost/views/pages/drawer_screens/profile_screen_old.dart';
 import 'package:locate_lost/views/pages/drawer_screens/terms_and_conditions_screen.dart' show TermsAndConditionsScreen;
 import 'package:locate_lost/views/pages/finder_screens/camera_capture.dart' show CameraCaptureScreen;
 import 'package:locate_lost/views/pages/finder_screens/found_person_details.dart' show FoundPersonDetailsScreen;
-import 'package:locate_lost/views/pages/finder_screens/upload_images_screen.dart' show FinderUploadImagesScreen;
+import 'package:locate_lost/views/pages/finder_screens/finder_upload_images.dart' show FinderUploadImagesScreen;
 import 'package:locate_lost/views/pages/main_navigation_screen.dart';
 import 'package:locate_lost/views/pages/parent_screens/missing_person_details.dart' show MissingPersonDetailsScreen;
 import 'package:locate_lost/views/pages/parent_screens/upload_images.dart' show UploadImagesScreen;

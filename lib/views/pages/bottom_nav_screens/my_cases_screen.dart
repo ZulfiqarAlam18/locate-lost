@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:locate_lost/controllers/my_cases_controller.dart';
+import 'package:locate_lost/data/models/parent_report/my_parent_reports_response.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_app_bar.dart';
@@ -19,60 +22,14 @@ class MyCasesScreen extends StatefulWidget {
 class _MyCasesScreenState extends State<MyCasesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool _isLoading = false;
   late MainNavigationController navController;
-
-  // Dummy data for demonstration
-  final List<Map<String, dynamic>> missingCases = [
-    {
-      'id': 'MP-001',
-      'name': 'Zohaib Khoso',
-      'age': 10,
-      'status': 'Active',
-      'lastSeen': 'Riverside Park',
-      'date': '01/08/2025',
-      'image': 'assets/images/khoso.jpeg',
-      'priority': 'Critical',
-    },
-    {
-      'id': 'MP-002',
-      'name': 'Zulfiqar Ali',
-      'age': 12,
-      'status': 'Investigating',
-      'lastSeen': 'School',
-      'date': '28/07/2025',
-      'image': 'assets/images/zulfi.jpeg',
-      'priority': 'High',
-    },
-     {
-      'id': 'MP-003',
-      'name': 'Raza',
-      'age': 8,
-      'status': 'Investigating',
-      'lastSeen': 'School',
-      'date': '28/07/2025',
-      'image': 'assets/images/raza.jpeg',
-      'priority': 'High',
-    },
-  ];
-
-  final List<Map<String, dynamic>> foundCases = [
-    {
-      'id': 'FP-001',
-      'name': 'Sarah Wilson',
-      'age': 10,
-      'status': 'Found',
-      'location': 'Mall Center',
-      'date': '30/07/2025',
-      'image': 'assets/images/bg.png',
-      'finder': 'John Doe',
-    },
-  ];
+  late MyCasesController casesController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    
     // Initialize or get the navigation controller
     try {
       navController = Get.find<MainNavigationController>();
@@ -80,21 +37,16 @@ class _MyCasesScreenState extends State<MyCasesScreen>
       navController = Get.put(MainNavigationController());
     }
     
+    // Initialize or get MyCasesController
+    try {
+      casesController = Get.find<MyCasesController>();
+    } catch (e) {
+      casesController = Get.put(MyCasesController());
+    }
+    
     if (!widget.isInNavigation) {
       navController.setIndex(1); // Set My Cases as active only if not in navigation wrapper
     }
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    // Simulate API call
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
@@ -108,7 +60,7 @@ class _MyCasesScreenState extends State<MyCasesScreen>
     return Scaffold(
       appBar: CustomAppBar(
         text: 'My Cases',
-        onPressed: () {},
+        onPressed: () => casesController.refreshReports(),
         icon: Icons.refresh,
       ),
       backgroundColor: AppColors.surfaceVariant,
@@ -153,73 +105,74 @@ class _MyCasesScreenState extends State<MyCasesScreen>
   }
 
   Widget _buildMissingCasesTab() {
-    if (_isLoading) {
-      return _buildLoadingState();
-    }
+    return Obx(() {
+      if (casesController.isLoading.value && casesController.parentReports.isEmpty) {
+        return _buildLoadingState();
+      }
 
-    if (missingCases.isEmpty) {
-      return _buildEmptyState(
-        icon: Icons.person_search,
-        title: 'No Missing Cases',
-        subtitle: 'You haven\'t reported any missing cases yet.',
-        buttonText: 'Report Missing Person',
-        onPressed: () => Get.toNamed(AppRoutes.reportCase),
+      if (casesController.errorMessage.value.isNotEmpty && casesController.parentReports.isEmpty) {
+        return _buildEmptyState(
+          icon: Icons.error_outline,
+          title: 'Error',
+          subtitle: casesController.errorMessage.value,
+          buttonText: 'Retry',
+          onPressed: () => casesController.fetchMyParentReports(),
+        );
+      }
+
+      if (casesController.parentReports.isEmpty) {
+        return _buildEmptyState(
+          icon: Icons.person_search,
+          title: 'No Missing Cases',
+          subtitle: 'You haven\'t reported any missing cases yet.',
+          buttonText: 'Report Missing Person',
+          onPressed: () => Get.toNamed(AppRoutes.reportCase),
+        );
+      }
+
+      return RefreshIndicator(
+        onRefresh: () => casesController.refreshReports(),
+        child: ListView.builder(
+          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, widget.isInNavigation ? 200.h : 220.h),
+          itemCount: casesController.parentReports.length,
+          itemBuilder: (context, index) {
+            final report = casesController.parentReports[index];
+            return _buildMissingCaseCard(report);
+          },
+        ),
       );
-    }
-
-    return RefreshIndicator(
-      onRefresh: () async {
-        await _loadData();
-      },
-      child: ListView.builder(
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, widget.isInNavigation ? 200.h : 220.h),
-        itemCount: missingCases.length,
-        itemBuilder: (context, index) {
-          final caseData = missingCases[index];
-          return _buildMissingCaseCard(caseData);
-        },
-      ),
-    );
+    });
   }
 
   Widget _buildFoundCasesTab() {
-    if (_isLoading) {
-      return _buildLoadingState();
-    }
-
-    if (foundCases.isEmpty) {
-      return _buildEmptyState(
-        icon: Icons.camera_alt,
-        title: 'No Found Cases',
-        subtitle: 'You haven\'t reported any found cases yet.',
-        buttonText: 'Report Found Person',
-        onPressed: () => Get.toNamed(AppRoutes.foundPersonDetails),
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: () async {
-        await _loadData();
-      },
-      child: ListView.builder(
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, widget.isInNavigation ? 200.h : 220.h),
-        itemCount: foundCases.length,
-        itemBuilder: (context, index) {
-          final caseData = foundCases[index];
-          return _buildFoundCaseCard(caseData);
-        },
-      ),
+    // TODO: Implement finder reports API integration
+    // For now, show placeholder as we're focusing on missing person cases (parent reports)
+    return _buildEmptyState(
+      icon: Icons.camera_alt,
+      title: 'No Found Cases',
+      subtitle: 'Found cases feature coming soon.\nYou can report found persons.',
+      buttonText: 'Report Found Person',
+      onPressed: () => Get.toNamed(AppRoutes.foundPersonDetails),
     );
   }
 
-  Widget _buildMissingCaseCard(Map<String, dynamic> caseData) {
+  Widget _buildMissingCaseCard(ParentReportItem report) {
+    // Format date
+    String formattedDate = 'Unknown date';
+    try {
+      final date = DateTime.parse(report.createdAt);
+      formattedDate = DateFormat('MMM dd, yyyy').format(date);
+    } catch (e) {
+      formattedDate = report.createdAt;
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
         child: InkWell(
-          onTap: () => Get.toNamed(AppRoutes.parentCaseSummary),
+          onTap: () => Get.toNamed('${AppRoutes.caseDetail}?reportId=${report.id}'),
           borderRadius: BorderRadius.circular(16.r),
           child: Padding(
             padding: EdgeInsets.all(16.w),
@@ -227,13 +180,27 @@ class _MyCasesScreenState extends State<MyCasesScreen>
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
-                  child: Image.asset(
-                    caseData['image'],
-                    width: 70.w,
-                    height: 70.w,
-                    fit: BoxFit.cover,
-                    semanticLabel: 'Photo of ${caseData['name']}',
-                  ),
+                  child: report.images.isNotEmpty
+                      ? Image.network(
+                          report.images.first.imageUrl,
+                          width: 70.w,
+                          height: 70.w,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 70.w,
+                              height: 70.w,
+                              color: Colors.grey[300],
+                              child: Icon(Icons.person, color: Colors.grey[600]),
+                            );
+                          },
+                        )
+                      : Container(
+                          width: 70.w,
+                          height: 70.w,
+                          color: Colors.grey[300],
+                          child: Icon(Icons.person, color: Colors.grey[600]),
+                        ),
                 ),
                 SizedBox(width: 16.w),
                 Expanded(
@@ -243,20 +210,38 @@ class _MyCasesScreenState extends State<MyCasesScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            caseData['name'],
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                          Expanded(
+                            child: Text(
+                              report.childName,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          _buildPriorityChip(caseData['priority']),
+                          if (report.matchCount.matchesAsParent > 0)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Text(
+                                '${report.matchCount.matchesAsParent} Match${report.matchCount.matchesAsParent > 1 ? 'es' : ''}',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Age: ${caseData['age']} • ID: ${caseData['id']}',
+                        'Father: ${report.fatherName} • ${report.gender}',
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: AppColors.textSecondary,
@@ -265,11 +250,11 @@ class _MyCasesScreenState extends State<MyCasesScreen>
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _buildStatusChip(caseData['status']),
+                          _buildStatusChip(report.status),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: Text(
-                              'Last seen: ${caseData['lastSeen']}',
+                              report.placeLost != null ? 'Last seen: ${report.placeLost}' : 'Location not specified',
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 color: AppColors.textMuted,
@@ -281,7 +266,7 @@ class _MyCasesScreenState extends State<MyCasesScreen>
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Reported: ${caseData['date']}',
+                        'Reported: $formattedDate',
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: AppColors.textMuted,

@@ -5,6 +5,8 @@ import 'package:http_parser/http_parser.dart';
 import '../../utils/constants/endpoints.dart';
 import '../models/parent_report/parent_report_request.dart';
 import '../models/parent_report/parent_report_response.dart';
+import '../models/parent_report/my_parent_reports_response.dart';
+import '../models/parent_report/parent_report_by_id_response.dart';
 
 class ParentReportHelper {
   static final ParentReportHelper _instance = ParentReportHelper._internal();
@@ -102,6 +104,100 @@ class ParentReportHelper {
     } catch (e) {
       print('❌ createReport error: $e');
       return ParentReportResponse(success: false, message: 'An error occurred: $e');
+    }
+  }
+
+  /// Fetches current user's parent reports
+  /// GET /api/reports/parent/my
+  Future<MyParentReportsResponse> getMyReports({
+    Map<String, String>? headers,
+    int page = 1,
+    int limit = 10,
+    String? status,
+    String? search,
+    String sortBy = 'createdAt',
+    String sortOrder = 'desc',
+  }) async {
+    try {
+      // Build query parameters
+      final Map<String, String> queryParams = {
+        'page': page.toString(),
+        'limit': limit.toString(),
+        'sortBy': sortBy,
+        'sortOrder': sortOrder,
+      };
+      
+      if (status != null && status.isNotEmpty) {
+        queryParams['status'] = status;
+      }
+      if (search != null && search.isNotEmpty) {
+        queryParams['search'] = search;
+      }
+
+      final uri = Uri.parse('$Base_URL$Parent_Report_My').replace(queryParameters: queryParams);
+      print('📤 Fetching my parent reports: $uri');
+
+      final response = await http.get(
+        uri,
+        headers: headers ?? {},
+      ).timeout(const Duration(seconds: 30));
+
+      print('📥 Response status: ${response.statusCode}');
+      print('📥 Response body: ${response.body}');
+
+      final decoded = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        return MyParentReportsResponse.fromJson(decoded);
+      } else {
+        return MyParentReportsResponse(
+          success: false,
+          message: decoded['message'] ?? 'Failed to fetch reports',
+        );
+      }
+    } catch (e) {
+      print('❌ getMyReports error: $e');
+      return MyParentReportsResponse(
+        success: false,
+        message: 'An error occurred: $e',
+      );
+    }
+  }
+
+  /// Fetches a specific parent report by ID
+  /// GET /api/reports/parent/{reportId}
+  Future<ParentReportByIdResponse> getReportById({
+    required String reportId,
+    Map<String, String>? headers,
+  }) async {
+    try {
+      final uri = Uri.parse('$Base_URL$Parent_Report_By_Id/$reportId');
+      print('📤 Fetching parent report by ID: $uri');
+
+      final response = await http.get(
+        uri,
+        headers: headers ?? {},
+      ).timeout(const Duration(seconds: 30));
+
+      print('📥 Response status: ${response.statusCode}');
+      print('📥 Response body: ${response.body}');
+
+      final decoded = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        return ParentReportByIdResponse.fromJson(decoded);
+      } else {
+        return ParentReportByIdResponse(
+          success: false,
+          message: decoded['message'] ?? 'Failed to fetch report details',
+        );
+      }
+    } catch (e) {
+      print('❌ getReportById error: $e');
+      return ParentReportByIdResponse(
+        success: false,
+        message: 'An error occurred: $e',
+      );
     }
   }
 }

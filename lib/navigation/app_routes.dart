@@ -17,6 +17,7 @@ class AppRoutes {
   static const String displayInfo = '/display-info';
   static const String myCases = '/my-cases';
   static const String caseDetails = '/case-details';
+  static const String caseDetail = '/case-detail'; // Single case detail with reportId parameter
   static const String mapNearbyReports = '/map-nearby-reports';
 
   // Notification Routes

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:locate_lost/controllers/auth_controller.dart';
 import 'package:locate_lost/controllers/parent_report_controller.dart';
 import 'package:locate_lost/controllers/finder_report_controller.dart';
+import 'package:locate_lost/controllers/my_cases_controller.dart';
 import 'package:locate_lost/views/pages/auth_screens/forgot_password_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/login_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/otp_verification_screen.dart';
@@ -9,6 +10,7 @@ import 'package:locate_lost/views/pages/auth_screens/signup_screen.dart';
 import 'package:locate_lost/views/pages/bottom_nav_screens/case_details_screen.dart' show CaseDetailsScreen;
 import 'package:locate_lost/views/pages/case_screens/finder_case_summary.dart' show FinderCaseSummaryScreen;
 import 'package:locate_lost/views/pages/case_screens/parent_case_summary.dart';
+import 'package:locate_lost/views/pages/case_screens/case_detail_screen.dart';
 import 'package:locate_lost/views/pages/drawer_screens/contact_us_screen.dart' show ContactUsScreen;
 import 'package:locate_lost/views/pages/drawer_screens/faqs_screen.dart';
 import 'package:locate_lost/views/pages/drawer_screens/profile_screen_old.dart';
@@ -223,6 +225,18 @@ class AppPages {
       page: () => const ParentCaseSummaryScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut<ParentReportController>(() => ParentReportController(), fenix: true);
+      }),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.caseDetail,
+      page: () {
+        final reportId = Get.parameters['reportId'] ?? '';
+        return CaseDetailScreen(reportId: reportId);
+      },
+      binding: BindingsBuilder(() {
+        Get.lazyPut<MyCasesController>(() => MyCasesController());
       }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),

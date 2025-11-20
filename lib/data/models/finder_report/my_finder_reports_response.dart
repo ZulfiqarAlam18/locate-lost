@@ -7,9 +7,10 @@ String _fixImageUrl(String url) {
     print('🔧 Fixed localhost URL: $url -> $fixedUrl');
     return fixedUrl;
   }
-  // Handle relative URLs
+  // Handle relative URLs (remove leading slash to avoid double slash)
   if (!url.startsWith('http')) {
-    final fixedUrl = Base_URL + url;
+    final cleanUrl = url.startsWith('/') ? url.substring(1) : url;
+    final fixedUrl = Base_URL + cleanUrl;
     print('🔧 Fixed relative URL: $url -> $fixedUrl');
     return fixedUrl;
   }

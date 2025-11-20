@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/models/parent_report/my_parent_reports_response.dart' as parent_models;
@@ -115,7 +116,13 @@ class MyCasesController extends GetxController {
         print('✅ Fetched ${response.data!.reports.length} parent reports');
         print('📊 Total: ${response.data!.pagination.total}, Pages: ${response.data!.pagination.pages}');
       } else {
-        errorMessage.value = response.message ?? 'Failed to fetch reports';
+        // Check if token expired
+        if (response.message?.contains('Token expired') == true || response.message?.contains('401') == true) {
+          errorMessage.value = 'Session expired. Please login again.';
+          _handleTokenExpiration();
+        } else {
+          errorMessage.value = response.message ?? 'Failed to fetch reports';
+        }
         print('❌ Error fetching reports: ${errorMessage.value}');
       }
     } catch (e) {
@@ -281,7 +288,13 @@ class MyCasesController extends GetxController {
         print('✅ Fetched ${response.data!.reports.length} finder reports');
         print('📊 Total: ${response.data!.pagination.total}, Pages: ${response.data!.pagination.pages}');
       } else {
-        errorMessage.value = 'Failed to fetch finder reports';
+        // Check if token expired
+        if (errorMessage.value.contains('Token expired') || errorMessage.value.contains('401')) {
+          errorMessage.value = 'Session expired. Please login again.';
+          _handleTokenExpiration();
+        } else {
+          errorMessage.value = 'Failed to fetch finder reports';
+        }
         print('❌ Error fetching finder reports: ${errorMessage.value}');
       }
     } catch (e) {
@@ -363,5 +376,35 @@ class MyCasesController extends GetxController {
   bool get hasMoreFinderPages {
     if (finderPaginationInfo.value == null) return false;
     return finderCurrentPage < finderPaginationInfo.value!.pages;
+  }
+
+  /// Handle token expiration by logging out user
+  void _handleTokenExpiration() async {
+    print('🔒 Token expired - logging out user');
+    try {
+      // Clear local data
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      
+      // Show dialog
+      Get.dialog(
+        AlertDialog(
+          title: Text('Session Expired'),
+          content: Text('Your session has expired. Please login again.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back(); // Close dialog
+                Get.offAllNamed('/login'); // Navigate to login
+              },
+              child: Text('Login'),
+            ),
+          ],
+        ),
+        barrierDismissible: false,
+      );
+    } catch (e) {
+      print('❌ Error handling token expiration: $e');
+    }
   }
 }

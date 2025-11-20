@@ -508,10 +508,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                   Get.back();
                 }
                 
-                // Delete controller instance to ensure fresh state
-                Get.delete<AuthController>();
-                
                 // Navigate to login screen and clear all previous routes
+                // Don't delete controller - it will be reused for next login
                 Get.offAllNamed(AppRoutes.login);
               } catch (e) {
                 // Close loading dialog
@@ -520,7 +518,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                 }
                 
                 // Still navigate to login even if error
-                Get.delete<AuthController>(force: true);
                 Get.offAllNamed(AppRoutes.login);
               }
             },

@@ -20,9 +20,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AuthController get authController => Get.find<AuthController>();
   
   // Statistics variables (will be updated with real data later)
-  int activeCases = 12;
-  int resolvedCases = 48;
-  int thisMonthCases = 8;
+  int activeCases = 4;
+  int resolvedCases = 2;
+  int thisMonthCases = 4;
   
   late MainNavigationController navController;
   late AnimationController _animationController;

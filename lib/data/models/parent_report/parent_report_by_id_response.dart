@@ -1,5 +1,27 @@
 // Response model for GET /api/reports/parent/{reportId} endpoint
 
+import '../../../utils/constants/endpoints.dart';
+
+/// Helper function to fix image URLs
+String _fixImageUrl(String url) {
+  // If URL is relative or starts with localhost, convert to tunnel URL
+  if (url.isEmpty) return url;
+  
+  if (url.startsWith('http://localhost:5000/')) {
+    // Replace localhost with tunnel URL
+    final fixed = url.replaceFirst('http://localhost:5000/', Base_URL);
+    print('🔧 Fixed localhost URL: $url -> $fixed');
+    return fixed;
+  } else if (url.startsWith('/')) {
+    // If it's a relative URL, prepend Base_URL
+    final fixed = Base_URL + url.substring(1); // Remove leading slash since Base_URL has trailing slash
+    print('🔧 Fixed relative URL: $url -> $fixed');
+    return fixed;
+  }
+  
+  return url; // Already a full URL or empty
+}
+
 // Match related classes
 class MatchInfo {
   final String id;
@@ -83,9 +105,14 @@ class DetailedReportImage {
   });
 
   factory DetailedReportImage.fromJson(Map<String, dynamic> json) {
+    print('📷 Parsing DetailedReportImage from JSON: $json');
+    String rawImageUrl = json['imageUrl'] ?? '';
+    String imageUrl = _fixImageUrl(rawImageUrl);
+    print('📷 Final detailed imageUrl: $imageUrl');
+    
     return DetailedReportImage(
       id: json['id'] ?? '',
-      imageUrl: json['imageUrl'] ?? '',
+      imageUrl: imageUrl,
       fileName: json['fileName'] ?? 'image.jpg',
     );
   }

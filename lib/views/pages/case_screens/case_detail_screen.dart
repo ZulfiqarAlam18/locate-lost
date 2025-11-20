@@ -168,26 +168,30 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
           return Center(child: Text('No data available'));
         }
 
-        return FadeTransition(
-          opacity: _fadeAnimation,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildHeaderSection(report),
-                _buildMissingPersonDetailsCard(report),
-                _buildUploadedImagesSection(report),
-                _buildContactInfoCard(report),
-                _buildLocationAndTimeCard(report),
-                if (report.additionalDetails != null && report.additionalDetails!.isNotEmpty)
-                  _buildDescriptionCard(report),
-                if (report.matchesAsParent.isNotEmpty)
-                  _buildMatchesSection(report),
-                SizedBox(height: 32.h),
-              ],
-            ),
-          ),
-        );
+        return _buildCaseContent(report);
       }),
+    );
+  }
+
+  Widget _buildCaseContent(ParentReportDetail report) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildHeaderSection(report),
+            _buildMissingPersonDetailsCard(report),
+            _buildUploadedImagesSection(report),
+            _buildContactInfoCard(report),
+            _buildLocationAndTimeCard(report),
+            if (report.additionalDetails != null && report.additionalDetails!.isNotEmpty)
+              _buildDescriptionCard(report),
+            if (report.matchesAsParent.isNotEmpty)
+              _buildMatchesSection(report),
+            SizedBox(height: 32.h),
+          ],
+        ),
+      ),
     );
   }
 
@@ -381,6 +385,8 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
       child: CarouselSlider.builder(
         itemCount: images.length,
         itemBuilder: (context, index, realIndex) {
+          final imageUrl = images[index].imageUrl;
+          print('🖼️ [CaseDetail] Loading carousel image $index: $imageUrl');
           return GestureDetector(
             onTap: () => _showImagePreview(images, index),
             child: Container(
@@ -398,7 +404,7 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.r),
                 child: Image.network(
-                  images[index].imageUrl,
+                  imageUrl,
                   fit: BoxFit.cover,
                   width: double.infinity,
                   loadingBuilder: (context, child, loadingProgress) {
@@ -412,9 +418,18 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
                     );
                   },
                   errorBuilder: (context, error, stackTrace) {
+                    print('❌ [CaseDetail] Carousel image error: $error');
+                    print('❌ [CaseDetail] Image URL was: $imageUrl');
                     return Container(
                       color: Colors.grey[300],
-                      child: Icon(Icons.error, color: Colors.red),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.broken_image, color: Colors.red, size: 40.w),
+                          SizedBox(height: 4.h),
+                          Text('Failed', style: TextStyle(fontSize: 10.sp, color: Colors.red)),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -443,13 +458,35 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
             CarouselSlider.builder(
               itemCount: images.length,
               itemBuilder: (context, index, realIndex) {
+                final imageUrl = images[index].imageUrl;
+                print('🖼️ [Preview] Loading preview image $index: $imageUrl');
                 return InteractiveViewer(
                   child: Image.network(
-                    images[index].imageUrl,
+                    imageUrl,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
                       return Center(
-                        child: Icon(Icons.error, color: Colors.white, size: 50.w),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      print('❌ [Preview] Image error: $error');
+                      print('❌ [Preview] Image URL was: $imageUrl');
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.broken_image, color: Colors.white, size: 50.w),
+                            SizedBox(height: 8.h),
+                            Text('Failed to load', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
                       );
                     },
                   ),

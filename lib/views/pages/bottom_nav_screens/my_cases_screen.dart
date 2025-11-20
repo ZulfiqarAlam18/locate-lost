@@ -181,17 +181,52 @@ class _MyCasesScreenState extends State<MyCasesScreen>
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
                   child: report.images.isNotEmpty
-                      ? Image.network(
-                          report.images.first.imageUrl,
-                          width: 70.w,
-                          height: 70.w,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
+                      ? Builder(
+                          builder: (context) {
+                            final imageUrl = report.images.first.imageUrl;
+                            print('🖼️ Loading image URL: $imageUrl');
+                            return Image.network(
+                              imageUrl,
                               width: 70.w,
                               height: 70.w,
-                              color: Colors.grey[300],
-                              child: Icon(Icons.person, color: Colors.grey[600]),
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: 70.w,
+                                  height: 70.w,
+                                  color: Colors.grey[200],
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                          : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                print('❌ Image load error: $error');
+                                print('❌ Image URL was: $imageUrl');
+                                print('❌ Stack trace: $stackTrace');
+                                return Container(
+                                  width: 70.w,
+                                  height: 70.w,
+                                  color: Colors.grey[300],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.broken_image, color: Colors.grey[600], size: 30.w),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        'Error',
+                                        style: TextStyle(fontSize: 8.sp, color: Colors.grey[600]),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             );
                           },
                         )

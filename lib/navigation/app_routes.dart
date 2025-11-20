@@ -34,7 +34,8 @@ class AppRoutes {
   static const String finderDetails = '/finder-details';
   static const String cameraCapture = '/camera-capture';
   static const String finderUploadImages = '/finder-upload-images';
-  static const String finderCaseSummary = '/finder-case-summary';
+  static const String finderCaseSummary = '/finder-case-summary'; // For submission flow
+  static const String finderCaseDetail = '/finder-case-detail'; // For viewing submitted reports with reportId
 
   // Drawer Routes
   static const String aboutUs = '/about-us';

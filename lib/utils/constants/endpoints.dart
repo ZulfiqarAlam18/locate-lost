@@ -5,3 +5,5 @@ const String Parent_Report_Create = 'api/reports/parent';
 const String Parent_Report_My = 'api/reports/parent/my';
 const String Parent_Report_By_Id = 'api/reports/parent'; // Append /{reportId}
 const String Finder_Report_Create = 'api/reports/finder';
+const String Finder_Report_My = 'api/reports/finder/my';
+const String Finder_Report_By_Id = 'api/reports/finder'; // Append /{reportId}

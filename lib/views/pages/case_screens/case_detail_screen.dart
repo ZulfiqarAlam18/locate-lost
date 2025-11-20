@@ -99,7 +99,7 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
       ),
       backgroundColor: Color(0xFFF8FAFC),
       body: Obx(() {
-        if (controller.isLoading.value && controller.selectedReportDetail.value == null) {
+        if (controller.isLoading.value && controller.selectedParentReportDetail.value == null) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +118,7 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
           );
         }
 
-        if (controller.errorMessage.value.isNotEmpty && controller.selectedReportDetail.value == null) {
+        if (controller.errorMessage.value.isNotEmpty && controller.selectedParentReportDetail.value == null) {
           return Center(
             child: Padding(
               padding: EdgeInsets.all(32.w),
@@ -163,7 +163,7 @@ class _CaseDetailScreenState extends State<CaseDetailScreen> with TickerProvider
           );
         }
 
-        final report = controller.selectedReportDetail.value;
+        final report = controller.selectedParentReportDetail.value;
         if (report == null) {
           return Center(child: Text('No data available'));
         }

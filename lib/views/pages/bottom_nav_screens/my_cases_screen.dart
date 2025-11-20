@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:locate_lost/controllers/my_cases_controller.dart';
 import 'package:locate_lost/data/models/parent_report/my_parent_reports_response.dart';
+import 'package:locate_lost/data/models/finder_report/my_finder_reports_response.dart' as finder_models;
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_app_bar.dart';
@@ -145,15 +146,43 @@ class _MyCasesScreenState extends State<MyCasesScreen>
   }
 
   Widget _buildFoundCasesTab() {
-    // TODO: Implement finder reports API integration
-    // For now, show placeholder as we're focusing on missing person cases (parent reports)
-    return _buildEmptyState(
-      icon: Icons.camera_alt,
-      title: 'No Found Cases',
-      subtitle: 'Found cases feature coming soon.\nYou can report found persons.',
-      buttonText: 'Report Found Person',
-      onPressed: () => Get.toNamed(AppRoutes.foundPersonDetails),
-    );
+    return Obx(() {
+      if (casesController.isLoading.value && casesController.finderReports.isEmpty) {
+        return _buildLoadingState();
+      }
+
+      if (casesController.errorMessage.value.isNotEmpty && casesController.finderReports.isEmpty) {
+        return _buildEmptyState(
+          icon: Icons.error_outline,
+          title: 'Error',
+          subtitle: casesController.errorMessage.value,
+          buttonText: 'Retry',
+          onPressed: () => casesController.fetchMyFinderReports(),
+        );
+      }
+
+      if (casesController.finderReports.isEmpty) {
+        return _buildEmptyState(
+          icon: Icons.camera_alt,
+          title: 'No Found Cases',
+          subtitle: 'You haven\'t reported any found cases yet.',
+          buttonText: 'Report Found Person',
+          onPressed: () => Get.toNamed(AppRoutes.foundPersonDetails),
+        );
+      }
+
+      return RefreshIndicator(
+        onRefresh: () => casesController.refreshFinderReports(),
+        child: ListView.builder(
+          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, widget.isInNavigation ? 200.h : 220.h),
+          itemCount: casesController.finderReports.length,
+          itemBuilder: (context, index) {
+            final report = casesController.finderReports[index];
+            return _buildFoundCaseCard(report);
+          },
+        ),
+      );
+    });
   }
 
   Widget _buildMissingCaseCard(ParentReportItem report) {
@@ -323,14 +352,26 @@ class _MyCasesScreenState extends State<MyCasesScreen>
     );
   }
 
-  Widget _buildFoundCaseCard(Map<String, dynamic> caseData) {
+  Widget _buildFoundCaseCard(finder_models.FinderReportItem report) {
+    // Format date
+    String formattedDate = 'Unknown date';
+    try {
+      final date = DateTime.parse(report.createdAt);
+      formattedDate = DateFormat('MMM dd, yyyy').format(date);
+    } catch (e) {
+      formattedDate = report.createdAt;
+    }
+
+    // Display child name or "Unknown Child"
+    final displayName = report.childName ?? 'Unknown Child';
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
         child: InkWell(
-          onTap: () => Get.toNamed(AppRoutes.finderCaseSummary),
+          onTap: () => Get.toNamed('${AppRoutes.finderCaseDetail}?reportId=${report.id}'),
           borderRadius: BorderRadius.circular(16.r),
           child: Padding(
             padding: EdgeInsets.all(16.w),
@@ -338,13 +379,43 @@ class _MyCasesScreenState extends State<MyCasesScreen>
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
-                  child: Image.asset(
-                    caseData['image'],
-                    width: 70.w,
-                    height: 70.w,
-                    fit: BoxFit.cover,
-                    semanticLabel: 'Photo of found person',
-                  ),
+                  child: report.images.isNotEmpty
+                      ? Builder(
+                          builder: (context) {
+                            final imageUrl = report.images.first.imageUrl;
+                            print('🖼️ Loading finder image URL: $imageUrl');
+                            return Image.network(
+                              imageUrl,
+                              width: 70.w,
+                              height: 70.w,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: 70.w,
+                                  height: 70.w,
+                                  color: Colors.grey[200],
+                                  child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                print('❌ Error loading finder image: $error');
+                                return Container(
+                                  width: 70.w,
+                                  height: 70.w,
+                                  color: Colors.grey[300],
+                                  child: Icon(Icons.broken_image, color: Colors.grey[600]),
+                                );
+                              },
+                            );
+                          },
+                        )
+                      : Container(
+                          width: 70.w,
+                          height: 70.w,
+                          color: Colors.grey[300],
+                          child: Icon(Icons.person, color: Colors.grey[600]),
+                        ),
                 ),
                 SizedBox(width: 16.w),
                 Expanded(
@@ -354,50 +425,51 @@ class _MyCasesScreenState extends State<MyCasesScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            caseData['name'],
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                            decoration: BoxDecoration(
-                              color: AppColors.success,
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
+                          Expanded(
                             child: Text(
-                              'FOUND',
+                              displayName,
                               style: TextStyle(
-                                fontSize: 10.sp,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: AppColors.textPrimary,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          SizedBox(width: 8.w),
+                          _buildStatusChip(report.status),
                         ],
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Age: ${caseData['age']} • ID: ${caseData['id']}',
+                        'Finder: ${report.finder.name} • ${report.gender ?? "N/A"}',
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: AppColors.textSecondary,
                         ),
                       ),
                       SizedBox(height: 8.h),
-                      Text(
-                        'Found at: ${caseData['location']}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppColors.textMuted,
-                        ),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on, size: 14.w, color: AppColors.primary),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              report.placeFound ?? 'Location not specified',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: AppColors.textMuted,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Reported: ${caseData['date']} • By: ${caseData['finder']}',
+                        'Reported: $formattedDate',
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: AppColors.textMuted,

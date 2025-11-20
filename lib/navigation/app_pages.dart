@@ -9,6 +9,7 @@ import 'package:locate_lost/views/pages/auth_screens/otp_verification_screen.dar
 import 'package:locate_lost/views/pages/auth_screens/signup_screen.dart';
 import 'package:locate_lost/views/pages/bottom_nav_screens/case_details_screen.dart' show CaseDetailsScreen;
 import 'package:locate_lost/views/pages/case_screens/finder_case_summary.dart' show FinderCaseSummaryScreen;
+import 'package:locate_lost/views/pages/case_screens/finder_case_detail_screen.dart';
 import 'package:locate_lost/views/pages/case_screens/parent_case_summary.dart';
 import 'package:locate_lost/views/pages/case_screens/case_detail_screen.dart';
 import 'package:locate_lost/views/pages/drawer_screens/contact_us_screen.dart' show ContactUsScreen;
@@ -279,6 +280,21 @@ class AppPages {
       page: () => const FinderCaseSummaryScreen(),
       // Reuse existing FinderReportController from camera/upload screen
       transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.finderCaseDetail,
+      page: () {
+        final reportId = Get.parameters['reportId'] ?? '';
+        return FinderCaseDetailScreen(reportId: reportId);
+      },
+      binding: BindingsBuilder(() {
+        // Ensure MyCasesController is available
+        if (!Get.isRegistered<MyCasesController>()) {
+          Get.lazyPut<MyCasesController>(() => MyCasesController());
+        }
+      }),
+      transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
 

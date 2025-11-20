@@ -382,20 +382,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       
                       SizedBox(height: 10.h),
                       
-                      // Test Backend Connection Button
-                      TextButton(
-                        onPressed: () {
-                          Get.toNamed(AppRoutes.backendTest);
-                        },
-                        child: Text(
-                          'Test Backend Connection',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 14.sp,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
+               
+                   
                     ],
                   ),
                 ),

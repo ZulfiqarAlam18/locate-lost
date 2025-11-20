@@ -7,7 +7,6 @@ import 'package:locate_lost/views/pages/auth_screens/login_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/otp_verification_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/signup_screen.dart';
 import 'package:locate_lost/views/pages/bottom_nav_screens/case_details_screen.dart' show CaseDetailsScreen;
-import 'package:locate_lost/views/pages/case_screens/case_summary.dart';
 import 'package:locate_lost/views/pages/case_screens/finder_case_summary.dart' show FinderCaseSummaryScreen;
 import 'package:locate_lost/views/pages/case_screens/parent_case_summary.dart';
 import 'package:locate_lost/views/pages/drawer_screens/contact_us_screen.dart' show ContactUsScreen;

@@ -271,17 +271,14 @@ class FinderCaseSummaryScreen extends StatelessWidget {
     String dateStr = 'Not specified';
     String timeStr = 'Not specified';
     
-    if (controller.foundDate.value.isNotEmpty && controller.foundTime.value.isNotEmpty) {
-      try {
-        String combinedStr = '${controller.foundDate.value} ${controller.foundTime.value}:00';
-        DateTime foundDateTime = DateTime.parse(combinedStr);
-        dateStr = '${foundDateTime.day}/${foundDateTime.month}/${foundDateTime.year}';
-        timeStr = '${foundDateTime.hour.toString().padLeft(2, '0')}:${foundDateTime.minute.toString().padLeft(2, '0')}';
-      } catch (e) {
-        print('❌ Error parsing date/time: $e');
-        dateStr = controller.foundDate.value;
-        timeStr = controller.foundTime.value;
-      }
+    // Controller already stores date as "dd/MM/yyyy" and time as "h:mm AM/PM"
+    // Just display them directly without parsing
+    if (controller.foundDate.value.isNotEmpty) {
+      dateStr = controller.foundDate.value;
+    }
+    
+    if (controller.foundTime.value.isNotEmpty) {
+      timeStr = controller.foundTime.value;
     }
 
     return Container(

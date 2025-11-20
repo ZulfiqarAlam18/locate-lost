@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:locate_lost/controllers/finder_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_elevated_button.dart';
@@ -18,21 +19,27 @@ class FinderUploadImagesScreen extends StatefulWidget {
 
 class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
   final ImagePicker _picker = ImagePicker();
+  late final FinderReportController finderController;
 
-  // Local UI-only state
-  List<XFile> _selectedImages = [];
+  @override
+  void initState() {
+    super.initState();
+    finderController = Get.find<FinderReportController>();
+    print('📤 FinderUpload - Got controller: ${finderController.hashCode}');
+    print('   Current images: ${finderController.selectedImages.length}');
+  }
 
-  // Progress calc
+  // Progress calc (images are 0-10% of progress)
   double get progressPercent {
     const maxAdditionalProgress = 0.10;
-    int imageCount = _selectedImages.length;
+    int imageCount = finderController.selectedImages.length;
     double imageProgress =
         (imageCount >= 3 ? 1.0 : imageCount / 3.0) * maxAdditionalProgress;
     return 0.80 + imageProgress; // Form is assumed 80% from previous screen
   }
 
   Future<void> _pickImages() async {
-    if (_selectedImages.length >= 5) {
+    if (finderController.selectedImages.length >= 5) {
       Get.snackbar(
         'Limit Reached',
         'You can only select up to 5 images',
@@ -45,12 +52,12 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
 
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles != null) {
-      int remainingSlots = 5 - _selectedImages.length;
+      int remainingSlots = 5 - finderController.selectedImages.length;
 
-      List<XFile> updated = List.from(_selectedImages);
+      List<XFile> updated = List.from(finderController.selectedImages);
       updated.addAll(pickedFiles.take(remainingSlots));
 
-      setState(() => _selectedImages = updated);
+      setState(() => finderController.updateImages(updated));
 
       if (pickedFiles.length > remainingSlots) {
         Get.snackbar(
@@ -65,7 +72,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
   }
 
   void _removeImage(int index) {
-    setState(() => _selectedImages.removeAt(index));
+    setState(() => finderController.removeImage(index));
   }
 
   void _viewImageFullScreen(String imagePath) {
@@ -160,9 +167,9 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                               ),
                               SizedBox(height: 6.h),
                               Text(
-                                _selectedImages.isEmpty
+                                finderController.selectedImages.isEmpty
                                     ? 'Form completed - Add images to continue'
-                                    : '${_selectedImages.length} of 5 images selected',
+                                    : '${finderController.selectedImages.length} of 5 images selected',
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.myRedColor,
@@ -178,7 +185,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                             lineWidth: 8.0.w,
                             percent: progressPercent,
                             animation: true,
-                            progressColor: _selectedImages.length >= 3
+                            progressColor: finderController.selectedImages.length >= 3
                                 ? AppColors.primary
                                 : Colors.orange,
                             backgroundColor: Colors.teal.shade100,
@@ -188,7 +195,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
-                                color: _selectedImages.length >= 3
+                                color: finderController.selectedImages.length >= 3
                                     ? AppColors.primary
                                     : Colors.orange,
                               ),
@@ -234,7 +241,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Images (${_selectedImages.length}/5)',
+                        'Images (${finderController.selectedImages.length}/5)',
                         style: TextStyle(
                           fontSize: 18.sp,
                           color: AppColors.primary,
@@ -244,16 +251,16 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                       SizedBox(height: 15.h),
 
                       GestureDetector(
-                        onTap: _selectedImages.length < 5 ? _pickImages : null,
+                        onTap: finderController.selectedImages.length < 5 ? _pickImages : null,
                         child: Container(
                           height: 120.h,
                           decoration: BoxDecoration(
-                            color: _selectedImages.length < 5
+                            color: finderController.selectedImages.length < 5
                                 ? AppColors.secondary.withOpacity(0.7)
                                 : Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(16.r),
                             border: Border.all(
-                              color: _selectedImages.isEmpty
+                              color: finderController.selectedImages.isEmpty
                                   ? AppColors.myRedColor
                                   : AppColors.primary,
                               width: 2.w,
@@ -264,29 +271,29 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  _selectedImages.length < 5
+                                  finderController.selectedImages.length < 5
                                       ? Icons.add_photo_alternate
                                       : Icons.photo_library,
-                                  color: _selectedImages.length < 5
+                                  color: finderController.selectedImages.length < 5
                                       ? AppColors.primary
                                       : Colors.grey,
                                   size: 45.sp,
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
-                                  _selectedImages.isEmpty
+                                  finderController.selectedImages.isEmpty
                                       ? 'Tap to select images'
-                                      : _selectedImages.length < 5
+                                      : finderController.selectedImages.length < 5
                                       ? 'Tap to add more images'
                                       : 'Maximum 5 images selected',
                                   style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: _selectedImages.length < 5
+                                    color: finderController.selectedImages.length < 5
                                         ? AppColors.primary
                                         : Colors.grey,
                                   ),
                                 ),
-                                if (_selectedImages.isEmpty)
+                                if (finderController.selectedImages.isEmpty)
                                   Padding(
                                     padding: EdgeInsets.only(top: 5.h),
                                     child: Text(
@@ -305,7 +312,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
 
                       SizedBox(height: 20.h),
 
-                      if (_selectedImages.isNotEmpty)
+                      if (finderController.selectedImages.isNotEmpty)
                         GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -315,18 +322,18 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                                 crossAxisSpacing: 10.w,
                                 mainAxisSpacing: 10.h,
                               ),
-                          itemCount: _selectedImages.length,
+                          itemCount: finderController.selectedImages.length,
                           itemBuilder: (_, index) {
                             return Stack(
                               children: [
                                 GestureDetector(
                                   onTap: () => _viewImageFullScreen(
-                                    _selectedImages[index].path,
+                                    finderController.selectedImages[index].path,
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12.r),
                                     child: Image.file(
-                                      File(_selectedImages[index].path),
+                                      File(finderController.selectedImages[index].path),
                                       fit: BoxFit.cover,
                                       width: double.infinity,
                                       height: double.infinity,
@@ -392,7 +399,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                   ),
                   CustomElevatedButton(
                     onPressed: () {
-                      if (_selectedImages.isNotEmpty) {
+                      if (finderController.selectedImages.isNotEmpty) {
                         //   Get.toNamed(AppRoutes.parentCaseSummary);
 
                         Navigator.of(context).pop();
@@ -412,7 +419,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                     fontSize: 15.sp,
                     borderRadius: 10.r,
                     label: 'Next',
-                    backgroundColor: _selectedImages.isEmpty
+                    backgroundColor: finderController.selectedImages.isEmpty
                         ? Colors.grey.shade400
                         : AppColors.primary,
                   ),

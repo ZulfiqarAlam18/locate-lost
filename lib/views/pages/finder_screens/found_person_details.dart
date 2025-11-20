@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:locate_lost/controllers/finder_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/views/widgets/custom_elevated_button.dart';
@@ -18,7 +19,7 @@ class FoundPersonDetailsScreen extends StatefulWidget {
 
 class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // Removed FoundPersonController dependency — this screen is UI-only.
+  late final FinderReportController finderController;
   
   // Organized controllers map for better management
   final Map<String, TextEditingController> _controllers = {
@@ -94,6 +95,12 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
   void initState() {
     super.initState();
     // No controller available in UI-only mode. Start with empty inputs.
+    // Initialize controller and load existing data (if returning from summary)
+    finderController = Get.find<FinderReportController>();
+    print('📋 FoundPersonDetails - Got controller: ${finderController.hashCode}');
+    print('   Current data - Name: ${finderController.childName.value}, Images: ${finderController.selectedImages.length}');
+    _loadExistingData();
+
     // Add listeners to required fields for dynamic progress updates
     _controllers['name']!.addListener(_updateProgress);
     _controllers['fatherName']!.addListener(_updateProgress);
@@ -101,6 +108,65 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
     _controllers['foundDate']!.addListener(_updateProgress);
     _controllers['foundTime']!.addListener(_updateProgress);
     _controllers['finderPhone']!.addListener(_updateProgress);
+  }
+
+  void _loadExistingData() {
+    // Load data from controller if user is returning from summary screen
+    if (finderController.childName.value.isNotEmpty) {
+      _controllers['name']!.text = finderController.childName.value;
+    }
+    if (finderController.fatherName.value.isNotEmpty) {
+      _controllers['fatherName']!.text = finderController.fatherName.value;
+    }
+    if (finderController.gender.value.isNotEmpty) {
+      selectedGender = finderController.gender.value;
+    }
+    if (finderController.placeFound.value.isNotEmpty) {
+      _controllers['foundPlace']!.text = finderController.placeFound.value;
+    }
+    if (finderController.contactNumber.value.isNotEmpty) {
+      _controllers['finderPhone']!.text = finderController.contactNumber.value;
+    }
+    if (finderController.emergency.value.isNotEmpty) {
+      _controllers['finderSecondaryPhone']!.text = finderController.emergency.value;
+    }
+    if (finderController.additionalDetails.value.isNotEmpty) {
+      _controllers['additionalDetails']!.text = finderController.additionalDetails.value;
+    }
+    // Load date and time from separate controller fields
+    if (finderController.foundDate.value.isNotEmpty) {
+      _controllers['foundDate']!.text = finderController.foundDate.value;
+    }
+    if (finderController.foundTime.value.isNotEmpty) {
+      _controllers['foundTime']!.text = finderController.foundTime.value;
+    }
+  }
+
+  void _syncFormToController() {
+    // Sync all form fields to controller
+    finderController.setField('childName', _controllers['name']!.text);
+    finderController.setField('fatherName', _controllers['fatherName']!.text);
+    finderController.setField('gender', selectedGender ?? '');
+    finderController.setField('placeFound', _controllers['foundPlace']!.text);
+    finderController.setField('contactNumber', _controllers['finderPhone']!.text);
+    finderController.setField('emergency', _controllers['finderSecondaryPhone']!.text);
+    finderController.setField('additionalDetails', _controllers['additionalDetails']!.text);
+    
+    // Set date and time separately (controller will combine them for API)
+    finderController.setField('foundDate', _controllers['foundDate']!.text);
+    finderController.setField('foundTime', _controllers['foundTime']!.text);
+    
+    // Debug print to verify data sync
+    print('✅ Synced to controller:');
+    print('  childName: ${_controllers['name']!.text}');
+    print('  fatherName: ${_controllers['fatherName']!.text}');
+    print('  gender: ${selectedGender ?? "not set"}');
+    print('  placeFound: ${_controllers['foundPlace']!.text}');
+    print('  foundDate: ${_controllers['foundDate']!.text}');
+    print('  foundTime: ${_controllers['foundTime']!.text}');
+    print('  contactNumber: ${_controllers['finderPhone']!.text}');
+    print('  emergency: ${_controllers['finderSecondaryPhone']!.text}');
+    print('  images: ${finderController.selectedImages.length}');
   }
 
   @override
@@ -117,171 +183,6 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
     _controllers.values.forEach((controller) => controller.dispose());
     super.dispose();
   }
-
-  // // Show popup dialog for image options
-  // void _showImageOptionsDialog() {
-  //   Get.dialog(
-  //     Dialog(
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(20.r),
-  //       ),
-  //       child: Container(
-  //         padding: EdgeInsets.all(24.w),
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(20.r),
-  //         ),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             // Header
-  //             Text(
-  //               'Select Image Option',
-  //               style: TextStyle(
-  //                 fontSize: 22.sp,
-  //                 fontWeight: FontWeight.w700,
-  //                 color: AppColors.primary,
-  //               ),
-  //             ),
-  //             SizedBox(height: 8.h),
-  //             Text(
-  //               'How would you like to provide images of the found person?',
-  //               style: TextStyle(
-  //                 fontSize: 14.sp,
-  //                 color: Colors.grey[600],
-  //               ),
-  //               textAlign: TextAlign.center,
-  //             ),
-  //             SizedBox(height: 24.h),
-
-  //             // Capture Images Option
-  //             _buildImageOption(
-  //               icon: Icons.camera_alt,
-  //               title: 'Capture Images',
-  //               subtitle: 'Take photos using camera',
-  //               onTap: () {
-  //                 Get.back(); // Close dialog
-  //                 Get.toNamed(AppRoutes.cameraCapture);
-  //               },
-  //             ),
-              
-  //             SizedBox(height: 16.h),
-
-  //             // Upload from Gallery Option
-  //             _buildImageOption(
-  //               icon: Icons.photo_library,
-  //               title: 'Upload from Gallery',
-  //               subtitle: 'Select images from gallery',
-  //               onTap: () {
-  //                 Get.back(); // Close dialog
-  //                 Get.toNamed(AppRoutes.finderUploadImages);
-  //               },
-  //             ),
-
-  //             SizedBox(height: 20.h),
-
-  //             // Cancel Button
-  //             SizedBox(
-  //               width: double.infinity,
-  //               child: OutlinedButton(
-  //                 onPressed: () => Get.back(),
-  //                 style: OutlinedButton.styleFrom(
-  //                   side: BorderSide(color: AppColors.primary),
-  //                   shape: RoundedRectangleBorder(
-  //                     borderRadius: BorderRadius.circular(12.r),
-  //                   ),
-  //                   padding: EdgeInsets.symmetric(vertical: 14.h),
-  //                 ),
-  //                 child: Text(
-  //                   'Cancel',
-  //                   style: TextStyle(
-  //                     color: AppColors.primary,
-  //                     fontSize: 16.sp,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //     barrierDismissible: true,
-  //   );
-  // }
-
-
-  // Build individual image option widget
-  // Widget _buildImageOption({
-  //   required IconData icon,
-  //   required String title,
-  //   required String subtitle,
-  //   required VoidCallback onTap,
-  // }) {
-  //   return Container(
-  //     width: double.infinity,
-  //     child: Material(
-  //       color: Colors.transparent,
-  //       child: InkWell(
-  //         onTap: onTap,
-  //         borderRadius: BorderRadius.circular(12.r),
-  //         child: Container(
-  //           padding: EdgeInsets.all(16.w),
-  //           decoration: BoxDecoration(
-  //             border: Border.all(color: Colors.grey.shade300),
-  //             borderRadius: BorderRadius.circular(12.r),
-  //             color: AppColors.secondary.withOpacity(0.1),
-  //           ),
-  //           child: Row(
-  //             children: [
-  //               Container(
-  //                 padding: EdgeInsets.all(12.w),
-  //                 decoration: BoxDecoration(
-  //                   color: AppColors.primary.withOpacity(0.1),
-  //                   borderRadius: BorderRadius.circular(12.r),
-  //                 ),
-  //                 child: Icon(
-  //                   icon,
-  //                   color: AppColors.primary,
-  //                   size: 24.sp,
-  //                 ),
-  //               ),
-  //               SizedBox(width: 16.w),
-  //               Expanded(
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       title,
-  //                       style: TextStyle(
-  //                         fontSize: 16.sp,
-  //                         fontWeight: FontWeight.w600,
-  //                         color: Colors.black87,
-  //                       ),
-  //                     ),
-  //                     SizedBox(height: 4.h),
-  //                     Text(
-  //                       subtitle,
-  //                       style: TextStyle(
-  //                         fontSize: 13.sp,
-  //                         color: Colors.grey[600],
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               Icon(
-  //                 Icons.arrow_forward_ios,
-  //                 color: Colors.grey[400],
-  //                 size: 16.sp,
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -460,14 +361,15 @@ class _FoundPersonDetailsScreenState extends State<FoundPersonDetailsScreen> {
                           CustomElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                // UI-only mode: simulate saving data locally (no backend/controller)
+                                // Sync all form data to controller
+                                _syncFormToController();
                                 Get.dialog(
                                   Center(child: CircularProgressIndicator()),
                                   barrierDismissible: false,
                                 );
                                 Future.delayed(Duration(milliseconds: 700), () {
                                   if (Get.isDialogOpen ?? false) Get.back();
-                                  // Proceed to next screen
+                                  // Proceed to summary screen
                                   Get.toNamed(AppRoutes.finderCaseSummary);
                                 });
                               } else {

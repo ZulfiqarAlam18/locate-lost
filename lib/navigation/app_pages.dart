@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:locate_lost/controllers/auth_controller.dart';
 import 'package:locate_lost/controllers/parent_report_controller.dart';
+import 'package:locate_lost/controllers/finder_report_controller.dart';
 import 'package:locate_lost/views/pages/auth_screens/forgot_password_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/login_screen.dart';
 import 'package:locate_lost/views/pages/auth_screens/otp_verification_screen.dart';
@@ -228,34 +229,42 @@ class AppPages {
       transitionDuration: const Duration(milliseconds: 300),
     ),
 
-    // Founder Routes
-    GetPage(
-      name: AppRoutes.foundPersonDetails,
-      page: () => const FoundPersonDetailsScreen(),
-      transition: Transition.cupertino,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    // GetPage(
-    //   name: AppRoutes.finderDetails,
-    //   page: () => const FinderDetailsScreen(),
-    //   transition: Transition.cupertino,
-    //   transitionDuration: const Duration(milliseconds: 300),
-    // ),
+    // Finder Routes
     GetPage(
       name: AppRoutes.cameraCapture,
       page: () => const CameraCaptureScreen(),
+      binding: BindingsBuilder(() {
+        // Use Get.put with permanent:true to keep controller alive across navigation
+        if (!Get.isRegistered<FinderReportController>()) {
+          Get.put<FinderReportController>(FinderReportController(), permanent: true);
+        }
+      }),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.finderUploadImages,
       page: () => const FinderUploadImagesScreen(),
+      binding: BindingsBuilder(() {
+        // Use Get.put with permanent:true to keep controller alive across navigation
+        if (!Get.isRegistered<FinderReportController>()) {
+          Get.put<FinderReportController>(FinderReportController(), permanent: true);
+        }
+      }),
+      transition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.foundPersonDetails,
+      page: () => const FoundPersonDetailsScreen(),
+      // Reuse existing FinderReportController from camera/upload screen
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.finderCaseSummary,
       page: () => const FinderCaseSummaryScreen(),
+      // Reuse existing FinderReportController from camera/upload screen
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     ),
@@ -299,12 +308,7 @@ class AppPages {
     ),
 
     // Legacy/Redirector Routes
-    GetPage(
-      name: AppRoutes.caseSummary,
-      page: () => const CaseSummaryScreen(),
-      transition: Transition.cupertino,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+   
 
     // Settings Routes
     GetPage(

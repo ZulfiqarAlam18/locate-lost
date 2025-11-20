@@ -28,9 +28,7 @@ class MyApp extends StatelessWidget {
 
           title: 'LocateLost',
 
-        //  initialBinding: AppBindings(), // Initialize backend integration
            initialRoute: AppRoutes.splash,
-         // initialRoute: AppRoutes.mainNavigation,
           getPages: AppPages.pages,
 
   

@@ -2,174 +2,57 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:locate_lost/controllers/finder_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/utils/utils/dialog_utils.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:locate_lost/utils/utils/navigation_helper.dart';
 import 'package:locate_lost/views/widgets/custom_app_bar.dart';
 
-
-// Finder Case data model
-class FinderCaseData {
-  final String caseId;
-  final String caseType;
-  final String status;
-  final DateTime reportedDate;
-  final String foundPersonName;  // Changed from foundPersonDescription to match actual data
-  final String fatherName;       // Added to match input fields
-  final String gender;
-  final String foundLocation;
-  final String foundDate;        // Added separate date field
-  final String foundTime;        // Added separate time field
-  final String finderPhone;
-  final String finderSecondaryPhone; // Added secondary phone
-  final String additionalDetails; // Changed from circumstances to match controller
-  final List<String> uploadedImages; // Changed from capturedImages to match pattern
-  final DateTime foundDateTime;   // Computed from foundDate and foundTime
-  final FinderCaseStatus currentStatus;
-  final FinderCasePriority priority;
-
-  FinderCaseData({
-    required this.caseId,
-    required this.caseType,
-    required this.status,
-    required this.reportedDate,
-    required this.foundPersonName,
-    required this.fatherName,
-    required this.gender,
-    required this.foundLocation,
-    required this.foundDate,
-    required this.foundTime,
-    required this.finderPhone,
-    required this.finderSecondaryPhone,
-    required this.additionalDetails,
-    required this.uploadedImages,
-    required this.foundDateTime,
-    required this.currentStatus,
-    required this.priority,
-  });
-}
-
-enum FinderCaseStatus { reported, investigating, matched, reunited, closed }
-
-enum FinderCasePriority { low, medium, high, urgent }
-
-class FinderCaseSummaryScreen extends StatefulWidget {
-  final FinderCaseData? caseData;
-
-  const FinderCaseSummaryScreen({super.key, this.caseData});
-
-  @override
-  State<FinderCaseSummaryScreen> createState() =>
-      _FinderCaseSummaryScreenState();
-}
-
-class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
-    with TickerProviderStateMixin {
-  late FinderCaseData caseData;
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  // FoundPersonController removed — this screen runs in UI-only mode
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeData();
-    _setupAnimations();
-  }
-
-  void _initializeData() {
-    // Use provided data or create data from controller
-    caseData = widget.caseData ?? _getDataFromController();
-  }
-
-  void _setupAnimations() {
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: 800),
-      vsync: this,
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-    _animationController.forward();
-  }
-
-  FinderCaseData _getDataFromController() {
-    // UI-only: return default/placeholder data
-    return FinderCaseData(
-      caseId: 'FP-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
-      caseType: 'Found Person Report',
-      status: 'Draft - Ready to Submit',
-      reportedDate: DateTime.now(),
-      foundPersonName: 'Not specified',
-      fatherName: 'Not specified',
-      gender: 'Not specified',
-      foundLocation: 'Not specified',
-      foundDate: 'Not specified',
-      foundTime: 'Not specified',
-      finderPhone: 'Not specified',
-      finderSecondaryPhone: 'Not provided',
-      additionalDetails: 'No additional details provided',
-      uploadedImages: [],
-      foundDateTime: DateTime.now(),
-      currentStatus: FinderCaseStatus.reported,
-      priority: FinderCasePriority.high,
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  Color _getPriorityColor(FinderCasePriority priority) {
-    switch (priority) {
-      case FinderCasePriority.low:
-        return Colors.green;
-      case FinderCasePriority.medium:
-        return Colors.orange;
-      case FinderCasePriority.high:
-        return Colors.red;
-      case FinderCasePriority.urgent:
-        return Colors.purple;
-    }
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year} at ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
-  }
+class FinderCaseSummaryScreen extends StatelessWidget {
+  const FinderCaseSummaryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<FinderReportController>();
+    print('📊 FinderSummary - Got controller: ${controller.hashCode}');
+    print('   Controller data - Name: ${controller.childName.value}, Father: ${controller.fatherName.value}, Images: ${controller.selectedImages.length}');
+
     return Scaffold(
       appBar: CustomAppBar(
         text: 'Found Person Report',
         onPressed: () => Navigator.pop(context),
       ),
       backgroundColor: Color(0xFFF8FAFC),
-      body: FadeTransition(
-        opacity: _fadeAnimation,
-        child: SingleChildScrollView(
+      body: Obx(() {
+        // Debug print to verify reactive updates
+        print('🔄 Summary screen rebuilding...');
+        print('  Images: ${controller.selectedImages.length}');
+        print('  Name: ${controller.childName.value}');
+        print('  Father: ${controller.fatherName.value}');
+        print('  Gender: ${controller.gender.value}');
+        print('  Place: ${controller.placeFound.value}');
+        print('  Contact: ${controller.contactNumber.value}');
+        
+        return SingleChildScrollView(
           child: Column(
             children: [
-              _buildHeaderSection(),
-              _buildFoundPersonDetailsCard(),
-              _buildCapturedImagesSection(),
-              _buildFinderInfoCard(),
-              _buildLocationAndTimeCard(),
-              _buildCircumstancesCard(),
-              _buildActionButtons(),
+              _buildHeaderSection(controller),
+              _buildFoundPersonDetailsCard(controller),
+              _buildCapturedImagesSection(controller),
+              _buildFinderInfoCard(controller),
+              _buildLocationAndTimeCard(controller),
+              _buildAdditionalDetailsCard(controller),
+              _buildActionButtons(controller, context),
               SizedBox(height: 30.h),
             ],
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
-  Widget _buildHeaderSection() {
+  Widget _buildHeaderSection(FinderReportController controller) {
     return Container(
       margin: EdgeInsets.all(20.w),
       padding: EdgeInsets.all(24.w),
@@ -183,7 +66,8 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         boxShadow: [
           BoxShadow(
             color: Colors.green.withOpacity(0.3),
-            blurRadius: 15.r,
+            blurRadius: 15,
+            spreadRadius: 2,
             offset: Offset(0, 8.h),
           ),
         ],
@@ -198,7 +82,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Icons.person_add, color: Colors.white, size: 24.w),
+                child: Icon(Icons.person_search, color: Colors.white, size: 32.w),
               ),
               SizedBox(width: 16.w),
               Expanded(
@@ -206,16 +90,16 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Case ID: ${caseData.caseId}',
+                      'Found Person Report',
                       style: TextStyle(
-                        fontSize: 18.sp,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      'Reported: ${_formatDateTime(caseData.reportedDate)}',
+                      'Review your report details',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.white.withOpacity(0.9),
@@ -224,47 +108,56 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: _getPriorityColor(caseData.priority),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Text(
-                  caseData.priority.name.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
             ],
+          ),
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Text(
+              'Ready to Submit',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFoundPersonDetailsCard() {
+  Widget _buildFoundPersonDetailsCard(FinderReportController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Found Person Description',
+        title: 'Found Person Details',
         icon: Icons.person,
         child: Column(
           children: [
-            _buildDetailRow('Person Name', caseData.foundPersonName.isEmpty ? 'Unknown' : caseData.foundPersonName),
-            _buildDetailRow('Father Name', caseData.fatherName.isEmpty ? 'Unknown' : caseData.fatherName),
-            _buildDetailRow('Gender', caseData.gender),
-            _buildDetailRow('Additional Details', caseData.additionalDetails.isEmpty ? 'No additional details provided' : caseData.additionalDetails),
+            _buildDetailRow(
+              'Name', 
+              controller.childName.value.isEmpty ? 'Not specified' : controller.childName.value
+            ),
+            _buildDetailRow(
+              'Father Name', 
+              controller.fatherName.value.isEmpty ? 'Not specified' : controller.fatherName.value
+            ),
+            _buildDetailRow(
+              'Gender', 
+              controller.gender.value.isEmpty ? 'Not specified' : controller.gender.value
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCapturedImagesSection() {
+  Widget _buildCapturedImagesSection(FinderReportController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
@@ -273,463 +166,156 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (caseData.uploadedImages.isNotEmpty) ...[
-              _buildImageGalleryHeader(
-                'Photos You Captured',
-                caseData.uploadedImages.length,
-              ),
-              SizedBox(height: 12.h),
-              _buildImageCarousel(caseData.uploadedImages),
-              SizedBox(height: 12.h),
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: Colors.green.shade200),
+            Row(
+              children: [
+                Icon(Icons.photo_camera, size: 18.w, color: AppColors.primary),
+                SizedBox(width: 8.w),
+                Text(
+                  '${controller.selectedImages.length} ${controller.selectedImages.length == 1 ? 'Photo' : 'Photos'}',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[800],
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info, color: Colors.green.shade600, size: 16.w),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Text(
-                        'These photos will help law enforcement and families identify the found person.',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.green.shade700,
-                        ),
-                      ),
+                SizedBox(width: 8.w),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Text(
+                    '${controller.selectedImages.length}/5',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ] else ...[
+              ],
+            ),
+            SizedBox(height: 16.h),
+            if (controller.selectedImages.isEmpty)
               Container(
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Colors.red.shade50,
                   borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: Colors.grey[300]!,
-                    style: BorderStyle.solid,
-                  ),
+                  border: Border.all(color: Colors.red.shade200),
                 ),
-                child: Column(
+                child: Row(
                   children: [
-                    Icon(
-                      Icons.add_a_photo,
-                      size: 48.w,
-                      color: Colors.grey[400],
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'No photos captured yet',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        // Navigate to camera screen
-                      },
-                      icon: Icon(Icons.camera_alt, size: 16.w),
-                      label: Text('Capture Photos'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
+                    Icon(Icons.warning_amber_rounded, color: Colors.red.shade700),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Text(
+                        'No images captured. Please go back and add images.',
+                        style: TextStyle(color: Colors.red.shade700, fontSize: 14.sp),
                       ),
                     ),
                   ],
                 ),
+              )
+            else
+              Container(
+                height: 120.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: controller.selectedImages.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(right: 12.w),
+                      width: 120.w,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: Image.file(
+                          File(controller.selectedImages[index].path),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _buildImageGalleryHeader(String title, int count) {
-    return Row(
-      children: [
-        Icon(Icons.photo_camera, size: 18.w, color: AppColors.primary),
-        SizedBox(width: 8.w),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey[800],
-          ),
-        ),
-        SizedBox(width: 8.w),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          child: Text(
-            '$count',
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildImageCarousel(List<String> images) {
-    return Container(
-      height: 120.h,
-      child: CarouselSlider.builder(
-        itemCount: images.length,
-        itemBuilder: (context, index, realIndex) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 4.w),
-            child: GestureDetector(
-              onTap: () => _showImagePreview(images, index),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12.r),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: images[index].startsWith('assets/')
-                          ? Image.asset(
-                              images[index],
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[300],
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.broken_image,
-                                        size: 32.w,
-                                        color: Colors.grey[500],
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        'Image not found',
-                                        style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            )
-                          : Image.file(
-                              File(images[index]),
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[300],
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.broken_image,
-                                        size: 32.w,
-                                        color: Colors.grey[500],
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        'Image not found',
-                                        style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
-                    Positioned(
-                      bottom: 4.h,
-                      right: 4.w,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 6.w,
-                          vertical: 2.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Text(
-                          '${index + 1}/${images.length}',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-        options: CarouselOptions(
-          height: 120.h,
-          enlargeCenterPage: false,
-          enableInfiniteScroll: false,
-          viewportFraction: 0.3,
-          padEnds: false,
-        ),
-      ),
-    );
-  }
-
-  void _showImagePreview(List<String> images, int initialIndex) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => Dialog(
-            backgroundColor: Colors.transparent,
-            child: Container(
-              constraints: BoxConstraints(maxHeight: 500.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.r),
-                        topRight: Radius.circular(20.r),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Captured Photos',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.close, color: Colors.grey[600]),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      child: CarouselSlider.builder(
-                        itemCount: images.length,
-                        itemBuilder: (context, index, realIndex) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 8.w),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16.r),
-                              child: images[index].startsWith('assets/')
-                                  ? Image.asset(
-                                      images[index],
-                                      fit: BoxFit.contain,
-                                      width: double.infinity,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          color: Colors.grey[200],
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.broken_image,
-                                                size: 64.w,
-                                                color: Colors.grey[400],
-                                              ),
-                                              SizedBox(height: 8.h),
-                                              Text(
-                                                'Image not available',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: Colors.grey[600],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  : Image.file(
-                                      File(images[index]),
-                                      fit: BoxFit.contain,
-                                      width: double.infinity,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          color: Colors.grey[200],
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.broken_image,
-                                                size: 64.w,
-                                                color: Colors.grey[400],
-                                              ),
-                                              SizedBox(height: 8.h),
-                                              Text(
-                                                'Image not available',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: Colors.grey[600],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                            ),
-                          );
-                        },
-                        options: CarouselOptions(
-                          height: 350.h,
-                          enlargeCenterPage: true,
-                          initialPage: initialIndex,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.9,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20.r),
-                        bottomRight: Radius.circular(20.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Swipe to view all photos',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-    );
-  }
-
-  Widget _buildFinderInfoCard() {
+  Widget _buildFinderInfoCard(FinderReportController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Your Information (Finder)',
+        title: 'Your Contact Information',
         icon: Icons.person_pin,
         child: Column(
           children: [
-            _buildContactRow(
-              'Primary Phone',
-              caseData.finderPhone,
-              Icons.phone,
-              () => _makePhoneCall(caseData.finderPhone),
+            _buildDetailRow(
+              'Primary Phone', 
+              controller.contactNumber.value.isEmpty ? 'Not specified' : controller.contactNumber.value
             ),
-            if (caseData.finderSecondaryPhone.isNotEmpty && 
-                caseData.finderSecondaryPhone != 'Not provided' && 
-                caseData.finderSecondaryPhone != 'Not specified' &&
-                caseData.finderSecondaryPhone.length >= 10)
-              _buildContactRow(
-                'Secondary Phone',
-                caseData.finderSecondaryPhone,
-                Icons.phone_android,
-                () => _makePhoneCall(caseData.finderSecondaryPhone),
-              ),
+            _buildDetailRow(
+              'Emergency Contact', 
+              controller.emergency.value.isEmpty ? 'Not provided' : controller.emergency.value
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildLocationAndTimeCard() {
+  Widget _buildLocationAndTimeCard(FinderReportController controller) {
+    String dateStr = 'Not specified';
+    String timeStr = 'Not specified';
+    
+    if (controller.foundDate.value.isNotEmpty && controller.foundTime.value.isNotEmpty) {
+      try {
+        String combinedStr = '${controller.foundDate.value} ${controller.foundTime.value}:00';
+        DateTime foundDateTime = DateTime.parse(combinedStr);
+        dateStr = '${foundDateTime.day}/${foundDateTime.month}/${foundDateTime.year}';
+        timeStr = '${foundDateTime.hour.toString().padLeft(2, '0')}:${foundDateTime.minute.toString().padLeft(2, '0')}';
+      } catch (e) {
+        print('❌ Error parsing date/time: $e');
+        dateStr = controller.foundDate.value;
+        timeStr = controller.foundTime.value;
+      }
+    }
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Location & Time Found',
+        title: 'Location & Time',
         icon: Icons.location_on,
         child: Column(
           children: [
-            _buildDetailRow('Found Location', caseData.foundLocation),
-            _buildDetailRow('Found Date', caseData.foundDate),
-            _buildDetailRow('Found Time', caseData.foundTime),
-            SizedBox(height: 12.h),
-            ElevatedButton.icon(
-              onPressed: () => _openMap(caseData.foundLocation),
-              icon: Icon(Icons.map, size: 18.w),
-              label: Text('View on Map'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary.withOpacity(0.1),
-                foregroundColor: AppColors.primary,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              ),
+            _buildDetailRow(
+              'Place Found', 
+              controller.placeFound.value.isEmpty ? 'Not specified' : controller.placeFound.value
             ),
+            _buildDetailRow('Date Found', dateStr),
+            _buildDetailRow('Time Found', timeStr),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCircumstancesCard() {
+  Widget _buildAdditionalDetailsCard(FinderReportController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: _buildModernCard(
-        title: 'Circumstances & Notes',
+        title: 'Additional Details',
         icon: Icons.description,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'How You Found This Person',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              caseData.additionalDetails.isEmpty ? 'No additional details provided' : caseData.additionalDetails,
+              controller.additionalDetails.value.isEmpty 
+                ? 'No additional details provided' 
+                : controller.additionalDetails.value,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[700],
@@ -754,7 +340,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10.r,
+            blurRadius: 10,
             offset: Offset(0, 4.h),
           ),
         ],
@@ -770,7 +356,7 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(icon, color: AppColors.primary, size: 20.w),
                 ),
@@ -800,23 +386,24 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 100.w,
+            width: 120.w,
             child: Text(
               label,
               style: TextStyle(
                 fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
                 color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
               ),
             ),
           ),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
                 fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
                 color: Colors.grey[800],
-                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -825,45 +412,67 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  Widget _buildContactRow(
-    String label,
-    String value,
-    IconData icon,
-    VoidCallback onTap,
-  ) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildActionButtons(FinderReportController controller, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(20.w),
+      child: Column(
         children: [
+          // Submit Button
           SizedBox(
-            width: 100.w,
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
+            width: double.infinity,
+            height: 56.h,
+            child: ElevatedButton(
+              onPressed: () => _submitReport(controller, context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                elevation: 3,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.check_circle_outline, size: 24.w, color: Colors.white),
+                  SizedBox(width: 12.w),
+                  Text(
+                    'Submit Report',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          Expanded(
-            child: GestureDetector(
-              onTap: onTap,
+          SizedBox(height: 12.h),
+          // Edit Button
+          SizedBox(
+            width: double.infinity,
+            height: 56.h,
+            child: OutlinedButton(
+              onPressed: () => Get.toNamed(AppRoutes.foundPersonDetails),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: AppColors.primary, width: 2.w),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+              ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Text(
-                      value,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline,
-                      ),
+                  Icon(Icons.edit, size: 24.w, color: AppColors.primary),
+                  SizedBox(width: 12.w),
+                  Text(
+                    'Edit Report',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
                     ),
                   ),
-                  Icon(icon, size: 16.w, color: AppColors.primary),
                 ],
               ),
             ),
@@ -873,127 +482,53 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
     );
   }
 
-  Widget _buildActionButtons() {
-    return Container(
-      margin: EdgeInsets.all(20.w),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () => _editReport(),
-                  icon: Icon(Icons.edit, size: 18.w),
-                  label: Text('Edit Report'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () => _submitReport(),
-                  icon: Icon(Icons.send, size: 18.w),
-                  label: Text('Submit Report'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                  ),
-                ),
-              ),
-            ],
+  void _submitReport(FinderReportController controller, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        title: Text(
+          'Submit Report?',
+          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
+        ),
+        content: Text(
+          'Are you sure you want to submit this found person report? Once submitted, you can track the status in "My Cases".',
+          style: TextStyle(fontSize: 14.sp),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey)),
           ),
-          SizedBox(height: 12.h),
-          // TODO: Uncomment these buttons when needed
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: OutlinedButton.icon(
-          //         onPressed: () => _contactAuthorities(),
-          //         icon: Icon(Icons.local_police, size: 18.w),
-          //         label: Text('Contact Police'),
-          //         style: OutlinedButton.styleFrom(
-          //           foregroundColor: Colors.blue[700],
-          //           side: BorderSide(color: Colors.blue[700]!),
-          //           shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(12.r),
-          //           ),
-          //           padding: EdgeInsets.symmetric(vertical: 14.h),
-          //         ),
-          //       ),
-          //     ),
-          //     SizedBox(width: 12.w),
-          //     Expanded(
-          //       child: OutlinedButton.icon(
-          //         onPressed: () => _shareReport(),
-          //         icon: Icon(Icons.share, size: 18.w),
-          //         label: Text('Share Report'),
-          //         style: OutlinedButton.styleFrom(
-          //           foregroundColor: Colors.grey[700],
-          //           side: BorderSide(color: Colors.grey[400]!),
-          //           shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(12.r),
-          //           ),
-          //           padding: EdgeInsets.symmetric(vertical: 14.h),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _performSubmission(controller);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+            ),
+            child: Text('Submit', style: TextStyle(color: Colors.white)),
+          ),
         ],
       ),
     );
   }
 
-  // Action methods
-  void _editReport() {
-    Get.toNamed(AppRoutes.foundPersonDetails);
-  }
+  Future<void> _performSubmission(FinderReportController controller) async {
+    // Validate that at least 1 image is selected (required)
+    if (controller.selectedImages.isEmpty) {
+      Get.snackbar(
+        'Images Required',
+        'Please capture or upload at least one image',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppColors.myRedColor,
+        colorText: Colors.white,
+      );
+      return;
+    }
 
-  void _submitReport() {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            title: Text('Submit Found Person Report'),
-            content: Text(
-              'Are you sure you want to submit this report? It will be shared with law enforcement and families searching for missing persons.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  _performSubmission();
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(
-                  'Submit Report',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-    );
-  }
-
-  void _performSubmission() async {
     // Show loading indicator
     Get.dialog(
       Center(
@@ -1016,89 +551,31 @@ class _FinderCaseSummaryScreenState extends State<FinderCaseSummaryScreen>
       barrierDismissible: false,
     );
 
-    // Simulate API call
-    await Future.delayed(Duration(seconds: 2));
+    // Call actual API
+    final response = await controller.submitReport();
 
     // Close loading dialog
     Get.back();
 
-    // Simulate success/failure (replace with actual API logic)
-    bool isSuccess =
-        DateTime.now().millisecondsSinceEpoch % 2 ==
-        0; // Random success/failure for demo
-
-    if (isSuccess) {
+    if (response.success) {
+      // Clear form data after successful submission
+      controller.clearData();
+      
       DialogUtils.showCaseSubmissionSuccess(
         title: 'Found Person Report Submitted!',
-        message:
-            'Your report has been submitted successfully. We\'ll help match this person with missing person reports.',
+        message: response.message,
         onViewCases: () {
           NavigationHelper.goToMyCases();
-
         },
       );
     } else {
       DialogUtils.showCaseSubmissionError(
         title: 'Found Person Report Failed',
-        message:
-            'Unable to submit your found person report. Please check your connection and try again.',
+        message: response.message,
         onRetry: () {
-          _performSubmission(); // Retry submission
+          _performSubmission(controller);
         },
       );
     }
-  }
-
-  // TODO: Uncomment these methods when contact police and share report features are needed
-  // void _contactAuthorities() {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text('Contacting local authorities...'),
-  //       backgroundColor: Colors.blue[700],
-  //       behavior: SnackBarBehavior.floating,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(12.r),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // void _shareReport() {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text('Sharing found person report...'),
-  //       backgroundColor: AppColors.primary,
-  //       behavior: SnackBarBehavior.floating,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(12.r),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  void _makePhoneCall(String phone) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Call: $phone'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
-  }
-
-  void _openMap(String location) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Opening map for: $location'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
   }
 }

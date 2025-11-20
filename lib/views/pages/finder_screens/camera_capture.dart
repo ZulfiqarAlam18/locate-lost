@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
+import 'package:locate_lost/controllers/finder_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,30 +19,29 @@ class CameraCaptureScreen extends StatefulWidget {
 
 class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   CameraController? _controller;
-  List<File> _capturedImages = [];
+  late final FinderReportController finderController;
   bool _isCameraInitialized = false;
   bool _isLoading = true;
   String? _errorMessage;
   final int _maxImages = 5;
-  
-  // Add FoundPersonController to store images
-  // Removed dependency on FoundPersonController - images are kept locally in this screen.
 
-  // Dynamic progress calculation (90% base + 10% for images)
+  // Dynamic progress calculation (10% for images)
   double get progressPercent {
-    const baseProgress = 0.90; // Base progress for completing form
-    const maxAdditionalProgress = 0.10; // Final 10% for images
+    const maxProgress = 0.10; // Images are first step (10%)
     
-    int imageCount = _capturedImages.length;
+    int imageCount = finderController.selectedImages.length;
     // Progress increases with images, completes at 3+ images
-    double imageProgress = (imageCount >= 3 ? 1.0 : imageCount / 3.0) * maxAdditionalProgress;
+    double imageProgress = (imageCount >= 3 ? 1.0 : imageCount / 3.0) * maxProgress;
     
-    return baseProgress + imageProgress;
+    return imageProgress;
   }
 
   @override
   void initState() {
     super.initState();
+    finderController = Get.find<FinderReportController>();
+    print('📷 CameraCapture - Got controller: ${finderController.hashCode}');
+    print('   Current images: ${finderController.selectedImages.length}');
     _initializeCamera();
   }
 
@@ -109,7 +109,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   Future<void> _takePicture() async {
     if (_controller == null || !_controller!.value.isInitialized) return;
 
-    if (_capturedImages.length >= _maxImages) {
+    if (finderController.selectedImages.length >= _maxImages) {
       _showSnackBar('Maximum $_maxImages images allowed', isError: true);
       return;
     }
@@ -128,12 +128,12 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         }
 
         setState(() {
-          _capturedImages.add(imageFile);
+          finderController.addImage(XFile(imageFile.path));
         });
 
         _showSnackBar('Image captured successfully!');
 
-        if (_capturedImages.length == 1) {
+        if (finderController.selectedImages.length == 1) {
           _showReviewDialog();
         }
       } else {
@@ -185,7 +185,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
                     child: Image.file(
-                      _capturedImages.last,
+                      File(finderController.selectedImages.last.path),
                       height: 200.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -285,13 +285,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                     ),
                   ),
                   SizedBox(height: 16.h),
-                  if (_capturedImages.isNotEmpty) ...[
+                  if (finderController.selectedImages.isNotEmpty) ...[
                     Expanded(
                       child: CarouselSlider(
                         items:
-                            _capturedImages.asMap().entries.map((entry) {
+                            finderController.selectedImages.asMap().entries.map((entry) {
                               int index = entry.key;
-                              File img = entry.value;
+                              File img = File(entry.value.path);
                               return Container(
                                 margin: EdgeInsets.symmetric(horizontal: 8.w),
                                 child: Stack(
@@ -344,7 +344,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                                           ),
                                         ),
                                         child: Text(
-                                          '${index + 1} / ${_capturedImages.length}',
+                                          '${index + 1} / ${finderController.selectedImages.length}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 12.sp,
@@ -367,7 +367,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                     ),
                     SizedBox(height: 16.h),
                     Text(
-                      '${_capturedImages.length} image(s) ready to submit',
+                      '${finderController.selectedImages.length} image(s) ready to submit',
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
@@ -407,7 +407,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed:
-                          _capturedImages.isNotEmpty
+                          finderController.selectedImages.isNotEmpty
                               ? _proceedToNextScreen
                               : null,
                       style: ElevatedButton.styleFrom(
@@ -437,10 +437,10 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
   void _removeImage(int index) {
     setState(() {
-      _capturedImages.removeAt(index);
+      finderController.removeImage(index);
     });
     Navigator.of(context).pop();
-    if (_capturedImages.isNotEmpty) {
+    if (finderController.selectedImages.isNotEmpty) {
       _showFinalReview();
     }
   }
@@ -496,7 +496,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    if (_capturedImages.isNotEmpty) {
+    if (finderController.selectedImages.isNotEmpty) {
       final shouldPop = await showDialog<bool>(
         context: context,
         builder:
@@ -509,7 +509,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
               ),
               content: Text(
-                'You have ${_capturedImages.length} unsaved image(s). Are you sure you want to go back?',
+                'You have ${finderController.selectedImages.length} unsaved image(s). Are you sure you want to go back?',
                 style: TextStyle(fontSize: 14.sp),
               ),
               actions: [
@@ -667,7 +667,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Text(
-                        '${_capturedImages.length}/$_maxImages',
+                        '${finderController.selectedImages.length}/$_maxImages',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14.sp,
@@ -709,9 +709,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                               widthFactor: progressPercent,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: _capturedImages.isEmpty
+                                  color: finderController.selectedImages.isEmpty
                                       ? Colors.orange
-                                      : _capturedImages.length >= 3
+                                      : finderController.selectedImages.length >= 3
                                           ? Colors.green
                                           : Colors.orange,
                                   borderRadius: BorderRadius.circular(2.r),
@@ -735,13 +735,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
               child: Column(
                 children: [
                   // Image thumbnails
-                  if (_capturedImages.isNotEmpty) ...[
+                  if (finderController.selectedImages.isNotEmpty) ...[
                     Container(
                       height: 60.h,
                       margin: EdgeInsets.only(bottom: 20.h),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _capturedImages.length,
+                        itemCount: finderController.selectedImages.length,
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         itemBuilder: (context, index) {
                           return Container(
@@ -749,7 +749,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.r),
                               child: Image.file(
-                                _capturedImages[index],
+                                File(finderController.selectedImages[index].path),
                                 width: 60.w,
                                 height: 60.h,
                                 fit: BoxFit.cover,
@@ -765,7 +765,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (_capturedImages.isNotEmpty) ...[
+                      if (finderController.selectedImages.isNotEmpty) ...[
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black54,
@@ -798,13 +798,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                             border: Border.all(
                               width: 4.w,
                               color:
-                                  _capturedImages.length >= _maxImages
+                                  finderController.selectedImages.length >= _maxImages
                                       ? Colors.red
                                       : AppColors.primary,
                             ),
                           ),
                           child:
-                              _capturedImages.length >= _maxImages
+                              finderController.selectedImages.length >= _maxImages
                                   ? Icon(
                                     Icons.block,
                                     color: Colors.red,

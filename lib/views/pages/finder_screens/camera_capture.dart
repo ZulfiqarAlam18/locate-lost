@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:locate_lost/controllers/finder_report_controller.dart';
 import 'package:locate_lost/utils/constants/app_colors.dart';
 import 'package:locate_lost/navigation/app_routes.dart';
+import 'package:locate_lost/views/pages/finder_screens/found_person_details.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';

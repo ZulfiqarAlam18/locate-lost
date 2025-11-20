@@ -400,9 +400,7 @@ class _FinderUploadImagesScreenState extends State<FinderUploadImagesScreen> {
                   CustomElevatedButton(
                     onPressed: () {
                       if (finderController.selectedImages.isNotEmpty) {
-                        //   Get.toNamed(AppRoutes.parentCaseSummary);
-
-                        Navigator.of(context).pop();
+                        // Navigate to details - keep current route so back button works
                         Get.toNamed(AppRoutes.foundPersonDetails);
                       } else {
                         Get.snackbar(

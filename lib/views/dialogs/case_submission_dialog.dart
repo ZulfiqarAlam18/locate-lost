@@ -361,7 +361,12 @@ class _CaseSubmissionDialogState extends State<CaseSubmissionDialog>
             width: double.infinity,
             height: 48.h,
             child: TextButton(
-              onPressed: () => Get.back(),
+              onPressed: () {
+                // Close dialog first
+                Get.back();
+                // Navigate to home screen and clear navigation stack
+                Get.offAllNamed(AppRoutes.mainNavigation, arguments: 0);
+              },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.grey[600],
                 shape: RoundedRectangleBorder(

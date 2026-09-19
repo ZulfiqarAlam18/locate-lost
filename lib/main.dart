@@ -5,9 +5,7 @@ import 'navigation/app_pages.dart';
 import 'navigation/app_routes.dart';
 
 void main() {
-  // Reset location permission check on app start
- // LocationPermissionService.resetSessionCheck();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +14,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      //  designSize: Size(375, 812), more generic
       designSize: Size(430, 932),
 
       minTextAdapt: true,
@@ -28,8 +25,7 @@ class MyApp extends StatelessWidget {
 
           title: 'LocateLost',
 
-           initialRoute: AppRoutes.splash,
-      //  initialRoute: AppRoutes.splash1,
+          initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
 
   
